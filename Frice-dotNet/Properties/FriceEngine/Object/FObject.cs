@@ -1,5 +1,5 @@
 ﻿using Frice_dotNet.Properties.FriceEngine.Resource;
-using Frice_dotNet.Properties.FriceEngine.Utils.Graphics.Shape;
+using Frice_dotNet.Properties.FriceEngine.Utils.Graphics;
 
 namespace Frice_dotNet.Properties.FriceEngine.Object
 {

@@ -1,4 +1,4 @@
-﻿namespace Frice_dotNet.Properties.FriceEngine.Utils.Graphics.Shape
+﻿namespace Frice_dotNet.Properties.FriceEngine.Utils.Graphics
 {
 	public interface IFShape
 	{

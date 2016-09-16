@@ -49,7 +49,8 @@
     <Compile Include="Properties\FriceEngine\Game.cs" />
     <Compile Include="Properties\FriceEngine\Object\FObject.cs" />
     <Compile Include="Properties\FriceEngine\Resource\FResource.cs" />
-    <Compile Include="Properties\FriceEngine\Utils\Graphics\Shape\FShape.cs" />
+    <Compile Include="Properties\FriceEngine\Utils\Graphics\ColorUtils.cs" />
+    <Compile Include="Properties\FriceEngine\Utils\Graphics\FShape.cs" />
     <Compile Include="Properties\Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
