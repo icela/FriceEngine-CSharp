@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Windows.Forms;
 
-namespace Frice_dotNet.FriceEngine
+namespace Frice_dotNet.Properties.FriceEngine
 {
 	public class Game : Form
 	{
