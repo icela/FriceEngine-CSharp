@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\FriceEngine\Game.cs" />
+    <Compile Include="Properties\FriceEngine\Object\FObject.cs" />
     <Compile Include="Properties\Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -74,6 +75,7 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Properties\FriceEngine" />
+    <Folder Include="Properties\FriceEngine\Object" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

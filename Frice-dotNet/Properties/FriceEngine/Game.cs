@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Collections;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Frice_dotNet.Properties.FriceEngine
@@ -13,12 +15,28 @@ namespace Frice_dotNet.Properties.FriceEngine
 			new Thread(Run).Start();
 		}
 
+		private ArrayList _objects = new ArrayList();
+		private ArrayList _objectsAddBuffer = new ArrayList();
+		private ArrayList _objectsDeleteBuffer = new ArrayList();
+
+		private ArrayList _texts = new ArrayList();
+		private ArrayList _textsAddBuffer = new ArrayList();
+		private ArrayList _textsDeleteBuffer = new ArrayList();
+
 		public void OnInit()
 		{
 		}
 
 		public void OnRefresh()
 		{
+		}
+
+		protected override void OnPaint(PaintEventArgs e)
+		{
+			base.OnPaint(e);
+			switch ()
+			{
+			}
 		}
 
 		private void Run()
