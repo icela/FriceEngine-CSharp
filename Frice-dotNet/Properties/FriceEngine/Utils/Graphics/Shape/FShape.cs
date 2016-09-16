@@ -36,4 +36,17 @@
 		{
 		}
 	}
+
+	/// <summary> like a data class in Kotlin. </summary>
+	public class FPoint
+	{
+		public double X;
+		public double Y;
+
+		public FPoint(double y, double x)
+		{
+			Y = y;
+			X = x;
+		}
+	}
 }
