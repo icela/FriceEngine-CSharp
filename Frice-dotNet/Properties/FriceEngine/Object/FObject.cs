@@ -24,11 +24,11 @@ namespace Frice_dotNet.Properties.FriceEngine.Object
 
 	public abstract class PhysicalObject : IAbstractObject, IFContainer
 	{
-		public double X { get; set; }
-		public double Y { get; set; }
+		public virtual double X { get; set; }
+		public virtual double Y { get; set; }
 
-		public double Width { get; set; }
-		public double Height { get; set; }
+		public virtual double Width { get; set; }
+		public virtual double Height { get; set; }
 
 		public double Rotate { get; set; } = 0;
 
@@ -49,10 +49,22 @@ namespace Frice_dotNet.Properties.FriceEngine.Object
 		public bool ContainsPoint(int px, int py) => px >= X && px <= X + Width && py >= Y && py <= Y + Height;
 	}
 
-	public class ShapeObject : FObject
+	public sealed class ShapeObject : FObject
 	{
-		public IFShape Shape { get; set; }
+		public IFShape Shape;
 		public ColorResource ColorResource;
+
+		public override double Width
+		{
+			get { return Shape.Width; }
+			set { Shape.Width = value; }
+		}
+
+		public override double Height
+		{
+			get { return Shape.Height; }
+			set { Shape.Height = value; }
+		}
 
 		public ShapeObject(ColorResource colorResource, IFShape shape, double x, double y)
 		{
