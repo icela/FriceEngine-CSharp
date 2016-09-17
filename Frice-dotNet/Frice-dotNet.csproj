@@ -52,8 +52,8 @@
     <Compile Include="Properties\FriceEngine\Utils\Graphics\ColorUtils.cs" />
     <Compile Include="Properties\FriceEngine\Utils\Graphics\FShape.cs" />
     <Compile Include="Properties\FriceEngine\Utils\Message\FLog.cs" />
-    <Compile Include="Properties\Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

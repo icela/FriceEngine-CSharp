@@ -18,14 +18,19 @@
 		}
 	}
 
-	public class FOval : FRectangle
+	public class FOval : IFShape
 	{
 		/// <summary> this class represents the shape oval. </summary>
 		/// <param name="rh"> radius horizontal. </param>
 		/// <param name="rv"> radius vertical. </param>
-		public FOval(double rh, double rv) : base(rh + rh, rv + rv)
+		public FOval(double rh, double rv)
 		{
+			Width = rh + rh;
+			Height = rv + rv;
 		}
+
+		public double Width { get; set; }
+		public double Height { get; set; }
 	}
 
 	public class FCircle : FOval
