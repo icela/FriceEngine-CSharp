@@ -10,9 +10,12 @@ namespace Frice_dotNet
 		public override void OnInit()
 		{
 			base.OnInit();
-			AddObject(new ShapeObject(ColorResource.Blue, new FCircle(10), 10, 10));
+			AddObject(new ShapeObject(ColorResource.Blue, new FCircle(50), 100, 100));
 		}
 
-		public static void Main(string[] args) => new Test();
+		public static void Main(string[] args)
+		{
+			new Test();
+		}
 	}
 }
