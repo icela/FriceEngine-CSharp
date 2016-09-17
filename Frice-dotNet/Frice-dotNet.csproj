@@ -51,6 +51,7 @@
     <Compile Include="Properties\FriceEngine\Resource\FResource.cs" />
     <Compile Include="Properties\FriceEngine\Utils\Graphics\ColorUtils.cs" />
     <Compile Include="Properties\FriceEngine\Utils\Graphics\FShape.cs" />
+    <Compile Include="Properties\FriceEngine\Utils\Message\FLog.cs" />
     <Compile Include="Properties\Game.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -82,6 +83,7 @@
     <Folder Include="Properties\FriceEngine\Resource" />
     <Folder Include="Properties\FriceEngine\Utils" />
     <Folder Include="Properties\FriceEngine\Utils\Graphics" />
+    <Folder Include="Properties\FriceEngine\Utils\Message" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

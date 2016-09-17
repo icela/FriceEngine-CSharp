@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
@@ -12,19 +13,25 @@ namespace Frice_dotNet.Properties.FriceEngine
 	{
 		public Game()
 		{
+			_objects = new List<IAbstractObject>();
+			_objectsAddBuffer = new List<IAbstractObject>();
+			_objectsDeleteBuffer = new List<IAbstractObject>();
+			_texts = new List<IAbstractObject>();
+			_textsAddBuffer = new List<IAbstractObject>();
+			_textsDeleteBuffer = new List<IAbstractObject>();
 			SetBounds(100, 100, 500, 500);
 			OnInit(this, EventArgs.Empty);
 			Show();
 			new Thread(Run).Start();
 		}
 
-		private ArrayList _objects = new ArrayList();
-		private ArrayList _objectsAddBuffer = new ArrayList();
-		private ArrayList _objectsDeleteBuffer = new ArrayList();
+		private readonly IList<IAbstractObject> _objects;
+		private readonly IList<IAbstractObject> _objectsAddBuffer;
+		private readonly IList<IAbstractObject> _objectsDeleteBuffer;
 
-		private ArrayList _texts = new ArrayList();
-		private ArrayList _textsAddBuffer = new ArrayList();
-		private ArrayList _textsDeleteBuffer = new ArrayList();
+		private readonly IList<IAbstractObject> _texts;
+		private readonly IList<IAbstractObject> _textsAddBuffer;
+		private readonly IList<IAbstractObject> _textsDeleteBuffer;
 
 		public void AddObject(IAbstractObject o) => _objectsAddBuffer.Add(o);
 
@@ -36,7 +43,7 @@ namespace Frice_dotNet.Properties.FriceEngine
 
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			base.OnPaint(e);
+			HandleBuffer();
 
 			foreach (var o in _objects)
 			{
@@ -66,6 +73,9 @@ namespace Frice_dotNet.Properties.FriceEngine
 				{
 				}
 			}
+			foreach (var t in _texts)
+			{
+			}
 		}
 
 		private void Run()
@@ -75,6 +85,19 @@ namespace Frice_dotNet.Properties.FriceEngine
 				OnRefresh(this, EventArgs.Empty);
 			}
 			// ReSharper disable once FunctionNeverReturns
+		}
+
+		private void HandleBuffer()
+		{
+			foreach (var o in _objectsAddBuffer) _objects.Add(o);
+			_objectsAddBuffer.Clear();
+			foreach (var o in _objectsDeleteBuffer) _objects.Remove(o);
+			_objectsDeleteBuffer.Clear();
+
+			foreach (var o in _textsAddBuffer) _texts.Add(o);
+			_textsAddBuffer.Clear();
+			foreach (var o in _textsDeleteBuffer) _texts.Remove(o);
+			_textsDeleteBuffer.Clear();
 		}
 	}
 }

@@ -28,5 +28,14 @@ namespace Frice_dotNet.Properties.FriceEngine.Utils.Graphics
 			var c = (color.R + color.G + color.B) / 3;
 			return Color.FromArgb(color.A, c, c, c).ToArgb();
 		}
+
+		public static int Darker(int argb)
+		{
+			var color = Color.FromArgb(argb);
+			return (color.B * 2 / 3)
+			       | ((color.G * 2 / 3) << 8)
+			       | ((color.R * 2 / 3) << 16)
+			       | (color.A << 24);
+		}
 	}
 }
