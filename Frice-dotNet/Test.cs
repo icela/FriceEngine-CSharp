@@ -10,11 +10,12 @@ namespace Frice_dotNet
 		public override void OnInit()
 		{
 			base.OnInit();
-			AddObject(new ShapeObject(ColorResource.Blue, new FCircle(50), 100, 100));
+			AddObject(new ShapeObject(ColorResource.茅野枫, new FCircle(50), 100, 100));
 		}
 
 		public static void Main(string[] args)
 		{
+			// ReSharper disable once ObjectCreationAsStatement
 			new Test();
 		}
 	}

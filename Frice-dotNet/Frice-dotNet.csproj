@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\FriceEngine\Animation\FAnim.cs" />
     <Compile Include="Properties\FriceEngine\Game.cs" />
     <Compile Include="Properties\FriceEngine\Object\FObject.cs" />
     <Compile Include="Properties\FriceEngine\Resource\FResource.cs" />
@@ -79,6 +80,7 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Properties\FriceEngine" />
+    <Folder Include="Properties\FriceEngine\Animation" />
     <Folder Include="Properties\FriceEngine\Object" />
     <Folder Include="Properties\FriceEngine\Resource" />
     <Folder Include="Properties\FriceEngine\Utils" />

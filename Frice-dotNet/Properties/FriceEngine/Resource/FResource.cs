@@ -25,6 +25,22 @@ namespace Frice_dotNet.Properties.FriceEngine.Resource
 			Color = Color.FromName(name);
 		}
 
+		public override bool Equals(object obj)
+		{
+			if (!(obj is ColorResource)) return false;
+			return ((ColorResource) obj).Color.Equals(Color);
+		}
+
+		protected bool Equals(ColorResource other)
+		{
+			return Color.Equals(other.Color);
+		}
+
+		public override int GetHashCode()
+		{
+			return Color.GetHashCode();
+		}
+
 		public static readonly ColorResource Blue = new ColorResource(Color.Blue);
 		public static readonly ColorResource Red = new ColorResource(Color.Red);
 		public static readonly ColorResource Green = new ColorResource(Color.Green);

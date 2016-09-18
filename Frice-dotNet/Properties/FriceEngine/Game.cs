@@ -110,9 +110,5 @@ namespace Frice_dotNet.Properties.FriceEngine
 			foreach (var o in _textsDeleteBuffer) _texts.Remove(o);
 			_textsDeleteBuffer.Clear();
 		}
-
-		private class MyPanel : Panel
-		{
-		}
 	}
 }
