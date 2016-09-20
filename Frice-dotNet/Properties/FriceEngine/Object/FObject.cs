@@ -78,4 +78,16 @@ namespace Frice_dotNet.Properties.FriceEngine.Object
 	public class ImageObject : FObject
 	{
 	}
+
+	public class DoublePair
+	{
+		public double X;
+		public double Y;
+
+		public DoublePair(double y, double x)
+		{
+			Y = y;
+			X = x;
+		}
+	}
 }
