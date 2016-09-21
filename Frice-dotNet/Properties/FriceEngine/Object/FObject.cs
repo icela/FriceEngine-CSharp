@@ -3,91 +3,106 @@ using Frice_dotNet.Properties.FriceEngine.Utils.Graphics;
 
 namespace Frice_dotNet.Properties.FriceEngine.Object
 {
-	public interface IAbstractObject
-	{
-		double X { get; set; }
-		double Y { get; set; }
+    public interface IAbstractObject
+    {
+        double X { get; set; }
+        double Y { get; set; }
 
-		double Rotate { get; set; }
-	}
+        double Rotate { get; set; }
+    }
 
-	public interface IFContainer
-	{
-		double Width { get; set; }
-		double Height { get; set; }
-	}
+    public class AbstractObject : IAbstractObject
+    {
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Rotate { get; set; }
 
-	public interface ICollideBox
-	{
-		bool IsCollide(ICollideBox other);
-	}
+        public AbstractObject(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
+    }
 
-	public abstract class PhysicalObject : IAbstractObject, IFContainer
-	{
-		public virtual double X { get; set; }
-		public virtual double Y { get; set; }
+    public interface IFContainer
+    {
+        double Width { get; set; }
+        double Height { get; set; }
+    }
 
-		public virtual double Width { get; set; }
-		public virtual double Height { get; set; }
+    public interface ICollideBox
+    {
+        bool IsCollide(ICollideBox other);
+    }
 
-		public double Rotate { get; set; } = 0;
+    public abstract class PhysicalObject : IAbstractObject, IFContainer
+    {
+        public virtual double X { get; set; }
+        public virtual double Y { get; set; }
 
-		public bool Died { get; set; } = false;
+        public virtual double Width { get; set; }
+        public virtual double Height { get; set; }
 
-		private double _mass = 1;
+        public double Rotate { get; set; } = 0;
 
-		public double Mass
-		{
-			get { return _mass; }
-			set { _mass = value <= 0 ? 0.001 : value; }
-		}
-	}
+        public bool Died { get; set; } = false;
 
-	public abstract class FObject : PhysicalObject
-	{
-		public bool ContainsPoint(double px, double py) => px >= X && px <= X + Width && py >= Y && py <= Y + Height;
-		public bool ContainsPoint(int px, int py) => px >= X && px <= X + Width && py >= Y && py <= Y + Height;
-	}
+        private double _mass = 1;
 
-	public sealed class ShapeObject : FObject
-	{
-		public IFShape Shape;
-		public ColorResource ColorResource;
+        public double Mass
+        {
+            get { return _mass; }
+            set { _mass = value <= 0 ? 0.001 : value; }
+        }
+    }
 
-		public override double Width
-		{
-			get { return Shape.Width; }
-			set { Shape.Width = value; }
-		}
+    public abstract class FObject : PhysicalObject
+    {
+        public bool ContainsPoint(double px, double py) => px >= X && px <= X + Width && py >= Y && py <= Y + Height;
+        public bool ContainsPoint(int px, int py) => px >= X && px <= X + Width && py >= Y && py <= Y + Height;
+    }
 
-		public override double Height
-		{
-			get { return Shape.Height; }
-			set { Shape.Height = value; }
-		}
+    public sealed class ShapeObject : FObject
+    {
+        public IFShape Shape;
+        public ColorResource ColorResource;
 
-		public ShapeObject(ColorResource colorResource, IFShape shape, double x, double y)
-		{
-			ColorResource = colorResource;
-			Shape = shape;
-			X = x;
-			Y = y;
-		}
-	}
+        public override double Width
+        {
+            get { return Shape.Width; }
+            set { Shape.Width = value; }
+        }
 
-	public class ImageObject : FObject
-	{
-	}
+        public override double Height
+        {
+            get { return Shape.Height; }
+            set { Shape.Height = value; }
+        }
 
-	public class DoublePair
-	{
-		public double X;
-		public double Y;
+        public ShapeObject(ColorResource colorResource, IFShape shape, double x, double y)
+        {
+            ColorResource = colorResource;
+            Shape = shape;
+            X = x;
+            Y = y;
+        }
+    }
 
-		public DoublePair(double y, double x)
-		{
-			Y = y;
-			X = x;
-		}
-	}
+    public class ImageObject : FObject
+    {
+    }
+
+    public class DoublePair
+    {
+        public double X;
+        public double Y;
+
+        public DoublePair(double y, double x)
+        {
+            Y = y;
+            X = x;
+        }
+
+        public static DoublePair From1000(double x, double y) => new DoublePair(x/1000.0, y/1000.0);
+    }
 }
