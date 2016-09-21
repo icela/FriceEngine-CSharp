@@ -20,7 +20,6 @@ namespace Frice_dotNet.Properties.FriceEngine
             _textsDeleteBuffer = new List<IAbstractObject>();
             SetBounds(100, 100, 500, 500);
             OnInit();
-            OnClick();
             ShowDialog();
             new Thread(Run).Start();
         }
