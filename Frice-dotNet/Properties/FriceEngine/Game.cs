@@ -16,9 +16,12 @@ namespace Frice_dotNet.Properties.FriceEngine
             Objects = new List<IAbstractObject>();
             ObjectAddBuffer = new List<IAbstractObject>();
             ObjectDeleteBuffer = new List<IAbstractObject>();
-            Texts = new List<IAbstractObject>();
-            TextAddBuffer = new List<IAbstractObject>();
-            TextDeleteBuffer = new List<IAbstractObject>();
+            Texts = new List<FText>();
+            TextAddBuffer = new List<FText>();
+            TextDeleteBuffer = new List<FText>();
+            FTimeListeners = new List<FTimeListener>();
+            FTimeListenerAddBuffer = new List<FTimeListener>();
+            FTimeListenerDeleteBuffer = new List<FTimeListener>();
             SetBounds(100, 100, 500, 500);
             OnInit();
             ShowDialog();
