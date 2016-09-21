@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Frice_dotNet.Properties.FriceEngine.Object;
 using Frice_dotNet.Properties.FriceEngine.Utils.Graphics;
 using Frice_dotNet.Properties.FriceEngine.Utils.Message;
+using Frice_dotNet.Properties.FriceEngine.Utils.Time;
 
 namespace Frice_dotNet.Properties.FriceEngine
 {
@@ -12,31 +13,82 @@ namespace Frice_dotNet.Properties.FriceEngine
     {
         public Game()
         {
-            _objects = new List<IAbstractObject>();
-            _objectsAddBuffer = new List<IAbstractObject>();
-            _objectsDeleteBuffer = new List<IAbstractObject>();
-            _texts = new List<IAbstractObject>();
-            _textsAddBuffer = new List<IAbstractObject>();
-            _textsDeleteBuffer = new List<IAbstractObject>();
+            Objects = new List<IAbstractObject>();
+            ObjectAddBuffer = new List<IAbstractObject>();
+            ObjectDeleteBuffer = new List<IAbstractObject>();
+            Texts = new List<IAbstractObject>();
+            TextAddBuffer = new List<IAbstractObject>();
+            TextDeleteBuffer = new List<IAbstractObject>();
             SetBounds(100, 100, 500, 500);
             OnInit();
             ShowDialog();
             new Thread(Run).Start();
         }
 
-        private readonly IList<IAbstractObject> _objects;
-        private readonly IList<IAbstractObject> _objectsAddBuffer;
-        private readonly IList<IAbstractObject> _objectsDeleteBuffer;
+        protected readonly IList<IAbstractObject> Objects;
+        protected readonly IList<IAbstractObject> ObjectAddBuffer;
+        protected readonly IList<IAbstractObject> ObjectDeleteBuffer;
 
-        private readonly IList<IAbstractObject> _texts;
-        private readonly IList<IAbstractObject> _textsAddBuffer;
-        private readonly IList<IAbstractObject> _textsDeleteBuffer;
+        protected readonly IList<FText> Texts;
+        protected readonly IList<FText> TextAddBuffer;
+        protected readonly IList<FText> TextDeleteBuffer;
+
+        protected readonly IList<FTimeListener> FTimeListeners;
+        protected readonly IList<FTimeListener> FTimeListenerAddBuffer;
+        protected readonly IList<FTimeListener> FTimeListenerDeleteBuffer;
 
         public new Point MousePosition() => Control.MousePosition;
 
-        public void AddObject(IAbstractObject o) => _objectsAddBuffer.Add(o);
+        /// <summary>
+        /// add an object or text to screen.
+        /// </summary>
+        /// <param name="o">the object or text to be added.</param>
+        public void AddObject(IAbstractObject o)
+        {
+            if (o == null) return;
+            if (o is FText) TextAddBuffer.Add((FText) o);
+            else ObjectAddBuffer.Add(o);
+        }
 
-        public void RemoveObject(IAbstractObject o) => _objectsDeleteBuffer.Add(o);
+        /// <summary>
+        /// remove an object or text from screen.
+        /// </summary>
+        /// <param name="o">the object or text to be removed.</param>
+        public void RemoveObject(IAbstractObject o)
+        {
+            if (o == null) return;
+            if (o is FText) TextDeleteBuffer.Add((FText) o);
+            else ObjectDeleteBuffer.Add(o);
+        }
+
+        /// <summary>
+        /// clear all objects and texts
+        /// </summary>
+        public void ClearObjects()
+        {
+            foreach (var o in Objects) ObjectDeleteBuffer.Add(o);
+            foreach (var o in Texts) TextDeleteBuffer.Add(o);
+        }
+
+        /// <summary>
+        /// add a timerListener
+        /// </summary>
+        /// <param name="t">the timeListener to be added.</param>
+        public void AddTimeListener(FTimeListener t) => FTimeListenerAddBuffer.Add(t);
+
+        /// <summary>
+        /// remove a timeListener
+        /// </summary>
+        /// <param name="t">the timeListener to be removed.</param>
+        public void RemoveTimeListener(FTimeListener t) => FTimeListenerDeleteBuffer.Add(t);
+
+        /// <summary>
+        /// clear the timeListeners.
+        /// </summary>
+        public void ClearTimeListeners()
+        {
+            foreach (var l in FTimeListeners) FTimeListenerDeleteBuffer.Add(l);
+        }
 
         public virtual void OnInit()
         {
@@ -52,10 +104,10 @@ namespace Frice_dotNet.Properties.FriceEngine
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            HandleBuffer();
+            ProcessBuffer();
 
             var g = e.Graphics;
-            foreach (var o in _objects)
+            foreach (var o in Objects)
                 if (o is ShapeObject)
                 {
                     var brush = new SolidBrush((o as ShapeObject).ColorResource.Color);
@@ -77,7 +129,7 @@ namespace Frice_dotNet.Properties.FriceEngine
                 else if (o is ImageObject)
                 {
                 }
-            foreach (var t in _texts)
+            foreach (var t in Texts)
             {
             }
 
@@ -96,17 +148,22 @@ namespace Frice_dotNet.Properties.FriceEngine
             // ReSharper disable once FunctionNeverReturns
         }
 
-        private void HandleBuffer()
+        private void ProcessBuffer()
         {
-            foreach (var o in _objectsAddBuffer) _objects.Add(o);
-            _objectsAddBuffer.Clear();
-            foreach (var o in _objectsDeleteBuffer) _objects.Remove(o);
-            _objectsDeleteBuffer.Clear();
+            foreach (var o in ObjectAddBuffer) Objects.Add(o);
+            foreach (var o in ObjectDeleteBuffer) Objects.Remove(o);
+            ObjectAddBuffer.Clear();
+            ObjectDeleteBuffer.Clear();
 
-            foreach (var o in _textsAddBuffer) _texts.Add(o);
-            _textsAddBuffer.Clear();
-            foreach (var o in _textsDeleteBuffer) _texts.Remove(o);
-            _textsDeleteBuffer.Clear();
+            foreach (var t in TextAddBuffer) Texts.Add(t);
+            foreach (var t in TextDeleteBuffer) Texts.Remove(t);
+            TextAddBuffer.Clear();
+            TextDeleteBuffer.Clear();
+
+            foreach (var t in FTimeListenerAddBuffer) FTimeListeners.Add(t);
+            foreach (var t in FTimeListenerDeleteBuffer) FTimeListeners.Remove(t);
+            FTimeListenerAddBuffer.Clear();
+            FTimeListenerDeleteBuffer.Clear();
         }
     }
 }

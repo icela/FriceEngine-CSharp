@@ -17,14 +17,14 @@ namespace Frice_dotNet.Properties.FriceEngine.Animation
 
     public class SimpleMove : MoveAnim
     {
-        public int X { get; set; }
-        public int Y { get; set; }
-
         public SimpleMove(int y, int x)
         {
             Y = y;
             X = x;
         }
+
+        public int X { get; set; }
+        public int Y { get; set; }
 
         public override DoublePair GetDelta()
         {
@@ -34,14 +34,14 @@ namespace Frice_dotNet.Properties.FriceEngine.Animation
 
     public class AccurateMove : MoveAnim
     {
-        public double X { get; set; }
-        public double Y { get; set; }
-
         public AccurateMove(int y, int x)
         {
             Y = y;
             X = x;
         }
+
+        public double X { get; set; }
+        public double Y { get; set; }
 
         public override DoublePair GetDelta()
         {
