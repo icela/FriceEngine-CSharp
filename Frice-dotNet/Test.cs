@@ -1,4 +1,5 @@
 ﻿using Frice_dotNet.Properties.FriceEngine;
+using Frice_dotNet.Properties.FriceEngine.Animation;
 using Frice_dotNet.Properties.FriceEngine.Object;
 using Frice_dotNet.Properties.FriceEngine.Resource;
 using Frice_dotNet.Properties.FriceEngine.Utils.Graphics;
@@ -9,8 +10,10 @@ namespace Frice_dotNet
     {
         public override void OnInit()
         {
+            var a = new ShapeObject(ColorResource.茅野枫, new FCircle(50), 100, 100);
+            a.MoveList.Add(new SimpleMove(10, 0));
             base.OnInit();
-            AddObject(new ShapeObject(ColorResource.茅野枫, new FCircle(50), 100, 100));
+            AddObject(a);
         }
 
         public static void Main(string[] args)

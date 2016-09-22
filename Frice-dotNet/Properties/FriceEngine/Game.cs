@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
@@ -13,17 +14,24 @@ namespace Frice_dotNet.Properties.FriceEngine
     {
         public Game()
         {
+            _timer = new FTimer(10);
+
             Objects = new List<IAbstractObject>();
             ObjectAddBuffer = new List<IAbstractObject>();
             ObjectDeleteBuffer = new List<IAbstractObject>();
+
             Texts = new List<FText>();
             TextAddBuffer = new List<FText>();
             TextDeleteBuffer = new List<FText>();
+
             FTimeListeners = new List<FTimeListener>();
             FTimeListenerAddBuffer = new List<FTimeListener>();
             FTimeListenerDeleteBuffer = new List<FTimeListener>();
+
             SetBounds(100, 100, 500, 500);
             OnInit();
+//            _gameScene = CreateGraphics();
+//            _screenCut = new Bitmap(Width, Height);
             ShowDialog();
             new Thread(Run).Start();
         }
@@ -39,6 +47,11 @@ namespace Frice_dotNet.Properties.FriceEngine
         protected readonly IList<FTimeListener> FTimeListeners;
         protected readonly IList<FTimeListener> FTimeListenerAddBuffer;
         protected readonly IList<FTimeListener> FTimeListenerDeleteBuffer;
+
+        private readonly FTimer _timer;
+
+//        private readonly Graphics _gameScene;
+//        private readonly Bitmap _screenCut;
 
         public new Point MousePosition() => Control.MousePosition;
 
@@ -101,13 +114,14 @@ namespace Frice_dotNet.Properties.FriceEngine
         {
         }
 
-//        public virtual void OnClick()
-//        {
-//        }
+        public virtual void OnClick()
+        {
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             ProcessBuffer();
+            foreach (var o in Objects) (o as FObject)?.HandleAnims();
 
             var g = e.Graphics;
             foreach (var o in Objects)
@@ -142,12 +156,12 @@ namespace Frice_dotNet.Properties.FriceEngine
         private void Run()
         {
             while (true)
-            {
-                Thread.Sleep(10);
-                OnRefresh();
-                Refresh();
-                FLog.Info("repaint");
-            }
+                if (_timer.Ended())
+                {
+                    OnRefresh();
+                    Refresh();
+                    FLog.Info("repaint");
+                }
             // ReSharper disable once FunctionNeverReturns
         }
 

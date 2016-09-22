@@ -1,4 +1,6 @@
-﻿using Frice_dotNet.Properties.FriceEngine.Resource;
+﻿using System.Collections.Generic;
+using Frice_dotNet.Properties.FriceEngine.Animation;
+using Frice_dotNet.Properties.FriceEngine.Resource;
 using Frice_dotNet.Properties.FriceEngine.Utils.Graphics;
 
 namespace Frice_dotNet.Properties.FriceEngine.Object
@@ -58,6 +60,27 @@ namespace Frice_dotNet.Properties.FriceEngine.Object
 
     public abstract class FObject : PhysicalObject
     {
+        protected FObject()
+        {
+            MoveList = new List<MoveAnim>();
+        }
+
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        public List<MoveAnim> MoveList { get; private set; }
+
+        public void Move(double x, double y)
+        {
+            X += x;
+            Y += y;
+        }
+
+        public void Move(DoublePair p) => Move(p.X, p.Y);
+
+        public void HandleAnims()
+        {
+            foreach (var anim in MoveList) Move(anim.GetDelta());
+        }
+
         public bool ContainsPoint(double px, double py) => px >= X && px <= X + Width && py >= Y && py <= Y + Height;
         public bool ContainsPoint(int px, int py) => px >= X && px <= X + Width && py >= Y && py <= Y + Height;
     }
@@ -79,7 +102,7 @@ namespace Frice_dotNet.Properties.FriceEngine.Object
             set { Shape.Height = value; }
         }
 
-        public ShapeObject(ColorResource colorResource, IFShape shape, double x, double y)
+        public ShapeObject(ColorResource colorResource, IFShape shape, double x, double y) : base()
         {
             ColorResource = colorResource;
             Shape = shape;

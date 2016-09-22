@@ -28,7 +28,7 @@ namespace Frice_dotNet.Properties.FriceEngine.Animation
 
         public override DoublePair GetDelta()
         {
-            return DoublePair.From1000((Now - Start)*X, (Now - Start)*Y);
+            return DoublePair.From1000((Now - Start) * X, (Now - Start) * Y);
         }
     }
 
