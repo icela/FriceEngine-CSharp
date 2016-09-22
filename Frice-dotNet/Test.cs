@@ -11,7 +11,7 @@ namespace Frice_dotNet
         public override void OnInit()
         {
             var a = new ShapeObject(ColorResource.茅野枫, new FCircle(50), 100, 100);
-            a.MoveList.Add(new SimpleMove(10, 0));
+            a.MoveList.Add(new SimpleMove(5, 2));
             base.OnInit();
             AddObject(a);
         }
