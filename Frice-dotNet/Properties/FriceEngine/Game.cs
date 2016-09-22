@@ -11,7 +11,7 @@ using Frice_dotNet.Properties.FriceEngine.Utils.Time;
 
 namespace Frice_dotNet.Properties.FriceEngine
 {
-    public class AbstractGame : Form
+    public class AbstractGame : Panel
     {
         internal readonly IList<IAbstractObject> Objects;
         internal readonly IList<IAbstractObject> ObjectAddBuffer;
@@ -39,7 +39,6 @@ namespace Frice_dotNet.Properties.FriceEngine
             FTimeListeners = new List<FTimeListener>();
             FTimeListenerAddBuffer = new List<FTimeListener>();
             FTimeListenerDeleteBuffer = new List<FTimeListener>();
-            ShowDialog();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -95,19 +94,21 @@ namespace Frice_dotNet.Properties.FriceEngine
         }
     }
 
-    public class Game
+    public class Game : Form
     {
         public Game()
         {
             _timer = new FTimer(10);
-            Form = new AbstractGame();
-            Form.ShowDialog();
-            // ReSharper disable VirtualMemberCallInConstructor
+            GamePanel = new AbstractGame();
             OnInit();
+            GamePanel.SetBounds(0, 0, Width, Height);
+            Controls.Add(GamePanel);
+            Show();
             Run();
+            // ReSharper disable VirtualMemberCallInConstructor
         }
 
-        protected readonly AbstractGame Form;
+        protected readonly AbstractGame GamePanel;
 
         private readonly FTimer _timer;
 
@@ -123,8 +124,8 @@ namespace Frice_dotNet.Properties.FriceEngine
         public void AddObject(IAbstractObject o)
         {
             if (o == null) return;
-            if (o is FText) Form.TextAddBuffer.Add((FText) o);
-            else Form.ObjectAddBuffer.Add(o);
+            if (o is FText) GamePanel.TextAddBuffer.Add((FText) o);
+            else GamePanel.ObjectAddBuffer.Add(o);
         }
 
         /// <summary>
@@ -134,8 +135,8 @@ namespace Frice_dotNet.Properties.FriceEngine
         public void RemoveObject(IAbstractObject o)
         {
             if (o == null) return;
-            if (o is FText) Form.TextDeleteBuffer.Add((FText) o);
-            else Form.ObjectDeleteBuffer.Add(o);
+            if (o is FText) GamePanel.TextDeleteBuffer.Add((FText) o);
+            else GamePanel.ObjectDeleteBuffer.Add(o);
         }
 
         /// <summary>
@@ -143,28 +144,28 @@ namespace Frice_dotNet.Properties.FriceEngine
         /// </summary>
         public void ClearObjects()
         {
-            foreach (var o in Form.Objects) Form.ObjectDeleteBuffer.Add(o);
-            foreach (var o in Form.Texts) Form.TextDeleteBuffer.Add(o);
+            foreach (var o in GamePanel.Objects) GamePanel.ObjectDeleteBuffer.Add(o);
+            foreach (var o in GamePanel.Texts) GamePanel.TextDeleteBuffer.Add(o);
         }
 
         /// <summary>
         /// add a timerListener
         /// </summary>
         /// <param name="t">the timeListener to be added.</param>
-        public void AddTimeListener(FTimeListener t) => Form.FTimeListenerAddBuffer.Add(t);
+        public void AddTimeListener(FTimeListener t) => GamePanel.FTimeListenerAddBuffer.Add(t);
 
         /// <summary>
         /// remove a timeListener
         /// </summary>
         /// <param name="t">the timeListener to be removed.</param>
-        public void RemoveTimeListener(FTimeListener t) => Form.FTimeListenerDeleteBuffer.Add(t);
+        public void RemoveTimeListener(FTimeListener t) => GamePanel.FTimeListenerDeleteBuffer.Add(t);
 
         /// <summary>
         /// clear the timeListeners.
         /// </summary>
         public void ClearTimeListeners()
         {
-            foreach (var l in Form.FTimeListeners) Form.FTimeListenerDeleteBuffer.Add(l);
+            foreach (var l in GamePanel.FTimeListeners) GamePanel.FTimeListenerDeleteBuffer.Add(l);
         }
 
         public virtual void OnInit()
@@ -189,7 +190,7 @@ namespace Frice_dotNet.Properties.FriceEngine
                 {
                     ++_counter;
                     OnRefresh();
-                    Form.Refresh();
+                    GamePanel.Refresh();
                     FLog.Info("repaint" + _counter);
                 }
             // ReSharper disable once FunctionNeverReturns

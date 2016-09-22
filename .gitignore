@@ -29,3 +29,5 @@
 *.app
 /Frice-dotNet/obj
 /Frice-dotNet/bin
+/.vs/Frice-dotNet/v14/.suo
+/.vs
