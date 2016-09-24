@@ -1,0 +1,5 @@
+C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngine\obj\Debug\FriceEngine.csprojResolveAssemblyReference.cache
+C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngine\bin\Debug\FriceEngine.dll
+C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngine\bin\Debug\FriceEngine.pdb
+C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngine\obj\Debug\FriceEngine.dll
+C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngine\obj\Debug\FriceEngine.pdb
