@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 using FriceEngine.Object;
 using FriceEngine.Utils.Graphics;
@@ -183,8 +184,9 @@ namespace FriceEngine
         {
             _counter = 0;
             while (true)
-                if (_timer.Ended())
+                
                 {
+                    Thread.Sleep(50);
                     ++_counter;
                     OnRefresh();
                     GamePanel.Refresh();
