@@ -36,6 +36,7 @@ namespace FriceEngine
             FTimeListeners = new List<FTimeListener>();
             FTimeListenerAddBuffer = new List<FTimeListener>();
             FTimeListenerDeleteBuffer = new List<FTimeListener>();
+            this.DoubleBuffered = true;
         }
 
         protected override void OnPaint(PaintEventArgs e)
