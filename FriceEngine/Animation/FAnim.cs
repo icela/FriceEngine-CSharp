@@ -35,6 +35,9 @@ namespace FriceEngine.Animation
         }
     }
 
+    /// <summary>
+    /// a move class with more accurate parameters.
+    /// </summary>
     public class AccurateMove : MoveAnim
     {
         public AccurateMove(int y, int x)
