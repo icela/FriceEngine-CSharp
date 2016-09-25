@@ -89,26 +89,20 @@ namespace FriceEngine.Resource
 		public static readonly ColorResource 赤羽业 = 西木野真姬;
 	}
 
-    public static class ImageResource
+    public class ImageResource
     {
-        public static ImageObject FromFile(string path,double x,double y,int width = -1,int height = -1)
+        public Bitmap Bmp;
+
+        public ImageResource(Bitmap bmp)
         {
-            ImageObject img = new ImageObject(new Bitmap(path, true), x, y);
-            if (width > 0) img.Width = width;
-            if (height > 0) img.Height = height;
-            return img;
+            Bmp = bmp;
         }
 
-        public static ImageObject FromWeb(string url, double x, double y,int width =-1,int height =-1)
+        public ImageResource(string path)
         {
-            HttpWebResponse r = WebRequest.Create(url).GetResponse() as HttpWebResponse;
-            using (Stream imageStream = r?.GetResponseStream())
-            {
-                ImageObject img = imageStream == null ? null : new ImageObject(new Bitmap(imageStream, true), x, y);
-                if (width > 0 && img != null) img.Width = width;
-                if (height > 0 && img != null) img.Height = height;
-                return img;
-            }
+            Bmp = (Bitmap) Image.FromFile(path);
         }
+
+        public static ImageResource FromFile(string path) => new ImageResource(path);
     }
 }

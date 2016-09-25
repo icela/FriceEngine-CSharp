@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
+using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using FriceEngine.Animation;
 using FriceEngine.Resource;
@@ -123,7 +125,7 @@ namespace FriceEngine.Object
         public override double X
         {
             get { return Point.X; }
-            set { Point = new Point(Convert.ToInt32(value),Convert.ToInt32(this.Y)); }
+            set { Point = new Point(Convert.ToInt32(value), Convert.ToInt32(this.Y)); }
         }
 
         public override double Y
@@ -144,26 +146,47 @@ namespace FriceEngine.Object
             set { Bmp = _resize(Bmp, Convert.ToInt32(value), Convert.ToInt32(this.Height)); }
         }
 
-        public ImageObject(Bitmap bmp,double x,double y)
+        public ImageObject(Bitmap bmp, double x, double y)
         {
             this.Bmp = bmp;
-            this.Point = new Point(Convert.ToInt32(x),Convert.ToInt32(y));
+            this.Point = new Point(Convert.ToInt32(x), Convert.ToInt32(y));
         }
 
-        private Bitmap _resize(Bitmap oldBitmap,int newW,int newH)
+        public static ImageObject FromWeb(string url, double x, double y, int width = -1, int height = -1)
         {
-            Bitmap _b = new Bitmap(newW,newH);
-            using (Graphics g = Graphics.FromImage(_b))
+            var r = WebRequest.Create(url).GetResponse() as HttpWebResponse;
+            using (var imageStream = r?.GetResponseStream())
+            {
+                var img = imageStream == null ? null : new ImageObject(new Bitmap(imageStream, true), x, y);
+                if (width > 0 && img != null) img.Width = width;
+                if (height > 0 && img != null) img.Height = height;
+                return img;
+            }
+        }
+
+        private static Bitmap _resize(Image oldBitmap, int newW, int newH)
+        {
+            var b = new Bitmap(newW, newH);
+            using (var g = Graphics.FromImage(b))
             {
                 g.Clear(Color.Transparent);
                 g.CompositingQuality = CompositingQuality.HighQuality;
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                g.DrawImage(oldBitmap, new Rectangle(0,0, newW, newH),0,0,oldBitmap.Width,oldBitmap.Height,GraphicsUnit.Pixel);
-                return _b;
+                g.DrawImage(oldBitmap, new Rectangle(0, 0, newW, newH), 0, 0,
+                    oldBitmap.Width,
+                    oldBitmap.Height,
+                    GraphicsUnit.Pixel);
+                return b;
             }
-
         }
 
+        public static ImageObject FromFile(string path, double x, double y, int width = -1, int height = -1)
+        {
+            var img = new ImageObject(new Bitmap(path, true), x, y);
+            if (width > 0) img.Width = width;
+            if (height > 0) img.Height = height;
+            return img;
+        }
     }
 
     public class DoublePair

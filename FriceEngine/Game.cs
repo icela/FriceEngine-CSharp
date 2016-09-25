@@ -45,28 +45,31 @@ namespace FriceEngine
             foreach (var o in Objects) (o as FObject)?.HandleAnims();
 
             var g = e.Graphics;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
             foreach (var o in Objects)
                 if (o is ShapeObject)
                 {
                     var brush = new SolidBrush((o as ShapeObject).ColorResource.Color);
                     if ((o as ShapeObject).Shape is FRectangle)
                         g.FillRectangle(brush,
-                            (float)o.X,
-                            (float)o.Y,
-                            (float)(o as ShapeObject).Width,
-                            (float)(o as ShapeObject).Height
+                            (float) o.X,
+                            (float) o.Y,
+                            (float) (o as ShapeObject).Width,
+                            (float) (o as ShapeObject).Height
                         );
                     else if ((o as ShapeObject).Shape is FOval)
                         g.FillEllipse(brush,
-                            (float)o.X,
-                            (float)o.Y,
-                            (float)(o as ShapeObject).Width,
-                            (float)(o as ShapeObject).Height
+                            (float) o.X,
+                            (float) o.Y,
+                            (float) (o as ShapeObject).Width,
+                            (float) (o as ShapeObject).Height
                         );
                 }
                 else if (o is ImageObject)
                 {
-                    g.DrawImage((o as ImageObject).Bmp,(o as ImageObject).Point);
+                    g.DrawImage((o as ImageObject).Bmp, (o as ImageObject).Point);
                 }
             foreach (var t in Texts)
             {
@@ -114,7 +117,7 @@ namespace FriceEngine
         //        private readonly Graphics _gameScene;
         //        private readonly Bitmap _screenCut;
 
-        public Point MousePosition() => Control.MousePosition;
+        public new Point MousePosition() => Control.MousePosition;
 
         /// <summary>
         /// add an object or text to screen.
@@ -123,7 +126,7 @@ namespace FriceEngine
         public void AddObject(IAbstractObject o)
         {
             if (o == null) return;
-            if (o is FText) GamePanel.TextAddBuffer.Add((FText)o);
+            if (o is FText) GamePanel.TextAddBuffer.Add((FText) o);
             else GamePanel.ObjectAddBuffer.Add(o);
         }
 
@@ -134,7 +137,7 @@ namespace FriceEngine
         public void RemoveObject(IAbstractObject o)
         {
             if (o == null) return;
-            if (o is FText) GamePanel.TextDeleteBuffer.Add((FText)o);
+            if (o is FText) GamePanel.TextDeleteBuffer.Add((FText) o);
             else GamePanel.ObjectDeleteBuffer.Add(o);
         }
 
@@ -179,17 +182,15 @@ namespace FriceEngine
         {
         }
 
-        private int _counter;
-
         private void Run()
         {
-    
             while (true)
-                {
-                    Thread.Sleep(100);
-                    OnRefresh();
-                    GamePanel.Refresh();
-                }
+//                if (_timer.Ended())
+            {
+                Thread.Sleep(100);
+                OnRefresh();
+                GamePanel.Refresh();
+            }
             // ReSharper disable once FunctionNeverReturns
         }
     }
