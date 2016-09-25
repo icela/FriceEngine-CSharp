@@ -263,3 +263,17 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+*.pdb
+/Frice/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/Frice/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/Frice/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/Frice/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/FriceEngine/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+/FriceEngine/obj/Debug/DesignTimeResolveAssemblyReferences.cache
+/FriceEngine/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+/FriceEngine/obj/Debug/FriceEngine.csproj.FileListAbsolute.txt
+/FriceEngine/obj/Debug/FriceEngine.csprojResolveAssemblyReference.cache
+/FriceEngine/obj/Debug/FriceEngine.pdb
+/FriceEngine/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+/FriceEngine/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+/FriceEngine/bin/Debug/*.pdb
