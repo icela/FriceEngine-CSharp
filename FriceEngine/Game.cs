@@ -99,9 +99,8 @@ namespace FriceEngine
     {
         public Game()
         {
-
             //_timer = new FTimer(10);
-            _SyncContext = SynchronizationContext.Current;
+            _syncContext = SynchronizationContext.Current;
             GamePanel = new AbstractGame();
             OnInit();
             GamePanel.SetBounds(0, 0, Width, Height);
@@ -111,10 +110,10 @@ namespace FriceEngine
             // ReSharper disable VirtualMemberCallInConstructor
         }
 
-        private SynchronizationContext _SyncContext = null;
+        private SynchronizationContext _syncContext;
         protected readonly AbstractGame GamePanel;
 
-        private readonly FTimer _timer;
+//        private readonly FTimer _timer;
 
         //        private readonly Graphics _gameScene;
         //        private readonly Bitmap _screenCut;
@@ -192,12 +191,11 @@ namespace FriceEngine
             FTimer2 fTimer2 = new FTimer2(50);
             fTimer2.Start(() =>
             {
-                _SyncContext.Send((state) =>
+                _syncContext.Send((state) =>
                 {
                     OnRefresh();
                     GamePanel.Refresh();
                 }, null);
-
             });
 
 //           }

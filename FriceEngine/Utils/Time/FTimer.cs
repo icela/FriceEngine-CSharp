@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Threading;
+using System.Runtime.CompilerServices;
 
 namespace FriceEngine.Utils.Time
 {
     public class FTimer
     {
-        protected int Time;
+        public readonly int Time;
 
         public int Times { get; protected set; }
 
@@ -31,7 +33,7 @@ namespace FriceEngine.Utils.Time
         }
     }
 
-    public class FTimeListener:FTimer
+    public class FTimeListener : FTimer
     {
         public FTimeListener(int time, int times) : base(time, times)
         {
@@ -46,6 +48,30 @@ namespace FriceEngine.Utils.Time
             if (!Ended() || Times == 0) return;
             if (Times > 0) --Times;
             // TODO invoke the event
+        }
+    }
+
+    /// <summary>
+    /// timer using system API.
+    /// </summary>
+    /// <author>ifdog</author>
+    public class FTimer2
+    {
+        public FTimer2(int time)
+        {
+            _timer = new Timer
+            {
+                Interval = time,
+                AutoReset = true,
+            };
+        }
+
+        private readonly Timer _timer;
+
+        public void Start(Action action)
+        {
+            this._timer.Start();
+            this._timer.Elapsed += (sender, args) => action.Invoke();
         }
     }
 }
