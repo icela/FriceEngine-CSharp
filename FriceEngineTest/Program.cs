@@ -35,9 +35,9 @@ namespace FriceEngineTest
             a.Width = 100;
             c.Height = 100;
             c.Width = 100;
-            a.MoveList.Add(new SimpleMove(10, 10));
-            b.MoveList.Add(new SimpleMove(10, -10));
-            c.MoveList.Add(new SimpleMove(-10, 10));
+            a.MoveList.Add(new SimpleMove(3, 3));
+            b.MoveList.Add(new SimpleMove(3, -3));
+            c.MoveList.Add(new SimpleMove(-3, 3));
             AddObject(a);
             AddObject(b);
             AddObject(c);

@@ -189,7 +189,7 @@ namespace FriceEngine
 //            while (true)
 //                if (_timer.Ended())
 //            {
-            FTimer2 fTimer2 = new FTimer2(50);
+            FTimer2 fTimer2 = new FTimer2(15);// 这样是60帧左右
             fTimer2.Start(() =>
             {
                 _syncContext.Send((state) =>
