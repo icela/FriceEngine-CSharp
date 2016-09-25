@@ -5,9 +5,9 @@ namespace FriceEngine.Animation
 {
     public abstract class FAnim
     {
-        protected readonly double Start = DateTime.Now.Millisecond;
+        protected long Start = DateTime.Now.Ticks;
 
-        protected double Now => DateTime.Now.Millisecond;
+        protected long Now = DateTime.Now.Ticks;
     }
 
     public abstract class MoveAnim : FAnim
@@ -28,7 +28,10 @@ namespace FriceEngine.Animation
 
         public override DoublePair GetDelta()
         {
-            return DoublePair.From1000((Now - Start) * X, (Now - Start) * Y);
+            Now = DateTime.Now.Ticks;
+            DoublePair d = DoublePair.FromTicks((Now - Start) * X, (Now - Start) * Y);
+            Start = DateTime.Now.Ticks; ;
+            return d;
         }
     }
 
