@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Security.Cryptography.X509Certificates;
 using FriceEngine.Animation;
 using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
@@ -134,13 +135,13 @@ namespace FriceEngine.Object
         public override double Height
         {
             get { return Bmp.Height; }
-            set { Bmp = _resize(Bmp, Convert.ToInt32(this.X), Convert.ToInt32(value)); }
+            set { Bmp = _resize(Bmp, Convert.ToInt32(this.Width), Convert.ToInt32(value)); }
         }
 
         public override double Width
         {
             get { return Bmp.Width; }
-            set { Bmp = _resize(Bmp, Convert.ToInt32(value), Convert.ToInt32(this.Y)); }
+            set { Bmp = _resize(Bmp, Convert.ToInt32(value), Convert.ToInt32(this.Height)); }
         }
 
         public ImageObject(Bitmap bmp,double x,double y)
@@ -177,5 +178,7 @@ namespace FriceEngine.Object
         }
 
         public static DoublePair From1000(double x, double y) => new DoublePair(x/1000.0, y/1000.0);
+
+        public static DoublePair FromTicks(long x, long y) => new DoublePair(x/1e7, y/1e7);
     }
 }

@@ -91,16 +91,24 @@ namespace FriceEngine.Resource
 
     public static class ImageResource
     {
-        public static ImageObject FromFile(string path,double x,double y)
+        public static ImageObject FromFile(string path,double x,double y,int width = -1,int height = -1)
         {
-            return new ImageObject(new Bitmap(path, true), x, y);
+            ImageObject img = new ImageObject(new Bitmap(path, true), x, y);
+            if (width > 0) img.Width = width;
+            if (height > 0) img.Height = height;
+            return img;
         }
 
-        public static ImageObject FromWeb(string url, double x, double y)
+        public static ImageObject FromWeb(string url, double x, double y,int width =-1,int height =-1)
         {
             HttpWebResponse r = WebRequest.Create(url).GetResponse() as HttpWebResponse;
-            Stream imageStream = r?.GetResponseStream();
-            return imageStream==null?null: new ImageObject(new Bitmap(imageStream, true), x, y);
+            using (Stream imageStream = r?.GetResponseStream())
+            {
+                ImageObject img = imageStream == null ? null : new ImageObject(new Bitmap(imageStream, true), x, y);
+                if (width > 0 && img != null) img.Width = width;
+                if (height > 0 && img != null) img.Height = height;
+                return img;
+            }
         }
     }
 }

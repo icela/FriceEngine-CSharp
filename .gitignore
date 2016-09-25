@@ -31,3 +31,12 @@
 /Frice-dotNet/bin
 /.vs/Frice-dotNet/v14/.suo
 /.vs
+
+# Build results
+
+[Dd]ebug/
+[Rr]elease/
+x64/
+build/
+[Bb]in/
+[Oo]bj/

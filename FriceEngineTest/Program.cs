@@ -24,17 +24,18 @@ namespace FriceEngineTest
         {
             this.Width = 800;
             this.Height = 600;
-            var a = new FriceEngine.Object.ShapeObject(FriceEngine.Resource.ColorResource.吾王蓝,new FCircle(40),100,100 );
-            var b = ImageResource.FromFile(@"C:\1.bmp",250,100);
-            var c = ImageResource.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 100, 100);
-            //可缩放：
-            a.Height = 50;
-            a.Width = 60;
-            c.Height = 50;
-            c.Width = 50;
-            a.MoveList.Add(new SimpleMove(-5,-2));
-            b.MoveList.Add(new SimpleMove(-10,4));
-            c.MoveList.Add(new SimpleMove(-10, -4));
+            var a = new FriceEngine.Object.ShapeObject(FriceEngine.Resource.ColorResource.吾王蓝,new FCircle(40),400,300 );
+            //replace with a file path in desk
+            var b = ImageResource.FromFile(@"C:\1.bmp",400,300);
+            var c = ImageResource.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 400, 300);
+            //can resize：
+            a.Height = 100;
+            a.Width = 100;
+            c.Height = 100;
+            c.Width = 100;
+            a.MoveList.Add(new SimpleMove(10,10));
+            b.MoveList.Add(new SimpleMove(10,-10));
+            c.MoveList.Add(new SimpleMove(-10,10));
             AddObject(a);
             AddObject(b);
             AddObject(c);
