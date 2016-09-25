@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using FriceEngine.Animation;
 using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
@@ -113,6 +116,53 @@ namespace FriceEngine.Object
 
     public class ImageObject : FObject
     {
+        public Bitmap Bmp { get; set; }
+        public Point Point { get; set; }
+
+        public override double X
+        {
+            get { return Point.X; }
+            set { Point = new Point(Convert.ToInt32(value),Convert.ToInt32(this.Y)); }
+        }
+
+        public override double Y
+        {
+            get { return Point.Y; }
+            set { Point = new Point(Convert.ToInt32(this.X), Convert.ToInt32(value)); }
+        }
+
+        public override double Height
+        {
+            get { return Bmp.Height; }
+            set { Bmp = _resize(Bmp, Convert.ToInt32(this.X), Convert.ToInt32(value)); }
+        }
+
+        public override double Width
+        {
+            get { return Bmp.Width; }
+            set { Bmp = _resize(Bmp, Convert.ToInt32(value), Convert.ToInt32(this.Y)); }
+        }
+
+        public ImageObject(Bitmap bmp,double x,double y)
+        {
+            this.Bmp = bmp;
+            this.Point = new Point(Convert.ToInt32(x),Convert.ToInt32(y));
+        }
+
+        private Bitmap _resize(Bitmap oldBitmap,int newW,int newH)
+        {
+            Bitmap _b = new Bitmap(newW,newH);
+            using (Graphics g = Graphics.FromImage(_b))
+            {
+                g.Clear(Color.Transparent);
+                g.CompositingQuality = CompositingQuality.HighQuality;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.DrawImage(oldBitmap, new Rectangle(0,0, newW, newH),0,0,oldBitmap.Width,oldBitmap.Height,GraphicsUnit.Pixel);
+                return _b;
+            }
+
+        }
+
     }
 
     public class DoublePair

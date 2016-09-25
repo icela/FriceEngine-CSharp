@@ -1,6 +1,9 @@
 ﻿
 
 using System.Drawing;
+using System.IO;
+using System.Net;
+using FriceEngine.Object;
 
 namespace FriceEngine.Resource
 {
@@ -85,4 +88,19 @@ namespace FriceEngine.Resource
 		public static readonly ColorResource 茅野枫 = 冰封绿;
 		public static readonly ColorResource 赤羽业 = 西木野真姬;
 	}
+
+    public static class ImageResource
+    {
+        public static ImageObject FromFile(string path,double x,double y)
+        {
+            return new ImageObject(new Bitmap(path, true), x, y);
+        }
+
+        public static ImageObject FromWeb(string url, double x, double y)
+        {
+            HttpWebResponse r = WebRequest.Create(url).GetResponse() as HttpWebResponse;
+            Stream imageStream = r?.GetResponseStream();
+            return imageStream==null?null: new ImageObject(new Bitmap(imageStream, true), x, y);
+        }
+    }
 }

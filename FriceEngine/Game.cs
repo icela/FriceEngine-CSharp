@@ -66,6 +66,7 @@ namespace FriceEngine
                 }
                 else if (o is ImageObject)
                 {
+                    g.DrawImage((o as ImageObject).Bmp,(o as ImageObject).Point);
                 }
             foreach (var t in Texts)
             {
@@ -182,15 +183,12 @@ namespace FriceEngine
 
         private void Run()
         {
-            _counter = 0;
+    
             while (true)
-                
                 {
-                    Thread.Sleep(50);
-                    ++_counter;
+                    Thread.Sleep(100);
                     OnRefresh();
                     GamePanel.Refresh();
-                    FLog.Info("repaint" + _counter);
                 }
             // ReSharper disable once FunctionNeverReturns
         }

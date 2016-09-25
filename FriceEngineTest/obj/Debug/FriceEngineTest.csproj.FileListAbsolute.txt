@@ -6,3 +6,11 @@ C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngineTest\bin\Debug\FriceEn
 C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngineTest\obj\Debug\FriceEngineTest.csprojResolveAssemblyReference.cache
 C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngineTest\obj\Debug\FriceEngineTest.exe
 C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngineTest\obj\Debug\FriceEngineTest.pdb
+C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngine-CSharp\FriceEngineTest\bin\Debug\FriceEngineTest.exe.config
+C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngine-CSharp\FriceEngineTest\obj\Debug\FriceEngineTest.pdb
+C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngine-CSharp\FriceEngineTest\bin\Debug\FriceEngineTest.exe
+C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngine-CSharp\FriceEngineTest\bin\Debug\FriceEngineTest.pdb
+C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngine-CSharp\FriceEngineTest\bin\Debug\FriceEngine.dll
+C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngine-CSharp\FriceEngineTest\bin\Debug\FriceEngine.pdb
+C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngine-CSharp\FriceEngineTest\obj\Debug\FriceEngineTest.csprojResolveAssemblyReference.cache
+C:\Users\ifdog\Source\Repos\FriceEngine-CSharp\FriceEngine-CSharp\FriceEngineTest\obj\Debug\FriceEngineTest.exe
