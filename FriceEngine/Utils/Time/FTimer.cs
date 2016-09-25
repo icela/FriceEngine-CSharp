@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Threading;
 using System.Runtime.CompilerServices;
+using System.Timers;
 
 namespace FriceEngine.Utils.Time
 {
@@ -62,7 +62,7 @@ namespace FriceEngine.Utils.Time
             _timer = new Timer
             {
                 Interval = time,
-                AutoReset = true,
+                AutoReset = true
             };
         }
 
