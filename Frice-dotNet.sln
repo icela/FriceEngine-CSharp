@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frice-dotNet", "Frice-dotNet\Frice-dotNet.csproj", "{96AF710F-3B85-4311-8DAE-0960B4080F73}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FriceEngine", "FriceEngine\FriceEngine.csproj", "{9BEAD866-90E8-4676-93E6-C08F91261D59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FriceEngineTest", "FriceEngineTest\FriceEngineTest.csproj", "{FC2D9700-04C2-48E7-B338-22027C63469D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{96AF710F-3B85-4311-8DAE-0960B4080F73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96AF710F-3B85-4311-8DAE-0960B4080F73}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96AF710F-3B85-4311-8DAE-0960B4080F73}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{96AF710F-3B85-4311-8DAE-0960B4080F73}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{9BEAD866-90E8-4676-93E6-C08F91261D59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BEAD866-90E8-4676-93E6-C08F91261D59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BEAD866-90E8-4676-93E6-C08F91261D59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BEAD866-90E8-4676-93E6-C08F91261D59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC2D9700-04C2-48E7-B338-22027C63469D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC2D9700-04C2-48E7-B338-22027C63469D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC2D9700-04C2-48E7-B338-22027C63469D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC2D9700-04C2-48E7-B338-22027C63469D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
