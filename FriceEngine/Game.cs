@@ -99,7 +99,9 @@ namespace FriceEngine
     {
         public Game()
         {
-            _timer = new FTimer(10);
+
+            //_timer = new FTimer(10);
+            _SyncContext = SynchronizationContext.Current;
             GamePanel = new AbstractGame();
             OnInit();
             GamePanel.SetBounds(0, 0, Width, Height);
@@ -109,6 +111,7 @@ namespace FriceEngine
             // ReSharper disable VirtualMemberCallInConstructor
         }
 
+        private SynchronizationContext _SyncContext = null;
         protected readonly AbstractGame GamePanel;
 
         private readonly FTimer _timer;
@@ -183,13 +186,21 @@ namespace FriceEngine
 
         private void Run()
         {
-            while (true)
+//            while (true)
 //                if (_timer.Ended())
+//            {
+            FTimer2 fTimer2 = new FTimer2(50);
+            fTimer2.Start(() =>
             {
-                Thread.Sleep(100);
-                OnRefresh();
-                GamePanel.Refresh();
-            }
+                _SyncContext.Send((state) =>
+                {
+                    OnRefresh();
+                    GamePanel.Refresh();
+                }, null);
+
+            });
+
+//           }
             // ReSharper disable once FunctionNeverReturns
         }
     }

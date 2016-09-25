@@ -1,4 +1,7 @@
-﻿using FriceEngine;
+﻿using System;
+using System.Net.Mime;
+using System.Windows.Forms;
+using FriceEngine;
 using FriceEngine.Animation;
 using FriceEngine.Object;
 using FriceEngine.Resource;
@@ -11,20 +14,23 @@ namespace FriceEngineTest
         public static void Main(string[] args)
         {
             // ReSharper disable once ObjectCreationAsStatement
-            new Test();
+            Application.Run(new Test());
         }
     }
 
     public class Test : Game
     {
+
+        ShapeObject a = new ShapeObject(ColorResource.吾王蓝, new FCircle(40), 400, 300);
+        //replace with a file path in desk
+        ImageObject b = ImageObject.FromFile(@"C:\frice.png", 300, 400, 50, 50);
+        ImageObject c = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 400, 300);
+
         public override void OnInit()
         {
             Width = 800;
             Height = 600;
-            var a = new ShapeObject(ColorResource.吾王蓝, new FCircle(40), 400, 300);
-            //replace with a file path in desk
-            var b = ImageObject.FromFile(@"C:\frice.png", 300, 400, 50, 50);
-            var c = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 400, 300);
+
             //can resize：
             a.Height = 100;
             a.Width = 100;
