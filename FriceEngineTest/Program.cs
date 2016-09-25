@@ -6,7 +6,7 @@ using FriceEngine.Utils.Graphics;
 
 namespace FriceEngineTest
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {

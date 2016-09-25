@@ -1,9 +1,6 @@
 ﻿
 
 using System.Drawing;
-using System.IO;
-using System.Net;
-using FriceEngine.Object;
 
 namespace FriceEngine.Resource
 {

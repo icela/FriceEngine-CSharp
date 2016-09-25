@@ -4,7 +4,6 @@ using System.Threading;
 using System.Windows.Forms;
 using FriceEngine.Object;
 using FriceEngine.Utils.Graphics;
-using FriceEngine.Utils.Message;
 using FriceEngine.Utils.Time;
 
 namespace FriceEngine

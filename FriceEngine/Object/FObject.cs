@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.IO;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 using FriceEngine.Animation;
 using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
@@ -64,15 +62,14 @@ namespace FriceEngine.Object
         }
     }
 
-    public abstract class FObject : PhysicalObject
+    public abstract class FObject : PhysicalObject, ICollideBox
     {
         protected FObject()
         {
             MoveList = new List<MoveAnim>();
         }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
-        public List<MoveAnim> MoveList { get; private set; }
+        public List<MoveAnim> MoveList { get; }
 
         public void Move(double x, double y)
         {
@@ -85,6 +82,21 @@ namespace FriceEngine.Object
         public void HandleAnims()
         {
             foreach (var anim in MoveList) Move(anim.GetDelta());
+        }
+
+        /// <summary>
+        /// check if two collideBoxes are collided.
+        /// if 'other' isn't a PhysicalObject, it will always return false;
+        /// </summary>
+        /// <param name="other">the other collide box</param>
+        /// <returns>collided or not.</returns>
+        public bool IsCollide(ICollideBox other)
+        {
+            if (other is PhysicalObject)
+                return X + Width >= ((PhysicalObject)other).X && ((PhysicalObject)other).Y <= Y + Height &&
+                       X <= ((PhysicalObject)other).X + ((PhysicalObject)other).Width &&
+                       Y <= ((PhysicalObject)other).Y + ((PhysicalObject)other).Height;
+            return false;
         }
 
         public bool ContainsPoint(double px, double py) => px >= X && px <= X + Width && py >= Y && py <= Y + Height;
