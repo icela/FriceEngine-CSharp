@@ -1,6 +1,4 @@
-﻿
-
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace FriceEngine.Resource
 {
@@ -43,8 +41,8 @@ namespace FriceEngine.Resource
 			return Color.GetHashCode();
 		}
 
-	    public static ColorResource From(int argb) => new ColorResource(argb);
-	    public static ColorResource From(Color color) => new ColorResource(color);
+		public static ColorResource From(int argb) => new ColorResource(argb);
+		public static ColorResource From(Color color) => new ColorResource(color);
 
 		public static readonly ColorResource Blue = new ColorResource(Color.Blue);
 		public static readonly ColorResource Red = new ColorResource(Color.Red);
@@ -56,7 +54,7 @@ namespace FriceEngine.Resource
 		public static readonly ColorResource Wheat = new ColorResource(Color.Wheat);
 		public static readonly ColorResource Orange = new ColorResource(Color.Orange);
 		public static readonly ColorResource Gray = new ColorResource(Color.Gray);
-        public static readonly ColorResource DrakGray = new ColorResource(Color.DarkGray);
+		public static readonly ColorResource DrakGray = new ColorResource(Color.DarkGray);
 		public static readonly ColorResource ShitYellow = new ColorResource(Color.Gray);
 		public static readonly ColorResource IntelliJIdea黑 = new ColorResource(0x2B2B2B);
 		public static readonly ColorResource Colorless = new ColorResource(0);
@@ -86,20 +84,20 @@ namespace FriceEngine.Resource
 		public static readonly ColorResource 赤羽业 = 西木野真姬;
 	}
 
-    public class ImageResource
-    {
-        public Bitmap Bmp;
+	public class ImageResource
+	{
+		public Bitmap Bmp;
 
-        public ImageResource(Bitmap bmp)
-        {
-            Bmp = bmp;
-        }
+		public ImageResource(Bitmap bmp)
+		{
+			Bmp = bmp;
+		}
 
-        public ImageResource(string path)
-        {
-            Bmp = (Bitmap) Image.FromFile(path);
-        }
+		public ImageResource(string path)
+		{
+			Bmp = (Bitmap) Image.FromFile(path);
+		}
 
-        public static ImageResource FromFile(string path) => new ImageResource(path);
-    }
+		public static ImageResource FromFile(string path) => new ImageResource(path);
+	}
 }
