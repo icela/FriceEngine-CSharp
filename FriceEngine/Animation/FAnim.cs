@@ -10,7 +10,7 @@ namespace FriceEngine.Animation
 	{
 		protected readonly long Start = DateTime.Now.Ticks;
 
-		protected long Cache = DateTime.Now.Ticks;
+		protected long Last = DateTime.Now.Ticks;
 
 		protected long Now = DateTime.Now.Ticks;
 	}
