@@ -98,6 +98,10 @@ namespace FriceEngine
 		/// <param name="o">the object or text to be added.</param>
 		public void AddObject(IAbstractObject o) => _gamePanel.AddObject(o);
 
+		public void AddObjects(params IAbstractObject[] objects) => _gamePanel.AddObjects(objects);
+
+		public void RemoveObjects(params IAbstractObject[] objects) => _gamePanel.RemoveObjects(objects);
+
 		/// <summary>
 		/// remove an object or text from screen.
 		/// </summary>
@@ -287,6 +291,10 @@ namespace FriceEngine
 				if (o is FText) TextAddBuffer.Add((FText) o);
 				else ObjectAddBuffer.Add(o);
 			}
+			
+			internal void AddObjects(params IAbstractObject[] objects) => objects.ToList().ForEach(AddObject);
+
+			internal void RemoveObjects(params IAbstractObject[] objects) => objects.ToList().ForEach(RemoveObject);
 
 			private void ProcessBuffer()
 			{

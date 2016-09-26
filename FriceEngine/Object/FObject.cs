@@ -133,35 +133,48 @@ namespace FriceEngine.Object
 	{
 		public Bitmap Bmp { get; set; }
 		public Point Point { get; set; }
+	   private double _x;
+		private double _y;
 
 		public override double X
 		{
-			get { return Point.X; }
-			set { Point = new Point(Convert.ToInt32(value), Convert.ToInt32(Y)); }
+			get { return _x; }
+			set
+			{
+				_x = value;
+				Point = new Point(Convert.ToInt32(_x), Convert.ToInt32(_y));
+			}
 		}
 
 		public override double Y
 		{
-			get { return Point.Y; }
-			set { Point = new Point(Convert.ToInt32(X), Convert.ToInt32(value)); }
+			get { return _y; }
+			set
+			{
+				_y = value;
+				Point = new Point(Convert.ToInt32(_x), Convert.ToInt32(_y));
+			}
 		}
 
 		public override double Height
 		{
 			get { return Bmp.Height; }
-			set { Bmp = _resize(Bmp, Convert.ToInt32(Width), Convert.ToInt32(value)); }
+			set { Bmp = _resize(Bmp, Convert.ToInt32(this.Width), Convert.ToInt32(value)); }
 		}
 
 		public override double Width
 		{
 			get { return Bmp.Width; }
-			set { Bmp = _resize(Bmp, Convert.ToInt32(value), Convert.ToInt32(Height)); }
+			set { Bmp = _resize(Bmp, Convert.ToInt32(value), Convert.ToInt32(this.Height)); }
 		}
+
 
 		public ImageObject(Bitmap bmp, double x, double y)
 		{
 			Bmp = bmp;
-			Point = new Point(Convert.ToInt32(x), Convert.ToInt32(y));
+			_x = x;
+			_y = y;
+			Point = new Point(Convert.ToInt32(_x), Convert.ToInt32(_y));
 		}
 
 		public static ImageObject FromWeb(string url, double x, double y, int width = -1, int height = -1)
