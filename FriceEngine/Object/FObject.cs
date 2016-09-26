@@ -81,7 +81,7 @@ namespace FriceEngine.Object
 
 		public void HandleAnims()
 		{
-			foreach (var anim in MoveList) Move(anim.GetDelta());
+			foreach (var anim in MoveList) Move(anim.Delta);
 		}
 
 		/// <summary>
@@ -217,5 +217,6 @@ namespace FriceEngine.Object
 		public static DoublePair FromKilo(double x, double y) => From1000(x, y);
 
 		public static DoublePair FromTicks(long x, long y) => new DoublePair(x/1e7, y/1e7);
+		public static DoublePair FromTicks(double x, double y) => new DoublePair(x/1e7, y/1e7);
 	}
 }

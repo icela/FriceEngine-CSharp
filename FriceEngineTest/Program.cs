@@ -27,7 +27,7 @@ namespace FriceEngineTest
 
 			SetTitle("Fuck the world");
 
-			var a = new ShapeObject(ColorResource.吾王蓝, new FCircle(40), 400, 300);
+			var a = new ShapeObject(ColorResource.吾王蓝, new FCircle(40), 100, 100);
 			//replace with a file path in desk
 			var b = ImageObject.FromFile(@"C:\frice.png", 300, 400, 50, 50);
 //            var c = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 400, 300);
@@ -38,7 +38,8 @@ namespace FriceEngineTest
 //            c.Height = 100;
 //            c.Width = 100;
 			a.MoveList.Add(new SimpleMove(10, 10));
-			b.MoveList.Add(new SimpleMove(10, -10));
+			b.MoveList.Add(new SimpleMove(-10, -10));
+			a.MoveList.Add(new AccelerateMove(0, 10));
 //            c.MoveList.Add(new SimpleMove(-10, 10));
 			AddObject(a);
 			AddObject(b);
