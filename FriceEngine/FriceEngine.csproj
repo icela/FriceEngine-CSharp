@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animation\Move.cs" />
     <Compile Include="Animation\FAnim.cs" />
     <Compile Include="Game.cs">
       <SubType>Component</SubType>
