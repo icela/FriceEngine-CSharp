@@ -26,9 +26,11 @@ namespace FriceEngine
 			Icon = (System.Drawing.Icon) new ComponentResourceManager(typeof(Icon)).GetObject("icon");
 
 			_syncContext = SynchronizationContext.Current;
-			_gamePanel = new AbstractGame();
-			_gamePanel.OnClickAction = () => OnClick(new FPoint(MousePosition().X, MousePosition().Y));
-//			_gamePanel
+			_gamePanel = new AbstractGame
+			{
+				OnClickAction = () =>
+						OnClick(new FPoint(MousePosition().X, MousePosition().Y))
+			};
 
 			// ReSharper disable once VirtualMemberCallInConstructor
 			OnInit();
