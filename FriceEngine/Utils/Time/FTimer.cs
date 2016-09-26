@@ -57,11 +57,11 @@ namespace FriceEngine.Utils.Time
     /// <author>ifdog</author>
     public class FTimer2
     {
-        public FTimer2(int time)
+        public FTimer2(int milliSeconds)
         {
             _timer = new Timer
             {
-                Interval = time,
+                Interval = milliSeconds,
                 AutoReset = true
             };
         }
@@ -73,5 +73,22 @@ namespace FriceEngine.Utils.Time
             this._timer.Start();
             this._timer.Elapsed += (sender, args) => action.Invoke();
         }
+    }
+
+    public class FTimeListener2
+    {
+        public FTimeListener2(int milliSeconds,bool autoReset = false)
+        {
+            _timer = new Timer()
+            {
+                Interval = milliSeconds,
+                AutoReset = autoReset,
+            };
+            _timer.Elapsed += (sender, args) =>{OnTimeUp?.Invoke();};
+        }
+        private readonly Timer _timer;
+        public event Action OnTimeUp;
+        public void Start() => this._timer.Start();
+
     }
 }
