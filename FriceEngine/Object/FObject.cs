@@ -214,6 +214,8 @@ namespace FriceEngine.Object
 
         public static DoublePair From1000(double x, double y) => new DoublePair(x/1000.0, y/1000.0);
 
+        public static DoublePair FromKilo(double x, double y) => From1000(x, y);
+
         public static DoublePair FromTicks(long x, long y) => new DoublePair(x/1e7, y/1e7);
     }
 }

@@ -42,6 +42,7 @@ namespace FriceEngine
         protected override void OnPaint(PaintEventArgs e)
         {
             ProcessBuffer();
+            foreach (var l in FTimeListeners) l.Check();
             foreach (var o in Objects) (o as FObject)?.HandleAnims();
 
             var g = e.Graphics;
@@ -100,7 +101,6 @@ namespace FriceEngine
     {
         public Game()
         {
-            //_timer = new FTimer(10);
             SetBounds(100, 100, 500, 500);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             DoubleBuffered = true;
@@ -121,17 +121,25 @@ namespace FriceEngine
         private readonly SynchronizationContext _syncContext;
         private readonly AbstractGame _gamePanel;
 
-//        private readonly FTimer _timer;
-
-        //        private readonly Graphics _gameScene;
-        //        private readonly Bitmap _screenCut;
+//        private readonly Graphics _gameScene;
+//        private readonly Bitmap _screenCut;
 
         public new Point MousePosition() => Control.MousePosition;
 
+        /// <summary>
+        /// a java-like setTitle method.
+        /// set the window title.
+        /// </summary>
+        /// <param name="title">text of the title</param>
         public void SetTitle(string title)
         {
             Text = title;
         }
+
+        /// <summary>
+        /// hide the cursor.
+        /// </summary>
+        public void HideCursor() => Cursor.Hide();
 
         /// <summary>
         /// add an object or text to screen.
@@ -196,23 +204,20 @@ namespace FriceEngine
         {
         }
 
+        /// <summary>
+        /// 感谢ifdog老司机帮我修改这个问题。。。
+        /// </summary>
         private void Run()
         {
-//            while (true)
-//                if (_timer.Ended())
-//            {
-            FTimer2 fTimer2 = new FTimer2(50);
+            var fTimer2 = new FTimer2(50);
             fTimer2.Start(() =>
             {
-                _syncContext.Send((state) =>
+                _syncContext.Send(state =>
                 {
                     OnRefresh();
                     _gamePanel.Refresh();
                 }, null);
             });
-
-//           }
-            // ReSharper disable once FunctionNeverReturns
         }
     }
 }

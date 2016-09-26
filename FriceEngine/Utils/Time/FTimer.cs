@@ -53,6 +53,7 @@ namespace FriceEngine.Utils.Time
 
     /// <summary>
     /// timer using system API.
+    /// reciving and avtion.
     /// </summary>
     /// <author>ifdog</author>
     public class FTimer2
