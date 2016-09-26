@@ -169,11 +169,11 @@ namespace FriceEngine
 
 		private class AbstractGame : Panel
 		{
-			private readonly IList<IAbstractObject> Objects;
+			private readonly IList<IAbstractObject> _objects;
 			internal readonly IList<IAbstractObject> ObjectAddBuffer;
 			internal readonly IList<IAbstractObject> ObjectDeleteBuffer;
 
-			private readonly IList<FText> Texts;
+			private readonly IList<FText> _texts;
 			internal readonly IList<FText> TextAddBuffer;
 			internal readonly IList<FText> TextDeleteBuffer;
 
@@ -196,11 +196,11 @@ namespace FriceEngine
 				DoubleBuffered = true;
 
 				_fpsCounter = 0;
-				Objects = new List<IAbstractObject>();
+				_objects = new List<IAbstractObject>();
 				ObjectAddBuffer = new List<IAbstractObject>();
 				ObjectDeleteBuffer = new List<IAbstractObject>();
 
-				Texts = new List<FText>();
+				_texts = new List<FText>();
 				TextAddBuffer = new List<FText>();
 				TextDeleteBuffer = new List<FText>();
 
@@ -213,13 +213,13 @@ namespace FriceEngine
 			{
 				ProcessBuffer();
 				foreach (var l in FTimeListeners) l.Check();
-				foreach (var o in Objects) (o as FObject)?.HandleAnims();
+				foreach (var o in _objects) (o as FObject)?.HandleAnims();
 
 				var g = e.Graphics;
 				g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 				g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
 				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-				foreach (var o in Objects)
+				foreach (var o in _objects)
 				{
 					// GC
 					if (AutoGC && (o.X < -Width || o.Y < -Height || o.X > Width + Width || o.Y > Height + Height))
@@ -244,17 +244,17 @@ namespace FriceEngine
 					}
 					else if (o is ImageObject)
 					{
-						g.DrawImage((o as ImageObject).Bmp, (o as ImageObject).Point);
+						g.DrawImage((o as ImageObject).Bitmap, (o as ImageObject).Point);
 					}
 				}
-				foreach (var t in Texts)
+				foreach (var t in _texts)
 				{
 					var brush = new SolidBrush(t.GetColor().Color);
 					if (t is SimpleText)
 						g.DrawString(t.Text, TextFont, brush, (float) t.X, (float) t.Y);
 				}
 				if (ShowFps)
-					g.DrawString("fps: " + _fpsDisplay, DefaultFont, new SolidBrush(Color.Black), 20, Height - 80);
+					g.DrawString("fps: " + _fpsDisplay, TextFont, new SolidBrush(Color.Black), 20, Height - 80);
 
 				base.OnPaint(e);
 			}
@@ -283,8 +283,8 @@ namespace FriceEngine
 
 			internal void ClearObjects()
 			{
-				foreach (var o in Objects) ObjectDeleteBuffer.Add(o);
-				foreach (var o in Texts) TextDeleteBuffer.Add(o);
+				foreach (var o in _objects) ObjectDeleteBuffer.Add(o);
+				foreach (var o in _texts) TextDeleteBuffer.Add(o);
 			}
 
 			internal void AddObject(IAbstractObject o)
@@ -300,13 +300,13 @@ namespace FriceEngine
 
 			private void ProcessBuffer()
 			{
-				foreach (var o in ObjectAddBuffer) Objects.Add(o);
-				foreach (var o in ObjectDeleteBuffer) Objects.Remove(o);
+				foreach (var o in ObjectAddBuffer) _objects.Add(o);
+				foreach (var o in ObjectDeleteBuffer) _objects.Remove(o);
 				ObjectAddBuffer.Clear();
 				ObjectDeleteBuffer.Clear();
 
-				foreach (var t in TextAddBuffer) Texts.Add(t);
-				foreach (var t in TextDeleteBuffer) Texts.Remove(t);
+				foreach (var t in TextAddBuffer) _texts.Add(t);
+				foreach (var t in TextDeleteBuffer) _texts.Remove(t);
 				TextAddBuffer.Clear();
 				TextDeleteBuffer.Clear();
 

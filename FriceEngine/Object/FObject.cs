@@ -131,7 +131,14 @@ namespace FriceEngine.Object
 
 	public sealed class ImageObject : FObject
 	{
-		public Bitmap Bmp { get; set; }
+		public ImageResource Res { get; set; }
+
+		public Bitmap Bitmap
+		{
+			get { return Res.Bmp; }
+			set { Res.Bmp = value; }
+		}
+
 		public Point Point { get; set; }
 		private double _x;
 		private double _y;
@@ -158,20 +165,28 @@ namespace FriceEngine.Object
 
 		public override double Height
 		{
-			get { return Bmp.Height; }
-			set { Bmp = _resize(Bmp, Convert.ToInt32(Width), Convert.ToInt32(value)); }
+			get { return Bitmap.Height; }
+			set { Bitmap = _resize(Bitmap, Convert.ToInt32(Width), Convert.ToInt32(value)); }
 		}
 
 		public override double Width
 		{
-			get { return Bmp.Width; }
-			set { Bmp = _resize(Bmp, Convert.ToInt32(value), Convert.ToInt32(Height)); }
+			get { return Bitmap.Width; }
+			set { Bitmap = _resize(Bitmap, Convert.ToInt32(value), Convert.ToInt32(Height)); }
 		}
 
 
-		public ImageObject(Bitmap bmp, double x, double y)
+		public ImageObject(ImageResource img, double x, double y)
 		{
-			Bmp = bmp;
+			Res = img;
+			_x = x;
+			_y = y;
+			Point = new Point(Convert.ToInt32(_x), Convert.ToInt32(_y));
+		}
+
+		public ImageObject(Bitmap img, double x, double y)
+		{
+			Res = new ImageResource(img);
 			_x = x;
 			_y = y;
 			Point = new Point(Convert.ToInt32(_x), Convert.ToInt32(_y));
@@ -242,11 +257,11 @@ namespace FriceEngine.Object
 			X = x;
 		}
 
-		public static DoublePair From1000(double x, double y) => new DoublePair(x/1000.0, y/1000.0);
+		public static DoublePair From1000(double x, double y) => new DoublePair(x / 1000.0, y / 1000.0);
 
 		public static DoublePair FromKilo(double x, double y) => From1000(x, y);
 
-		public static DoublePair FromTicks(long x, long y) => new DoublePair(x/1e7, y/1e7);
-		public static DoublePair FromTicks(double x, double y) => new DoublePair(x/1e7, y/1e7);
+		public static DoublePair FromTicks(long x, long y) => new DoublePair(x / 1e7, y / 1e7);
+		public static DoublePair FromTicks(double x, double y) => new DoublePair(x / 1e7, y / 1e7);
 	}
 }

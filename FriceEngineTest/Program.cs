@@ -16,14 +16,17 @@ namespace FriceEngineTest
 		{
 			// ReSharper disable once ObjectCreationAsStatement
 //			Application.Run(new Test2());
-			 Application.Run(new Test());
+			Application.Run(new Test());
 		}
 	}
 
 	public class Test : Game
 	{
+		private ImageResource _file;
+
 		public override void OnInit()
 		{
+			_file = ImageResource.FromFile(@"C:\frice.png");
 			SetBounds(300, 300, 800, 600);
 
 			SetTitle("Fuck the world");
@@ -44,7 +47,11 @@ namespace FriceEngineTest
 
 		private void Add()
 		{
-			var a = ImageObject.FromFile(@"C:\frice.png", Mouse.X - 50, Mouse.Y - 50, 100, 100);
+			var a = new ImageObject(_file.Bmp, Mouse.X - 50, Mouse.Y - 50)
+			{
+				Width = 100,
+				Height = 100
+			};
 			a.MoveList.Add(new SimpleMove(100, -400));
 			a.MoveList.Add(new AccelerateMove(0, 1000));
 			AddObject(a);
