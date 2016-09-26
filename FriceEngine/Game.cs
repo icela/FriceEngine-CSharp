@@ -214,7 +214,7 @@ namespace FriceEngine
 				foreach (var o in Objects)
 				{
 					// GC
-					if (AutoGC&&(o.X < -Width || o.Y < -Height || o.X > Width + Width || o.Y > Height + Height))
+					if (AutoGC && (o.X < -Width || o.Y < -Height || o.X > Width + Width || o.Y > Height + Height))
 						RemoveObject(o);
 					if (o is ShapeObject)
 					{
