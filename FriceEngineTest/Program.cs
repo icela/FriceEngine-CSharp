@@ -42,11 +42,7 @@ namespace FriceEngineTest
 
 		private void Add()
 		{
-			var a = new ShapeObject(ColorResource.吾王蓝, new FCircle(40), Mouse.X - 50, Mouse.Y - 50)
-			{
-				Height = 100,
-				Width = 100
-			};
+			var a = ImageObject.FromFile(@"C:\frice.png", Mouse.X - 50, Mouse.Y - 50, 100, 100);
 			a.MoveList.Add(new SimpleMove(100, -400));
 			a.MoveList.Add(new AccelerateMove(0, 1000));
 			AddObject(a);
@@ -57,6 +53,12 @@ namespace FriceEngineTest
 			FLog.D("On click called.");
 			Add();
 			base.OnClick(mousePosition);
+		}
+
+		public override void OnRefresh()
+		{
+			Add();
+			base.OnRefresh();
 		}
 	}
 }
