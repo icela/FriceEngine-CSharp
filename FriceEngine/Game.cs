@@ -32,7 +32,7 @@ namespace FriceEngine
 		private long _fpsDisplay;
 		private readonly Action _onClickAction;
 
-		private Font _textFont = new Font(FontFamily.GenericSansSerif, 14);
+		internal Font TextFont = new Font(FontFamily.GenericSansSerif, 14);
 
 		internal AbstractGame(Action onClick)
 		{
@@ -90,7 +90,7 @@ namespace FriceEngine
 			{
 				var brush = new SolidBrush(t.GetColor().Color);
 				if (t is SimpleText)
-					g.DrawString(t.Text, _textFont, brush, (float) t.X, (float) t.Y);
+					g.DrawString(t.Text, TextFont, brush, (float) t.X, (float) t.Y);
 			}
 			if (ShowFps)
 				g.DrawString("fps: " + _fpsDisplay, DefaultFont, new SolidBrush(Color.Black), 20, Height - 80);
@@ -159,10 +159,22 @@ namespace FriceEngine
 		private readonly SynchronizationContext _syncContext;
 		private readonly AbstractGame _gamePanel;
 
+		public Random Random = new Random();
+
 //        private readonly Graphics _gameScene;
 //        private readonly Bitmap _screenCut;
 
-		public new Point MousePosition() => Control.MousePosition;
+		public new FPoint MousePosition() => new FPoint(Control.MousePosition.Y - Bounds.Y, Control.MousePosition.X - Bounds.X);
+
+		public FPoint Mouse
+		{
+			get { return MousePosition(); }
+			set
+			{
+				MousePosition().X = (int) value.X;
+				MousePosition().Y = (int) value.Y;
+			}
+		}
 
 		/// <summary>
 		/// a java-like setTitle method.
