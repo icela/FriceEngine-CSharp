@@ -23,14 +23,15 @@ namespace FriceEngine.Animation
             X = x;
         }
 
-        public int X { get; set; }
-        public int Y { get; set; }
+        public int X { get; }
+        public int Y { get; }
 
         public override DoublePair GetDelta()
         {
             Now = DateTime.Now.Ticks;
-            DoublePair d = DoublePair.FromTicks((Now - Start) * X, (Now - Start) * Y);
-            Start = DateTime.Now.Ticks; ;
+            DoublePair d = DoublePair.FromTicks((Now - Start)*X, (Now - Start)*Y);
+            Start = DateTime.Now.Ticks;
+            ;
             return d;
         }
     }
@@ -49,9 +50,23 @@ namespace FriceEngine.Animation
         public double X { get; set; }
         public double Y { get; set; }
 
-        public override DoublePair GetDelta()
-        {
-            return DoublePair.From1000((Now - Start)*X, (Now - Start)*Y);
-        }
+        public override DoublePair GetDelta() => DoublePair.From1000((Now - Start)*X, (Now - Start)*Y);
     }
+
+//    public class AccelerateMove : MoveAnim
+//    {
+//        public AccelerateMove(double x, double y)
+//        {
+//            X = x;
+//            Y = y;
+//        }
+
+//        public double X { get; set; }
+//        public double Y { get; set; }
+
+//        public override DoublePair GetDelta()
+//        {
+//            return DoublePair.From1000();
+//        }
+//    }
 }

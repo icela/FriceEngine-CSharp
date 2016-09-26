@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using FriceEngine.Object;
@@ -24,7 +26,6 @@ namespace FriceEngine
 
         internal AbstractGame()
         {
-            SetBounds(100, 100, 500, 500);
             Objects = new List<IAbstractObject>();
             ObjectAddBuffer = new List<IAbstractObject>();
             ObjectDeleteBuffer = new List<IAbstractObject>();
@@ -100,18 +101,25 @@ namespace FriceEngine
         public Game()
         {
             //_timer = new FTimer(10);
+            SetBounds(100, 100, 500, 500);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            DoubleBuffered = true;
+            MaximizeBox = false;
+
+            Icon = (System.Drawing.Icon) new ComponentResourceManager(typeof(Icon)).GetObject("icon");
+
             _syncContext = SynchronizationContext.Current;
-            GamePanel = new AbstractGame();
+            _gamePanel = new AbstractGame();
             OnInit();
-            GamePanel.SetBounds(0, 0, Width, Height);
-            Controls.Add(GamePanel);
+            _gamePanel.SetBounds(0, 0, Width, Height);
+            Controls.Add(_gamePanel);
             Show();
             Run();
             // ReSharper disable VirtualMemberCallInConstructor
         }
 
-        private SynchronizationContext _syncContext;
-        protected readonly AbstractGame GamePanel;
+        private readonly SynchronizationContext _syncContext;
+        private readonly AbstractGame _gamePanel;
 
 //        private readonly FTimer _timer;
 
@@ -120,6 +128,11 @@ namespace FriceEngine
 
         public new Point MousePosition() => Control.MousePosition;
 
+        public void SetTitle(string title)
+        {
+            Text = title;
+        }
+
         /// <summary>
         /// add an object or text to screen.
         /// </summary>
@@ -127,8 +140,8 @@ namespace FriceEngine
         public void AddObject(IAbstractObject o)
         {
             if (o == null) return;
-            if (o is FText) GamePanel.TextAddBuffer.Add((FText) o);
-            else GamePanel.ObjectAddBuffer.Add(o);
+            if (o is FText) _gamePanel.TextAddBuffer.Add((FText) o);
+            else _gamePanel.ObjectAddBuffer.Add(o);
         }
 
         /// <summary>
@@ -138,8 +151,8 @@ namespace FriceEngine
         public void RemoveObject(IAbstractObject o)
         {
             if (o == null) return;
-            if (o is FText) GamePanel.TextDeleteBuffer.Add((FText) o);
-            else GamePanel.ObjectDeleteBuffer.Add(o);
+            if (o is FText) _gamePanel.TextDeleteBuffer.Add((FText) o);
+            else _gamePanel.ObjectDeleteBuffer.Add(o);
         }
 
         /// <summary>
@@ -147,28 +160,28 @@ namespace FriceEngine
         /// </summary>
         public void ClearObjects()
         {
-            foreach (var o in GamePanel.Objects) GamePanel.ObjectDeleteBuffer.Add(o);
-            foreach (var o in GamePanel.Texts) GamePanel.TextDeleteBuffer.Add(o);
+            foreach (var o in _gamePanel.Objects) _gamePanel.ObjectDeleteBuffer.Add(o);
+            foreach (var o in _gamePanel.Texts) _gamePanel.TextDeleteBuffer.Add(o);
         }
 
         /// <summary>
         /// add a timerListener
         /// </summary>
         /// <param name="t">the timeListener to be added.</param>
-        public void AddTimeListener(FTimeListener t) => GamePanel.FTimeListenerAddBuffer.Add(t);
+        public void AddTimeListener(FTimeListener t) => _gamePanel.FTimeListenerAddBuffer.Add(t);
 
         /// <summary>
         /// remove a timeListener
         /// </summary>
         /// <param name="t">the timeListener to be removed.</param>
-        public void RemoveTimeListener(FTimeListener t) => GamePanel.FTimeListenerDeleteBuffer.Add(t);
+        public void RemoveTimeListener(FTimeListener t) => _gamePanel.FTimeListenerDeleteBuffer.Add(t);
 
         /// <summary>
         /// clear the timeListeners.
         /// </summary>
         public void ClearTimeListeners()
         {
-            foreach (var l in GamePanel.FTimeListeners) GamePanel.FTimeListenerDeleteBuffer.Add(l);
+            foreach (var l in _gamePanel.FTimeListeners) _gamePanel.FTimeListenerDeleteBuffer.Add(l);
         }
 
         public virtual void OnInit()
@@ -194,7 +207,7 @@ namespace FriceEngine
                 _syncContext.Send((state) =>
                 {
                     OnRefresh();
-                    GamePanel.Refresh();
+                    _gamePanel.Refresh();
                 }, null);
             });
 

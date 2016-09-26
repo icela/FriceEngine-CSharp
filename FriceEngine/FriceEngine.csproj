@@ -46,6 +46,11 @@
     <Compile Include="Game.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Icon.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Icon.resx</DependentUpon>
+    </Compile>
     <Compile Include="Object\FObject.cs" />
     <Compile Include="Object\FText.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,6 +59,16 @@
     <Compile Include="Utils\Graphics\FShape.cs" />
     <Compile Include="Utils\Message\FLog.cs" />
     <Compile Include="Utils\Time\FTimer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Icon.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Icon.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
