@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using FriceEngine.Object;
@@ -130,6 +131,11 @@ namespace FriceEngine
             if (o == null) return;
             if (o is FText) GamePanel.TextAddBuffer.Add((FText) o);
             else GamePanel.ObjectAddBuffer.Add(o);
+        }
+
+        public void AddObjects(params IAbstractObject[] objects)
+        {
+            objects.ToList().ForEach(AddObject);
         }
 
         /// <summary>
