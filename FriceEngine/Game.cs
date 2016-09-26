@@ -167,11 +167,11 @@ namespace FriceEngine
 
 		private class AbstractGame : Panel
 		{
-			internal readonly IList<IAbstractObject> Objects;
+			private readonly IList<IAbstractObject> Objects;
 			internal readonly IList<IAbstractObject> ObjectAddBuffer;
 			internal readonly IList<IAbstractObject> ObjectDeleteBuffer;
 
-			internal readonly IList<FText> Texts;
+			private readonly IList<FText> Texts;
 			internal readonly IList<FText> TextAddBuffer;
 			internal readonly IList<FText> TextDeleteBuffer;
 
@@ -291,7 +291,7 @@ namespace FriceEngine
 				if (o is FText) TextAddBuffer.Add((FText) o);
 				else ObjectAddBuffer.Add(o);
 			}
-			
+
 			internal void AddObjects(params IAbstractObject[] objects) => objects.ToList().ForEach(AddObject);
 
 			internal void RemoveObjects(params IAbstractObject[] objects) => objects.ToList().ForEach(RemoveObject);

@@ -49,8 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Animation\FAnim.cs" />
+    <Compile Include="Animation\Move.cs" />
     <Compile Include="Game.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="GameWindow.cs" />
     <Compile Include="GameWindow.Designer.cs">
@@ -85,7 +86,6 @@
   <ItemGroup>
     <None Include="Resources\icon.ico" />
   </ItemGroup>
-
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -133,7 +133,7 @@ namespace FriceEngine.Object
 	{
 		public Bitmap Bmp { get; set; }
 		public Point Point { get; set; }
-	   private double _x;
+		private double _x;
 		private double _y;
 
 		public override double X
@@ -159,13 +159,13 @@ namespace FriceEngine.Object
 		public override double Height
 		{
 			get { return Bmp.Height; }
-			set { Bmp = _resize(Bmp, Convert.ToInt32(this.Width), Convert.ToInt32(value)); }
+			set { Bmp = _resize(Bmp, Convert.ToInt32(Width), Convert.ToInt32(value)); }
 		}
 
 		public override double Width
 		{
 			get { return Bmp.Width; }
-			set { Bmp = _resize(Bmp, Convert.ToInt32(value), Convert.ToInt32(this.Height)); }
+			set { Bmp = _resize(Bmp, Convert.ToInt32(value), Convert.ToInt32(Height)); }
 		}
 
 
