@@ -4,7 +4,7 @@ namespace FriceEngine.Utils.Message
 {
 	public sealed class FLog
 	{
-		public static void Error(string s) => Console.WriteLine(s);
+		public static void Error(string s) => Console.Error.WriteLine(s);
 		public static void Warning(string s) => Console.WriteLine(s);
 		public static void Info(string s) => Console.WriteLine(s);
 		public static void Debug(string s) => Console.WriteLine(s);

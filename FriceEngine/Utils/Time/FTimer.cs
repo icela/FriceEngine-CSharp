@@ -71,8 +71,8 @@ namespace FriceEngine.Utils.Time
 
 		public void Start(Action action)
 		{
-			this._timer.Start();
-			this._timer.Elapsed += (sender, args) => action.Invoke();
+			_timer.Start();
+			_timer.Elapsed += (sender, args) => action.Invoke();
 		}
 	}
 }

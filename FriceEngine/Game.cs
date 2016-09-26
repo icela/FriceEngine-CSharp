@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -6,6 +7,7 @@ using System.Threading;
 using System.Windows.Forms;
 using FriceEngine.Object;
 using FriceEngine.Utils.Graphics;
+using FriceEngine.Utils.Message;
 using FriceEngine.Utils.Time;
 
 namespace FriceEngine
@@ -24,8 +26,18 @@ namespace FriceEngine
 		internal readonly IList<FTimeListener> FTimeListenerAddBuffer;
 		internal readonly IList<FTimeListener> FTimeListenerDeleteBuffer;
 
-		internal AbstractGame()
+		internal bool ShowFps = true;
+
+		private long _fpsCounter;
+		private long _fpsDisplay;
+		private Action _onClickAction;
+
+		internal AbstractGame(Action onClick)
 		{
+			DoubleBuffered = true;
+			_onClickAction = onClick;
+
+			_fpsCounter = 0;
 			Objects = new List<IAbstractObject>();
 			ObjectAddBuffer = new List<IAbstractObject>();
 			ObjectDeleteBuffer = new List<IAbstractObject>();
@@ -78,8 +90,26 @@ namespace FriceEngine
 				if (t is SimpleText)
 					g.DrawString(t.Text, DefaultFont, brush, (float) t.X, (float) t.Y);
 			}
+			if (ShowFps)
+				g.DrawString("fps: " + _fpsDisplay, DefaultFont, new SolidBrush(Color.Black), 20, Height - 80);
+
 			base.OnPaint(e);
 		}
+
+		internal void ChangeFps()
+		{
+			FLog.I("Refreshed");
+			_fpsDisplay = _fpsCounter;
+			_fpsCounter = 0;
+		}
+
+		protected override void OnClick(EventArgs e)
+		{
+			_onClickAction.Invoke();
+			base.OnClick(e);
+		}
+
+		internal void IncreaseFps() => ++_fpsCounter;
 
 		private void ProcessBuffer()
 		{
@@ -102,17 +132,20 @@ namespace FriceEngine
 
 	public class Game : Form
 	{
+		// ReSharper disable once MemberCanBeProtected.Global
 		public Game()
 		{
 			SetBounds(100, 100, 500, 500);
 			FormBorderStyle = FormBorderStyle.FixedSingle;
+			// ReSharper disable once VirtualMemberCallInConstructor
 			DoubleBuffered = true;
 			MaximizeBox = false;
 
 			Icon = (System.Drawing.Icon) new ComponentResourceManager(typeof(Icon)).GetObject("icon");
 
 			_syncContext = SynchronizationContext.Current;
-			_gamePanel = new AbstractGame();
+			_gamePanel = new AbstractGame(() => OnClick(new FPoint(MousePosition().X, MousePosition().Y)));
+			// ReSharper disable once VirtualMemberCallInConstructor
 			OnInit();
 			_gamePanel.SetBounds(0, 0, Width, Height);
 			Controls.Add(_gamePanel);
@@ -134,10 +167,14 @@ namespace FriceEngine
 		/// set the window title.
 		/// </summary>
 		/// <param name="title">text of the title</param>
-		public void SetTitle(string title)
-		{
-			Text = title;
-		}
+		// ReSharper disable once MemberCanBeProtected.Global
+		public void SetTitle(string title) => Text = title;
+
+		/// <summary>
+		/// show fps or not.
+		/// </summary>
+		/// <param name="_bool">show fps or not.</param>
+		public void SetShowFps(bool _bool) => _gamePanel.ShowFps = _bool;
 
 		/// <summary>
 		/// hide the cursor.
@@ -203,24 +240,28 @@ namespace FriceEngine
 		{
 		}
 
-		public virtual void OnClick()
+		/// <summary>
+		/// will be called when the window is clicked.
+		/// </summary>
+		/// <param name="mousePosition">the position of the mouse</param>
+		public virtual void OnClick(FPoint mousePosition)
 		{
 		}
 
 		/// <summary>
 		/// 感谢ifdog老司机帮我修改这个问题。。。
+		/// 再次感谢ifdog老司机！
 		/// </summary>
 		private void Run()
 		{
-			var fTimer2 = new FTimer2(50);
-			fTimer2.Start(() =>
+			var fTimer2 = new FTimer2(1);
+			fTimer2.Start(() => _syncContext.Send(state =>
 			{
-				_syncContext.Send(state =>
-				{
-					OnRefresh();
-					_gamePanel.Refresh();
-				}, null);
-			});
+				OnRefresh();
+				_gamePanel.IncreaseFps();
+				_gamePanel.Refresh();
+			}, null));
+			new FTimer2(1000).Start(() => _gamePanel.ChangeFps());
 		}
 	}
 }

@@ -6,6 +6,7 @@ using FriceEngine.Animation;
 using FriceEngine.Object;
 using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
+using FriceEngine.Utils.Message;
 
 namespace FriceEngineTest
 {
@@ -39,11 +40,17 @@ namespace FriceEngineTest
 //            c.Width = 100;
 			a.MoveList.Add(new SimpleMove(100, 0));
 			b.MoveList.Add(new SimpleMove(-10, -10));
-			a.MoveList.Add(new AccelerateMove(0, 400));
+			a.MoveList.Add(new AccelerateMove(0, 800));
 //            c.MoveList.Add(new SimpleMove(-10, 10));
 			AddObject(a);
 			AddObject(b);
 //            AddObject(c);
+		}
+
+		public override void OnClick(FPoint mousePosition)
+		{
+			FLog.D("On click called.");
+			base.OnClick(mousePosition);
 		}
 	}
 }
