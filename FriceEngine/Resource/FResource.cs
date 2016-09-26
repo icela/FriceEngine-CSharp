@@ -6,7 +6,7 @@ namespace FriceEngine.Resource
 	{
 	}
 
-	public class ColorResource
+	public sealed class ColorResource
 	{
 		public Color Color;
 
@@ -84,7 +84,7 @@ namespace FriceEngine.Resource
 		public static readonly ColorResource 赤羽业 = 西木野真姬;
 	}
 
-	public class ImageResource
+	public sealed class ImageResource
 	{
 		public Bitmap Bmp;
 

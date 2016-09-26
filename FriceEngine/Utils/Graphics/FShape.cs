@@ -6,7 +6,7 @@
 		double Height { get; set; }
 	}
 
-	public class FRectangle : IFShape
+	public sealed class FRectangle : IFShape
 	{
 		public double Width { get; set; }
 		public double Height { get; set; }
@@ -33,7 +33,7 @@
 		public double Height { get; set; }
 	}
 
-	public class FCircle : FOval
+	public sealed class FCircle : FOval
 	{
 		/// <summary> this class represents the shape circle. </summary>
 		/// <param name="r"> radius. </param>
@@ -43,7 +43,7 @@
 	}
 
 	/// <summary> like a data class in Kotlin. </summary>
-	public class FPoint
+	public sealed class FPoint
 	{
 		public double X;
 		public double Y;

@@ -8,7 +8,7 @@ namespace FriceEngine.Animation
 		public abstract DoublePair Delta { get; }
 	}
 
-	public class SimpleMove : MoveAnim
+	public sealed class SimpleMove : MoveAnim
 	{
 		public SimpleMove(int y, int x)
 		{
@@ -38,7 +38,7 @@ namespace FriceEngine.Animation
 	/// <summary>
 	/// a move class with more accurate parameters.
 	/// </summary>
-	public class AccurateMove : MoveAnim
+	public sealed class AccurateMove : MoveAnim
 	{
 		public AccurateMove(int y, int x)
 		{
@@ -64,7 +64,7 @@ namespace FriceEngine.Animation
 	/// <summary>
 	/// full of bugs. Orz
 	/// </summary>
-	public class AccelerateMove : MoveAnim
+	public sealed class AccelerateMove : MoveAnim
 	{
 		public AccelerateMove(double y, double x)
 		{

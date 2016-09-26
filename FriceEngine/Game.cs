@@ -30,7 +30,9 @@ namespace FriceEngine
 
 		private long _fpsCounter;
 		private long _fpsDisplay;
-		private Action _onClickAction;
+		private readonly Action _onClickAction;
+
+		private Font _textFont = new Font(FontFamily.GenericSansSerif, 14);
 
 		internal AbstractGame(Action onClick)
 		{
@@ -88,7 +90,7 @@ namespace FriceEngine
 			{
 				var brush = new SolidBrush(t.GetColor().Color);
 				if (t is SimpleText)
-					g.DrawString(t.Text, DefaultFont, brush, (float) t.X, (float) t.Y);
+					g.DrawString(t.Text, _textFont, brush, (float) t.X, (float) t.Y);
 			}
 			if (ShowFps)
 				g.DrawString("fps: " + _fpsDisplay, DefaultFont, new SolidBrush(Color.Black), 20, Height - 80);

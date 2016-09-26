@@ -129,7 +129,7 @@ namespace FriceEngine.Object
 		}
 	}
 
-	public class ImageObject : FObject
+	public sealed class ImageObject : FObject
 	{
 		public Bitmap Bmp { get; set; }
 		public Point Point { get; set; }
@@ -176,6 +176,14 @@ namespace FriceEngine.Object
 			}
 		}
 
+		/// <summary>
+		/// 感谢ifdog老司机！
+		/// </summary>
+		/// <param name="oldBitmap">the original bitmap</param>
+		/// <param name="newW">new bitmap width</param>
+		/// <param name="newH">new bitmap height</param>
+		/// <returns>scaled bitmap</returns>
+		/// <author>ifdog</author>
 		private static Bitmap _resize(Image oldBitmap, int newW, int newH)
 		{
 			var b = new Bitmap(newW, newH);
@@ -192,6 +200,15 @@ namespace FriceEngine.Object
 			}
 		}
 
+		/// <summary>
+		/// 感谢ifdog老司机！
+		/// </summary>
+		/// <param name="path">image path</param>
+		/// <param name="x">position x</param>
+		/// <param name="y">position y</param>
+		/// <param name="width">image width, defaultly original size.</param>
+		/// <param name="height">image height, defaultly original size.</param>
+		/// <returns></returns>
 		public static ImageObject FromFile(string path, double x, double y, int width = -1, int height = -1)
 		{
 			var img = new ImageObject(new Bitmap(path, true), x, y);

@@ -2,7 +2,7 @@
 
 namespace FriceEngine.Utils.Message
 {
-	public sealed class FLog
+	public static class FLog
 	{
 		public static void Error(string s) => Console.Error.WriteLine(s);
 		public static void Warning(string s) => Console.WriteLine(s);

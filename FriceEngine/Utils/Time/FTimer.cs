@@ -33,7 +33,7 @@ namespace FriceEngine.Utils.Time
 		}
 	}
 
-	public class FTimeListener : FTimer
+	public sealed class FTimeListener : FTimer
 	{
 		public FTimeListener(int time, int times) : base(time, times)
 		{
@@ -56,7 +56,7 @@ namespace FriceEngine.Utils.Time
 	/// reciving and avtion.
 	/// </summary>
 	/// <author>ifdog</author>
-	public class FTimer2
+	public sealed class FTimer2
 	{
 		public FTimer2(int time)
 		{

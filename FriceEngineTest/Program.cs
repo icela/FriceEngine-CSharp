@@ -38,12 +38,13 @@ namespace FriceEngineTest
 			a.Width = 100;
 //            c.Height = 100;
 //            c.Width = 100;
-			a.MoveList.Add(new SimpleMove(100, 0));
+			a.MoveList.Add(new SimpleMove(100, -400));
 			b.MoveList.Add(new SimpleMove(-10, -10));
-			a.MoveList.Add(new AccelerateMove(0, 800));
+			a.MoveList.Add(new AccelerateMove(0, 1000));
 //            c.MoveList.Add(new SimpleMove(-10, 10));
 			AddObject(a);
 			AddObject(b);
+			AddObject(new SimpleText(ColorResource.高坂穗乃果, "Hello World", 10, 10));
 //            AddObject(c);
 		}
 
