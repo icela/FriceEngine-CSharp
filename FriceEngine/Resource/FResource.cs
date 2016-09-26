@@ -31,13 +31,14 @@ namespace FriceEngine.Resource
 			return ((ColorResource) obj).Color.Equals(Color);
 		}
 
-		protected bool Equals(ColorResource other)
+		public bool Equals(ColorResource other)
 		{
 			return Color.Equals(other.Color);
 		}
 
 		public override int GetHashCode()
 		{
+			// ReSharper disable once NonReadonlyMemberInGetHashCode
 			return Color.GetHashCode();
 		}
 

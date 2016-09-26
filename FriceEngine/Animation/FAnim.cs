@@ -1,5 +1,4 @@
 ﻿using System;
-using FriceEngine.Object;
 
 namespace FriceEngine.Animation
 {

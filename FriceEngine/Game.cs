@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using FriceEngine.Object;
@@ -89,6 +88,7 @@ namespace FriceEngine
 		/// set if the engine should collect garbages itself.
 		/// </summary>
 		/// <param name="_bool">collect or not.</param>
+		// ReSharper disable once InconsistentNaming
 		public void SetAutoGC(bool _bool) => _gamePanel.AutoGC = _bool;
 
 		/// <summary>
@@ -181,6 +181,7 @@ namespace FriceEngine
 
 			internal Font TextFont = new Font(FontFamily.GenericSansSerif, 14);
 			internal Action OnClickAction;
+			// ReSharper disable once InconsistentNaming
 			internal bool AutoGC = true;
 
 			internal AbstractGame()

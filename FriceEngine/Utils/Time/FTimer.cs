@@ -1,23 +1,30 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Timers;
 
 namespace FriceEngine.Utils.Time
 {
+	/// <summary>
+	/// inherited from JVM edition.
+	/// </summary>
 	public class FTimer
 	{
+		// ReSharper disable once MemberCanBePrivate.Global
 		public readonly int Time;
 
+		// ReSharper disable once MemberCanBeProtected.Global
 		public int Times { get; protected set; }
 
+		// ReSharper disable once MemberCanBePrivate.Global
 		public int Start = DateTime.Now.Millisecond;
 
+		// ReSharper disable once MemberCanBeProtected.Global
 		public FTimer(int time, int times)
 		{
 			Time = time;
 			Times = times;
 		}
 
+		// ReSharper disable once MemberCanBeProtected.Global
 		public FTimer(int time)
 		{
 			Time = time;
@@ -33,6 +40,9 @@ namespace FriceEngine.Utils.Time
 		}
 	}
 
+	/// <summary>
+	/// inherited from JVM edition.
+	/// </summary>
 	public sealed class FTimeListener : FTimer
 	{
 		public FTimeListener(int time, int times) : base(time, times)

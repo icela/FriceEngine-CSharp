@@ -120,7 +120,7 @@ namespace FriceEngine.Object
 			set { Shape.Height = value; }
 		}
 
-		public ShapeObject(ColorResource colorResource, IFShape shape, double x, double y) : base()
+		public ShapeObject(ColorResource colorResource, IFShape shape, double x, double y)
 		{
 			ColorResource = colorResource;
 			Shape = shape;
@@ -137,31 +137,31 @@ namespace FriceEngine.Object
 		public override double X
 		{
 			get { return Point.X; }
-			set { Point = new Point(Convert.ToInt32(value), Convert.ToInt32(this.Y)); }
+			set { Point = new Point(Convert.ToInt32(value), Convert.ToInt32(Y)); }
 		}
 
 		public override double Y
 		{
 			get { return Point.Y; }
-			set { Point = new Point(Convert.ToInt32(this.X), Convert.ToInt32(value)); }
+			set { Point = new Point(Convert.ToInt32(X), Convert.ToInt32(value)); }
 		}
 
 		public override double Height
 		{
 			get { return Bmp.Height; }
-			set { Bmp = _resize(Bmp, Convert.ToInt32(this.Width), Convert.ToInt32(value)); }
+			set { Bmp = _resize(Bmp, Convert.ToInt32(Width), Convert.ToInt32(value)); }
 		}
 
 		public override double Width
 		{
 			get { return Bmp.Width; }
-			set { Bmp = _resize(Bmp, Convert.ToInt32(value), Convert.ToInt32(this.Height)); }
+			set { Bmp = _resize(Bmp, Convert.ToInt32(value), Convert.ToInt32(Height)); }
 		}
 
 		public ImageObject(Bitmap bmp, double x, double y)
 		{
-			this.Bmp = bmp;
-			this.Point = new Point(Convert.ToInt32(x), Convert.ToInt32(y));
+			Bmp = bmp;
+			Point = new Point(Convert.ToInt32(x), Convert.ToInt32(y));
 		}
 
 		public static ImageObject FromWeb(string url, double x, double y, int width = -1, int height = -1)
