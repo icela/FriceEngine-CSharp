@@ -15,8 +15,8 @@ namespace FriceEngineTest
 		public static void Main(string[] args)
 		{
 			// ReSharper disable once ObjectCreationAsStatement
-			Application.Run(new Test2());
-			// Application.Run(new Test2());
+//			Application.Run(new Test2());
+			 Application.Run(new Test());
 		}
 	}
 
@@ -71,20 +71,23 @@ namespace FriceEngineTest
 			Width = 800;
 			Height = 600;
 
-			var a = new ShapeObject(ColorResource.吾王蓝, new FRectangle(40, 40), 300, 200);
-			var b = new ShapeObject(ColorResource.小埋色, new FRectangle(40, 40), 300, 100);
-			var c = new ShapeObject(ColorResource.基佬紫, new FCircle(40), 300, 150);
+//			var b = new ShapeObject(ColorResource.小埋色, new FCircle(40), 300, 200);
+			var a = new ShapeObject(ColorResource.吾王蓝, new FCircle(40), 300, 200);
+//			var c = new ShapeObject(ColorResource.基佬紫, new FCircle(40), 300, 200);
 			//replace with a file path in disk
 //			var b = ImageObject.FromFile(@"C:\frice.png", 300, 200, 100, 100);
-//			var b = ImageObject.FromWeb("https://avatars3.githubusercontent.com/u/16398479", 300, 200, 100, 100);
-//			var c = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 300, 200, 100, 100);
-			AddObjects(a, b, c);
+			var b = ImageObject.FromWeb("https://avatars3.githubusercontent.com/u/16398479", 300, 200, 100, 100);
+			var c = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 300, 200, 100, 100);
+//			AddObjects(a, b, c);
+			AddObject(a);
+			AddObject(b);
+			AddObject(c);
 			RandomMove(a, 1000);
 			RandomMove(b, 1500);
 			RandomMove(c, 750);
 		}
 
-		public void RandomMove(FObject obj, int time)
+		private void RandomMove(FObject obj, int time)
 		{
 			var ft2 = new FTimeListener2(time, true);
 			ft2.OnTimeUp += () =>
@@ -95,7 +98,7 @@ namespace FriceEngineTest
 			ft2.Start();
 		}
 
-		public static SimpleMove GetRandomMove()
+		private static SimpleMove GetRandomMove()
 		{
 			var r = new Random();
 			var x = r.Next(-100, 100);
