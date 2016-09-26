@@ -17,7 +17,7 @@ namespace FriceEngine
 		// ReSharper disable once MemberCanBeProtected.Global
 		public Game()
 		{
-			SetBounds(100, 100, 500, 500);
+			SetBounds(300, 300, 500, 500);
 			FormBorderStyle = FormBorderStyle.FixedSingle;
 			// ReSharper disable once VirtualMemberCallInConstructor
 			DoubleBuffered = true;
@@ -80,16 +80,22 @@ namespace FriceEngine
 		public void HideCursor() => Cursor.Hide();
 
 		/// <summary>
-		/// add an object or text to screen.
-		/// </summary>
-		/// <param name="o">the object or text to be added.</param>
-		public void AddObject(IAbstractObject o) => _gamePanel.AddObject(o);
-
-		/// <summary>
 		/// set the global text font.
 		/// </summary>
 		/// <param name="font">the new font.</param>
 		public void SetTextFont(Font font) => _gamePanel.TextFont = font;
+
+		/// <summary>
+		/// set if the engine should collect garbages itself.
+		/// </summary>
+		/// <param name="_bool">collect or not.</param>
+		public void SetAutoGC(bool _bool) => _gamePanel.AutoGC = _bool;
+
+		/// <summary>
+		/// add an object or text to screen.
+		/// </summary>
+		/// <param name="o">the object or text to be added.</param>
+		public void AddObject(IAbstractObject o) => _gamePanel.AddObject(o);
 
 		/// <summary>
 		/// remove an object or text from screen.
@@ -175,6 +181,7 @@ namespace FriceEngine
 
 			internal Font TextFont = new Font(FontFamily.GenericSansSerif, 14);
 			internal Action OnClickAction;
+			internal bool AutoGC = true;
 
 			internal AbstractGame()
 			{
@@ -206,29 +213,31 @@ namespace FriceEngine
 				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
 				foreach (var o in Objects)
 				{
-					if (o.X < -Width || o.Y < -Height || o.X > Width + Width || o.Y > Height + Height)
-						if (o is ShapeObject)
-						{
-							var brush = new SolidBrush((o as ShapeObject).ColorResource.Color);
-							if ((o as ShapeObject).Shape is FRectangle)
-								g.FillRectangle(brush,
-									(float) o.X,
-									(float) o.Y,
-									(float) (o as ShapeObject).Width,
-									(float) (o as ShapeObject).Height
-								);
-							else if ((o as ShapeObject).Shape is FOval)
-								g.FillEllipse(brush,
-									(float) o.X,
-									(float) o.Y,
-									(float) (o as ShapeObject).Width,
-									(float) (o as ShapeObject).Height
-								);
-						}
-						else if (o is ImageObject)
-						{
-							g.DrawImage((o as ImageObject).Bmp, (o as ImageObject).Point);
-						}
+					// GC
+					if (AutoGC&&(o.X < -Width || o.Y < -Height || o.X > Width + Width || o.Y > Height + Height))
+						RemoveObject(o);
+					if (o is ShapeObject)
+					{
+						var brush = new SolidBrush((o as ShapeObject).ColorResource.Color);
+						if ((o as ShapeObject).Shape is FRectangle)
+							g.FillRectangle(brush,
+								(float) o.X,
+								(float) o.Y,
+								(float) (o as ShapeObject).Width,
+								(float) (o as ShapeObject).Height
+							);
+						else if ((o as ShapeObject).Shape is FOval)
+							g.FillEllipse(brush,
+								(float) o.X,
+								(float) o.Y,
+								(float) (o as ShapeObject).Width,
+								(float) (o as ShapeObject).Height
+							);
+					}
+					else if (o is ImageObject)
+					{
+						g.DrawImage((o as ImageObject).Bmp, (o as ImageObject).Point);
+					}
 				}
 				foreach (var t in Texts)
 				{

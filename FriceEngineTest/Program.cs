@@ -21,8 +21,7 @@ namespace FriceEngineTest
 	{
 		public override void OnInit()
 		{
-			Width = 800;
-			Height = 600;
+			SetBounds(300, 300, 800, 600);
 
 			SetTitle("Fuck the world");
 
