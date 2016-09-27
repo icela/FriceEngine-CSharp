@@ -6,6 +6,7 @@ using System.Net;
 using FriceEngine.Animation;
 using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
+using FriceEngine.Utils.Misc;
 
 namespace FriceEngine.Object
 {
@@ -70,6 +71,7 @@ namespace FriceEngine.Object
 		}
 
 		public List<MoveAnim> MoveList { get; }
+		public List<Pair<>> TargetList { get; }
 
 		public void Move(double x, double y)
 		{

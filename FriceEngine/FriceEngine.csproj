@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Animation\FAnim.cs" />
     <Compile Include="Animation\Move.cs" />
+    <Compile Include="Event\Events.cs" />
     <Compile Include="Game.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,6 +66,7 @@
     <Compile Include="Utils\Graphics\ColorUtils.cs" />
     <Compile Include="Utils\Graphics\FShape.cs" />
     <Compile Include="Utils\Message\FLog.cs" />
+    <Compile Include="Utils\Misc\Misc.cs" />
     <Compile Include="Utils\Time\FTimer.cs" />
     <Compile Include="WpfGame.cs" />
   </ItemGroup>
