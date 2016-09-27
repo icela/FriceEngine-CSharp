@@ -71,7 +71,7 @@ namespace FriceEngine.Object
 		}
 
 		public List<MoveAnim> MoveList { get; }
-		public List<Pair<>> TargetList { get; }
+		public List<Pair<ICollideBox, Action>> TargetList { get; }
 
 		public void Move(double x, double y)
 		{
@@ -81,9 +81,20 @@ namespace FriceEngine.Object
 
 		public void Move(DoublePair p) => Move(p.X, p.Y);
 
-		public void HandleAnims()
+		public void RunAnims()
 		{
 			foreach (var anim in MoveList) Move(anim.Delta);
+		}
+
+		public void CheckCollitions()
+		{
+			foreach (var p in TargetList)
+			{
+				if (IsCollide(p.First))
+				{
+					p.Second.Invoke();
+				}
+			}
 		}
 
 		/// <summary>

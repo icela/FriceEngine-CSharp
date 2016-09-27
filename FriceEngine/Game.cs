@@ -213,7 +213,7 @@ namespace FriceEngine
 			{
 				ProcessBuffer();
 				foreach (var l in FTimeListeners) l.Check();
-				foreach (var o in _objects) (o as FObject)?.HandleAnims();
+				foreach (var o in _objects) (o as FObject)?.RunAnims();
 
 				var g = e.Graphics;
 				g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;

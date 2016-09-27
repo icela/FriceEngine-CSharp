@@ -50,7 +50,6 @@
   <ItemGroup>
     <Compile Include="Animation\FAnim.cs" />
     <Compile Include="Animation\Move.cs" />
-    <Compile Include="Event\Events.cs" />
     <Compile Include="Game.cs">
       <SubType>Form</SubType>
     </Compile>
