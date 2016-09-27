@@ -211,9 +211,27 @@ namespace FriceEngine
 
 			protected override void OnPaint(PaintEventArgs e)
 			{
+				// garbage collection
+				if (AutoGC)
+				{
+					foreach (var o in _objects.Where(o =>
+						o.X < -Width ||
+						o.Y < -Height ||
+						o.X > Width + Width ||
+						o.Y > Height + Height))
+					{
+						if (o is PhysicalObject) ((PhysicalObject) o).Died = true;
+						RemoveObject(o);
+					}
+				}
+
 				ProcessBuffer();
 				foreach (var l in FTimeListeners) l.Check();
-				foreach (var o in _objects) (o as FObject)?.RunAnims();
+				foreach (var o in _objects)
+				{
+					(o as FObject)?.RunAnims();
+					(o as FObject)?.CheckCollitions();
+				}
 
 				var g = e.Graphics;
 				g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -221,9 +239,6 @@ namespace FriceEngine
 				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
 				foreach (var o in _objects)
 				{
-					// GC
-					if (AutoGC && (o.X < -Width || o.Y < -Height || o.X > Width + Width || o.Y > Height + Height))
-						RemoveObject(o);
 					if (o is ShapeObject)
 					{
 						var brush = new SolidBrush((o as ShapeObject).ColorResource.Color);

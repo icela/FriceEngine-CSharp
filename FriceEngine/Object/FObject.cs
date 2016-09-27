@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Net;
 using FriceEngine.Animation;
 using FriceEngine.Resource;
@@ -42,7 +43,7 @@ namespace FriceEngine.Object
 		bool IsCollide(ICollideBox other);
 	}
 
-	public abstract class PhysicalObject : IAbstractObject, IFContainer
+	public abstract class PhysicalObject : IAbstractObject, IFContainer, ICollideBox
 	{
 		public virtual double X { get; set; }
 		public virtual double Y { get; set; }
@@ -61,9 +62,11 @@ namespace FriceEngine.Object
 			get { return _mass; }
 			set { _mass = value <= 0 ? 0.001 : value; }
 		}
+
+		public abstract bool IsCollide(ICollideBox other);
 	}
 
-	public abstract class FObject : PhysicalObject, ICollideBox
+	public abstract class FObject : PhysicalObject
 	{
 		protected FObject()
 		{
@@ -71,7 +74,7 @@ namespace FriceEngine.Object
 		}
 
 		public List<MoveAnim> MoveList { get; }
-		public List<Pair<ICollideBox, Action>> TargetList { get; }
+		public List<Pair<PhysicalObject, Action>> TargetList { get; }
 
 		public void Move(double x, double y)
 		{
@@ -81,20 +84,22 @@ namespace FriceEngine.Object
 
 		public void Move(DoublePair p) => Move(p.X, p.Y);
 
+		/// <summary>
+		/// handle all animations
+		/// </summary>
 		public void RunAnims()
 		{
 			foreach (var anim in MoveList) Move(anim.Delta);
 		}
 
+		/// <summary>
+		/// check all collition targets
+		/// </summary>
 		public void CheckCollitions()
 		{
-			foreach (var p in TargetList)
-			{
-				if (IsCollide(p.First))
-				{
-					p.Second.Invoke();
-				}
-			}
+			TargetList.RemoveAll(p => p.First.Died);
+			foreach (var p in TargetList.Where(p => IsCollide(p.First)))
+				p.Second.Invoke();
 		}
 
 		/// <summary>
@@ -103,7 +108,7 @@ namespace FriceEngine.Object
 		/// </summary>
 		/// <param name="other">the other collide box</param>
 		/// <returns>collided or not.</returns>
-		public bool IsCollide(ICollideBox other)
+		public override bool IsCollide(ICollideBox other)
 		{
 			if (other is PhysicalObject)
 				return X + Width >= ((PhysicalObject) other).X && ((PhysicalObject) other).Y <= Y + Height &&
