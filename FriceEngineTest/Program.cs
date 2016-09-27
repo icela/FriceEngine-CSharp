@@ -12,6 +12,7 @@ namespace FriceEngineTest
 {
 	public static class Program
 	{
+        [STAThread]
 		public static void Main(string[] args)
 		{
 			// ReSharper disable once ObjectCreationAsStatement

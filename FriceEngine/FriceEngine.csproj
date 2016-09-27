@@ -53,10 +53,6 @@
     <Compile Include="Game.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GameWindow.cs" />
-    <Compile Include="GameWindow.Designer.cs">
-      <DependentUpon>GameWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="Icon.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -70,11 +66,7 @@
     <Compile Include="Utils\Graphics\FShape.cs" />
     <Compile Include="Utils\Message\FLog.cs" />
     <Compile Include="Utils\Time\FTimer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="GameWindow.resx">
-      <DependentUpon>GameWindow.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="WpfGame.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.resx">
