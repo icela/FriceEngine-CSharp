@@ -170,12 +170,12 @@ namespace FriceEngine
 		private class AbstractGame : Panel
 		{
 			private readonly IList<IAbstractObject> _objects;
-			internal readonly IList<IAbstractObject> ObjectAddBuffer;
-			internal readonly IList<IAbstractObject> ObjectDeleteBuffer;
+			private readonly IList<IAbstractObject> _objectAddBuffer;
+			private readonly IList<IAbstractObject> _objectDeleteBuffer;
 
 			private readonly IList<FText> _texts;
-			internal readonly IList<FText> TextAddBuffer;
-			internal readonly IList<FText> TextDeleteBuffer;
+			private readonly IList<FText> _textAddBuffer;
+			private readonly IList<FText> _textDeleteBuffer;
 
 			internal readonly IList<FTimeListener> FTimeListeners;
 			internal readonly IList<FTimeListener> FTimeListenerAddBuffer;
@@ -197,12 +197,12 @@ namespace FriceEngine
 
 				_fpsCounter = 0;
 				_objects = new List<IAbstractObject>();
-				ObjectAddBuffer = new List<IAbstractObject>();
-				ObjectDeleteBuffer = new List<IAbstractObject>();
+				_objectAddBuffer = new List<IAbstractObject>();
+				_objectDeleteBuffer = new List<IAbstractObject>();
 
 				_texts = new List<FText>();
-				TextAddBuffer = new List<FText>();
-				TextDeleteBuffer = new List<FText>();
+				_textAddBuffer = new List<FText>();
+				_textDeleteBuffer = new List<FText>();
 
 				FTimeListeners = new List<FTimeListener>();
 				FTimeListenerAddBuffer = new List<FTimeListener>();
@@ -292,21 +292,21 @@ namespace FriceEngine
 			internal void RemoveObject(IAbstractObject o)
 			{
 				if (o == null) return;
-				if (o is FText) TextDeleteBuffer.Add((FText) o);
-				else ObjectDeleteBuffer.Add(o);
+				if (o is FText) _textDeleteBuffer.Add((FText) o);
+				else _objectDeleteBuffer.Add(o);
 			}
 
 			internal void ClearObjects()
 			{
-				foreach (var o in _objects) ObjectDeleteBuffer.Add(o);
-				foreach (var o in _texts) TextDeleteBuffer.Add(o);
+				foreach (var o in _objects) _objectDeleteBuffer.Add(o);
+				foreach (var o in _texts) _textDeleteBuffer.Add(o);
 			}
 
 			internal void AddObject(IAbstractObject o)
 			{
 				if (o == null) return;
-				if (o is FText) TextAddBuffer.Add((FText) o);
-				else ObjectAddBuffer.Add(o);
+				if (o is FText) _textAddBuffer.Add((FText) o);
+				else _objectAddBuffer.Add(o);
 			}
 
 			internal void AddObjects(params IAbstractObject[] objects) => objects.ToList().ForEach(AddObject);
@@ -315,15 +315,15 @@ namespace FriceEngine
 
 			private void ProcessBuffer()
 			{
-				foreach (var o in ObjectAddBuffer) _objects.Add(o);
-				foreach (var o in ObjectDeleteBuffer) _objects.Remove(o);
-				ObjectAddBuffer.Clear();
-				ObjectDeleteBuffer.Clear();
+				foreach (var o in _objectAddBuffer) _objects.Add(o);
+				foreach (var o in _objectDeleteBuffer) _objects.Remove(o);
+				_objectAddBuffer.Clear();
+				_objectDeleteBuffer.Clear();
 
-				foreach (var t in TextAddBuffer) _texts.Add(t);
-				foreach (var t in TextDeleteBuffer) _texts.Remove(t);
-				TextAddBuffer.Clear();
-				TextDeleteBuffer.Clear();
+				foreach (var t in _textAddBuffer) _texts.Add(t);
+				foreach (var t in _textDeleteBuffer) _texts.Remove(t);
+				_textAddBuffer.Clear();
+				_textDeleteBuffer.Clear();
 
 				foreach (var t in FTimeListenerAddBuffer) FTimeListeners.Add(t);
 				foreach (var t in FTimeListenerDeleteBuffer) FTimeListeners.Remove(t);
