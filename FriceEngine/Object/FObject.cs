@@ -71,6 +71,7 @@ namespace FriceEngine.Object
 		protected FObject()
 		{
 			MoveList = new List<MoveAnim>();
+			TargetList = new List<Pair<PhysicalObject, Action>>();
 		}
 
 		public List<MoveAnim> MoveList { get; }
@@ -145,6 +146,16 @@ namespace FriceEngine.Object
 			X = x;
 			Y = y;
 		}
+
+		public ShapeObject(Color color, IFShape shape, double x, double y) :
+			this(new ColorResource(color), shape, x, y)
+		{
+		}
+
+		public ShapeObject(int argb, IFShape shape, double x, double y) :
+			this(new ColorResource(argb), shape, x, y)
+		{
+		}
 	}
 
 	public sealed class ImageObject : FObject
@@ -202,12 +213,9 @@ namespace FriceEngine.Object
 			Point = new Point(Convert.ToInt32(_x), Convert.ToInt32(_y));
 		}
 
-		public ImageObject(Bitmap img, double x, double y)
+		public ImageObject(Bitmap img, double x, double y) :
+			this(new ImageResource(img), x, y)
 		{
-			Res = new ImageResource(img);
-			_x = x;
-			_y = y;
-			Point = new Point(Convert.ToInt32(_x), Convert.ToInt32(_y));
 		}
 
 		public static ImageObject FromWeb(string url, double x, double y, int width = -1, int height = -1)

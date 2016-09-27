@@ -196,17 +196,17 @@ namespace FriceEngine
 				DoubleBuffered = true;
 
 				_fpsCounter = 0;
-				_objects = new List<IAbstractObject>();
-				_objectAddBuffer = new List<IAbstractObject>();
-				_objectDeleteBuffer = new List<IAbstractObject>();
+				_objects = new List<IAbstractObject>(50);
+				_objectAddBuffer = new List<IAbstractObject>(10);
+				_objectDeleteBuffer = new List<IAbstractObject>(10);
 
-				_texts = new List<FText>();
-				_textAddBuffer = new List<FText>();
-				_textDeleteBuffer = new List<FText>();
+				_texts = new List<FText>(20);
+				_textAddBuffer = new List<FText>(10);
+				_textDeleteBuffer = new List<FText>(10);
 
-				FTimeListeners = new List<FTimeListener>();
-				FTimeListenerAddBuffer = new List<FTimeListener>();
-				FTimeListenerDeleteBuffer = new List<FTimeListener>();
+				FTimeListeners = new List<FTimeListener>(10);
+				FTimeListenerAddBuffer = new List<FTimeListener>(10);
+				FTimeListenerDeleteBuffer = new List<FTimeListener>(10);
 			}
 
 			protected override void OnPaint(PaintEventArgs e)

@@ -6,13 +6,14 @@ using FriceEngine.Object;
 using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
 using FriceEngine.Utils.Message;
+using FriceEngine.Utils.Misc;
 using FriceEngine.Utils.Time;
 
 namespace FriceEngineTest
 {
 	public static class Program
 	{
-        [STAThread]
+		[STAThread]
 		public static void Main(string[] args)
 		{
 			// ReSharper disable once ObjectCreationAsStatement
@@ -24,24 +25,27 @@ namespace FriceEngineTest
 	public class Test : Game
 	{
 		private ImageResource _file;
+		private FTimer _timer;
+		private ImageObject _b;
 
 		public override void OnInit()
 		{
+			_timer = new FTimer(10);
 			_file = ImageResource.FromFile(@"C:\frice.png");
 			SetBounds(300, 300, 800, 600);
 
 			SetTitle("Fuck the world");
 
 			//replace with a file path in desk
-			var b = ImageObject.FromFile(@"C:\frice.png", 300, 400, 50, 50);
+			_b = ImageObject.FromFile(@"C:\frice.png", 300, 400, 50, 50);
 //			var c = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 400, 300);
 
 			//can resize：
 //			c.Height = 100;
 //			c.Width = 100;
-			b.MoveList.Add(new SimpleMove(-10, -10));
+			_b.MoveList.Add(new SimpleMove(-10, -10));
 //			c.MoveList.Add(new SimpleMove(-10, 10));
-			AddObject(b);
+			AddObject(_b);
 			AddObject(new SimpleText(ColorResource.高坂穗乃果, "Hello World", 10, 10));
 //			AddObject(c);
 		}
@@ -53,7 +57,8 @@ namespace FriceEngineTest
 				Width = 100,
 				Height = 100
 			};
-			a.MoveList.Add(new SimpleMove(100, -400));
+			a.TargetList.Add(new Pair<PhysicalObject, Action>(_b, () => a.MoveList.Add(new SimpleMove(0, -400))));
+			a.MoveList.Add(new SimpleMove(0, -400));
 			a.MoveList.Add(new AccelerateMove(0, 1000));
 			AddObject(a);
 		}
@@ -67,7 +72,8 @@ namespace FriceEngineTest
 
 		public override void OnRefresh()
 		{
-			Add();
+			if (_timer.Ended())
+				Add();
 			base.OnRefresh();
 		}
 	}

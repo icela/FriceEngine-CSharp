@@ -9,23 +9,23 @@ namespace FriceEngine.Utils.Time
 	public class FTimer
 	{
 		// ReSharper disable once MemberCanBePrivate.Global
-		public readonly int Time;
+		public readonly long Time;
 
 		// ReSharper disable once MemberCanBeProtected.Global
-		public int Times { get; protected set; }
+		public long Times { get; protected set; }
 
 		// ReSharper disable once MemberCanBePrivate.Global
-		public int Start = DateTime.Now.Millisecond;
+		public long Start = DateTime.Now.Millisecond;
 
 		// ReSharper disable once MemberCanBeProtected.Global
-		public FTimer(int time, int times)
+		public FTimer(long time, long times)
 		{
 			Time = time;
 			Times = times;
 		}
 
 		// ReSharper disable once MemberCanBeProtected.Global
-		public FTimer(int time)
+		public FTimer(long time)
 		{
 			Time = time;
 			Times = -1;
@@ -45,19 +45,23 @@ namespace FriceEngine.Utils.Time
 	/// </summary>
 	public sealed class FTimeListener : FTimer
 	{
-		public FTimeListener(int time, int times) : base(time, times)
+		public Action OnTimeEnded;
+
+		public FTimeListener(long time, long times, Action action) : base(time, times)
 		{
+			OnTimeEnded = action;
 		}
 
-		public FTimeListener(int time) : base(time)
+		public FTimeListener(long time, Action action) : base(time)
 		{
+			OnTimeEnded = action;
 		}
 
 		public void Check()
 		{
 			if (!Ended() || Times == 0) return;
 			if (Times > 0) --Times;
-			// TODO invoke the event
+			OnTimeEnded.Invoke();
 		}
 	}
 
@@ -68,7 +72,7 @@ namespace FriceEngine.Utils.Time
 	/// <author>ifdog</author>
 	public sealed class FTimer2
 	{
-		public FTimer2(int milliSeconds)
+		public FTimer2(long milliSeconds)
 		{
 			_timer = new Timer
 			{
@@ -76,6 +80,7 @@ namespace FriceEngine.Utils.Time
 				AutoReset = true
 			};
 		}
+
 		private readonly Timer _timer;
 
 		public void Start(Action action)
@@ -87,18 +92,18 @@ namespace FriceEngine.Utils.Time
 
 	public class FTimeListener2
 	{
-		public FTimeListener2(int milliSeconds, bool autoReset = false)
+		public FTimeListener2(long milliSeconds, bool autoReset = false)
 		{
 			_timer = new Timer()
 			{
 				Interval = milliSeconds,
 				AutoReset = autoReset,
 			};
-			_timer.Elapsed += (sender, args) =>{OnTimeUp?.Invoke();};
+			_timer.Elapsed += (sender, args) => { OnTimeUp?.Invoke(); };
 		}
+
 		private readonly Timer _timer;
 		public event Action OnTimeUp;
-		public void Start() => this._timer.Start();
-
+		public void Start() => _timer.Start();
 	}
 }

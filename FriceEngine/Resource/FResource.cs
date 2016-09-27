@@ -16,13 +16,13 @@ namespace FriceEngine.Resource
 		}
 
 		public ColorResource(int argb)
+			: this(Color.FromArgb(argb))
 		{
-			Color = Color.FromArgb(argb);
 		}
 
 		public ColorResource(string name)
+			: this(Color.FromName(name))
 		{
-			Color = Color.FromName(name);
 		}
 
 		public override bool Equals(object obj)
@@ -95,8 +95,8 @@ namespace FriceEngine.Resource
 		}
 
 		public ImageResource(string path)
+			: this((Bitmap) Image.FromFile(path))
 		{
-			Bmp = (Bitmap) Image.FromFile(path);
 		}
 
 		public static ImageResource FromFile(string path) => new ImageResource(path);

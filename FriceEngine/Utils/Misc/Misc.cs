@@ -11,7 +11,7 @@ namespace FriceEngine.Utils.Misc
 		public TF First { get; set; }
 		public TS Second { get; set; }
 
-		public Pair(TS second, TF first)
+		public Pair(TF first, TS second)
 		{
 			Second = second;
 			First = first;
