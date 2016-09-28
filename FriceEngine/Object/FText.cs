@@ -4,6 +4,7 @@ namespace FriceEngine.Object
 {
 	public abstract class FText : IAbstractObject
 	{
+		public int Uid { get; }
 		public double Rotate { get; set; } = 0;
 
 		public double X { get; set; }

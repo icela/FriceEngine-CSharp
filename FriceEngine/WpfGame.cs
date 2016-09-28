@@ -1,11 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using System.Windows.Threading;
 using FriceEngine.Object;
 using FriceEngine.Utils.Graphics;
-using Image = System.Drawing.Image;
+using FriceEngine.Utils.Time;
+using Brushes = System.Windows.Media.Brushes;
+using Color = System.Windows.Media.Color;
+using Point = System.Windows.Point;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace FriceEngine
 {
@@ -16,107 +26,128 @@ namespace FriceEngine
 	/// ifdog同学加油喔		——ice1000
 	/// </summary>
 	///<author>ifdog</author>
-	public class WpfGame
+	public abstract class WpfGame
 	{
-		private readonly Window _gameWindow = new Window
+		private WpfWindow _window = new WpfWindow();
+		private List<IAbstractObject> _buffer = new List<IAbstractObject>();
+		protected WpfGame()
 		{
-			ResizeMode = ResizeMode.NoResize
-		};
-
-		private readonly DrawingCanvas _canvas = new DrawingCanvas();
-		private readonly List<IAbstractObject> _addBuffer = new List<IAbstractObject>();
-		private readonly List<DrawingVisual> _drawBuffer = new List<DrawingVisual>();
-
-		public double Width
-		{
-			get { return _gameWindow.Width; }
-			set { _gameWindow.Width = value; }
+			OnInit();
+			Run();
+			new Application().Run(_window);
 		}
-
-		public double Height
-		{
-			get { return _gameWindow.Height; }
-			set { _gameWindow.Height = value; }
-		}
-
-		public Point Location
-		{
-			get { return new Point(_gameWindow.Left, _gameWindow.Top); }
-			set
-			{
-				_gameWindow.Left = value.X;
-				_gameWindow.Top = value.Y;
-			}
-		}
-
-		public WpfGame()
-		{
-			_gameWindow.Content = _canvas;
-		}
-
-		public void AddVisuals()
-		{
-			_addBuffer.ForEach(o =>
-			{
-				var dv = new DrawingVisual();
-				var dc = dv.RenderOpen();
-				if (o is ShapeObject)
-				{
-					var c = ((ShapeObject) o).ColorResource.Color;
-					var brush = new SolidColorBrush(Color.FromArgb(c.A, c.R, c.G, c.B));
-					if (((ShapeObject) o).Shape is FRectangle)
-					{
-						dc.DrawRectangle(brush, null, new Rect(
-							(float) o.X,
-							(float) o.Y,
-							(float) ((ShapeObject) o).Width,
-							(float) ((ShapeObject) o).Height));
-					}
-					else if (((ShapeObject) o).Shape is FOval)
-					{
-						dc.DrawEllipse(brush, null, new Point(
-								(float) o.X,
-								(float) o.Y),
-							(float) ((ShapeObject) o).Width,
-							(float) ((ShapeObject) o).Height);
-					}
-				}
-				else if (o is ImageObject)
-				{
-					var bmp = o as ImageObject;
-					dc.DrawImage(BitmapToBitmapImage(bmp.Bitmap),
-						new Rect(bmp.X, bmp.Y, bmp.Width, bmp.Height));
-				}
-				_drawBuffer.Add(dv);
-			});
-		}
-
-		private static BitmapImage BitmapToBitmapImage(Image bitmap)
-		{
-			var bitmapImage = new BitmapImage();
-			using (var ms = new System.IO.MemoryStream())
-			{
-				bitmap.Save(ms, bitmap.RawFormat);
-				bitmapImage.BeginInit();
-				bitmapImage.StreamSource = ms;
-				bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-				bitmapImage.EndInit();
-				bitmapImage.Freeze();
-			}
-			return bitmapImage;
-		}
-
 
 		public void Run()
 		{
-			new Application().Run(_gameWindow);
+			new FTimer2(50).Start(() =>
+			{
+				_window.Dispatcher.Invoke(() =>
+				{
+					_window.Update(_buffer);
+				},DispatcherPriority.Normal);
+			});
+		}
+
+		public abstract void OnInit();
+		
+
+		public void AddObject(IAbstractObject obj)
+		{
+			_buffer.Add(obj);
 		}
 	}
 
-	public class DrawingCanvas : Canvas
+	public class WpfWindow : Window
 	{
-		public List<Visual> Visuals = new List<Visual>();
+		private readonly Canvas _canvas = new Canvas();
+		private readonly Dictionary<int,FrameworkElement> _objectsDict = new Dictionary<int, FrameworkElement>();
+		public WpfWindow()
+		{
+			this.Content = _canvas;
+		}
+		public void Update(List<IAbstractObject> objects)
+		{
+			_objectsDict.Keys.Where(o => !objects.Select(i => i.Uid).Contains(o)).ToList().ForEach(_onRemove);
+			objects.ForEach(o =>
+			{
+				if (_objectsDict.ContainsKey(o.Uid))
+				{
+					_onChange(o);
+				}
+				else
+				{
+					_onAdd(o);
+				}
+			});
+		}
 
-		public DrawingVisual GetHitVisual(Point point) => VisualTreeHelper.HitTest(this, point).VisualHit as DrawingVisual;
+		private void _onRemove(int uid)
+		{
+			_objectsDict.Remove(uid);
+			_canvas.Children.Remove(_objectsDict[uid]);
+		}
+
+		private void _onAdd(IAbstractObject obj)
+		{
+			if (obj is ShapeObject)
+			{
+				var c = ((ShapeObject) obj).ColorResource.Color;
+				var brush = new SolidColorBrush(Color.FromArgb(c.A, c.R, c.G, c.B));
+				if (((ShapeObject) obj).Shape is FRectangle)
+				{
+					Rectangle rect = new Rectangle()
+					{
+						Fill = brush,
+						Width = (float) ((ShapeObject) obj).Width,
+						Height = (float) ((ShapeObject) obj).Height,
+					};
+					rect.SetValue(Canvas.TopProperty,  obj.X);
+					rect.SetValue(Canvas.LeftProperty,  obj.Y);
+					_objectsDict.Add(obj.Uid, rect);
+					_canvas.Children.Add(rect);
+				}
+				else if (((ShapeObject) obj).Shape is FOval)
+				{
+					Ellipse epse = new Ellipse()
+					{
+						Fill = brush,
+						Width = (float) ((ShapeObject) obj).Width,
+						Height = (float) ((ShapeObject) obj).Height,
+					};
+					epse.SetValue(Canvas.TopProperty,  obj.X);
+					epse.SetValue(Canvas.LeftProperty,  obj.Y);
+					_objectsDict.Add(obj.Uid, epse);
+					_canvas.Children.Add(epse);
+				}
+			}
+			else if (obj is ImageObject)
+			{
+				var bmp = obj as ImageObject;
+
+				using (MemoryStream ms = new MemoryStream())
+				{
+					bmp.Bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+					BitmapImage bImage = new BitmapImage();
+					bImage.BeginInit();
+					bImage.StreamSource = new MemoryStream(ms.ToArray());
+					bImage.EndInit();
+					bmp.Bitmap.Dispose();
+					Image img = new Image {Source = bImage};
+					int x = obj.Uid;
+					_objectsDict.Add(obj.Uid, img);
+					_canvas.Children.Add(img);
+					
+				}
+			}
+		}
+
+		private void _onChange(IAbstractObject o)
+		{
+			var element = _objectsDict[o.Uid];
+			(o as FObject)?.RunAnims();
+			Canvas.SetLeft(element,o.X);
+			Canvas.SetTop(element,o.Y);
+		}
+		
 	}
 }

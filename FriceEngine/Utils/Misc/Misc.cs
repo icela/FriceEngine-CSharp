@@ -17,4 +17,10 @@ namespace FriceEngine.Utils.Misc
 			First = first;
 		}
 	}
+
+	public static class StaticHelper
+	{
+		private static int _base = 0;
+		public static int GetNewUid() => _base++;
+	}
 }

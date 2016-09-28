@@ -18,7 +18,8 @@ namespace FriceEngineTest
 		{
 			// ReSharper disable once ObjectCreationAsStatement
 //			Application.Run(new Test2());
-			Application.Run(new Test());
+			//Application.Run(new Test());
+			new test3();
 		}
 	}
 
@@ -120,6 +121,18 @@ namespace FriceEngineTest
 			var y = r.Next(-100, 100);
 
 			return new SimpleMove(x, y);
+		}
+	}
+
+	public class test3 : WpfGame
+	{
+		public override void OnInit()
+		{
+			var a = new ShapeObject(ColorResource.吾王蓝, new FCircle(40), 30, 20);
+			a.MoveList.Add(new SimpleMove(100, 200));
+			var b = ImageObject.FromFile(@"C:\frice.png", 300, 400, 50, 50);
+			AddObject(b);
+			AddObject(a);
 		}
 	}
 }

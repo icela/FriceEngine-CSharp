@@ -15,7 +15,7 @@ namespace FriceEngine.Object
 	{
 		double X { get; set; }
 		double Y { get; set; }
-
+		int Uid { get; }
 		double Rotate { get; set; }
 	}
 
@@ -24,7 +24,7 @@ namespace FriceEngine.Object
 		public double X { get; set; }
 		public double Y { get; set; }
 		public double Rotate { get; set; }
-
+		public int Uid { get; }
 		public AbstractObject(double x, double y)
 		{
 			X = x;
@@ -51,6 +51,7 @@ namespace FriceEngine.Object
 		public virtual double Width { get; set; }
 		public virtual double Height { get; set; }
 
+		public abstract int Uid { get; }
 		public double Rotate { get; set; } = 0;
 
 		public bool Died { get; set; } = false;
@@ -70,10 +71,13 @@ namespace FriceEngine.Object
 	{
 		protected FObject()
 		{
+			_uid = StaticHelper.GetNewUid();
 			MoveList = new List<MoveAnim>();
 			TargetList = new List<Pair<PhysicalObject, Action>>();
 		}
 
+		private int _uid;
+		public override int Uid => _uid;
 		public List<MoveAnim> MoveList { get; }
 		public List<Pair<PhysicalObject, Action>> TargetList { get; }
 
