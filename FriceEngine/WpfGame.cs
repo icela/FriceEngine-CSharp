@@ -39,13 +39,7 @@ namespace FriceEngine
 
 		public void Run()
 		{
-			new FTimer2(50).Start(() =>
-			{
-				_window.Dispatcher.Invoke(() =>
-				{
-					_window.Update(_buffer);
-				},DispatcherPriority.Normal);
-			});
+			CompositionTarget.Rendering += (sender, e) => { _window.Update(_buffer); };
 		}
 
 		public abstract void OnInit();
@@ -145,8 +139,11 @@ namespace FriceEngine
 		{
 			var element = _objectsDict[o.Uid];
 			(o as FObject)?.RunAnims();
-			Canvas.SetLeft(element,o.X);
-			Canvas.SetTop(element,o.Y);
+			//Canvas.SetLeft(element,o.X);
+			//Canvas.SetTop(element,o.Y);
+			element.SetValue(Canvas.TopProperty, o.X);
+			element.SetValue(Canvas.LeftProperty, o.Y);
+			
 		}
 		
 	}

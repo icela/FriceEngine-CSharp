@@ -128,9 +128,10 @@ namespace FriceEngineTest
 	{
 		public override void OnInit()
 		{
-			var a = new ShapeObject(ColorResource.吾王蓝, new FCircle(40), 30, 20);
-			a.MoveList.Add(new SimpleMove(100, 200));
+			var a = new ShapeObject(ColorResource.吾王蓝, new FCircle(40), 0, 0);
+			a.MoveList.Add(new SimpleMove(50, 50));
 			var b = ImageObject.FromFile(@"C:\frice.png", 300, 400, 50, 50);
+			b.MoveList.Add(new SimpleMove(-10, 70));
 			AddObject(b);
 			AddObject(a);
 		}
