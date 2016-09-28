@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -39,7 +40,10 @@ namespace FriceEngine
 
 		public void Run()
 		{
-			CompositionTarget.Rendering += (sender, e) => { _window.Update(_buffer); };
+			CompositionTarget.Rendering += (sender, e) =>
+			{
+				_window.Update(_buffer); 	
+			};
 		}
 
 		public abstract void OnInit();
