@@ -28,8 +28,10 @@ namespace FriceEngine
 			_syncContext = SynchronizationContext.Current;
 			_gamePanel = new AbstractGame
 			{
-				OnClickAction = () =>
-						OnClick(new FPoint(MousePosition().X, MousePosition().Y))
+				OnClickAction = (EventArgs e) =>
+						OnClick(e, Mouse),
+				OnCustomDraw = (Graphics g) =>
+						CustomDraw(g)
 			};
 
 			// ReSharper disable once VirtualMemberCallInConstructor
@@ -147,7 +149,15 @@ namespace FriceEngine
 		/// will be called when the window is clicked.
 		/// </summary>
 		/// <param name="mousePosition">the position of the mouse</param>
-		public virtual void OnClick(FPoint mousePosition)
+		public virtual void OnClick(EventArgs e, FPoint mousePosition)
+		{
+		}
+
+		/// <summary>
+		/// draw what you want with a graphics class
+		/// </summary>
+		/// <param name="g"></param>
+		public virtual void CustomDraw(Graphics g)
 		{
 		}
 
@@ -187,7 +197,9 @@ namespace FriceEngine
 			private long _fpsDisplay;
 
 			internal Font TextFont = new Font(FontFamily.GenericSansSerif, 14);
-			internal Action OnClickAction;
+			internal Action<EventArgs> OnClickAction;
+			internal Action<Graphics> OnCustomDraw;
+
 			// ReSharper disable once InconsistentNaming
 			internal bool AutoGC = true;
 
@@ -271,6 +283,7 @@ namespace FriceEngine
 				if (ShowFps)
 					g.DrawString("fps: " + _fpsDisplay, TextFont, new SolidBrush(Color.Black), 20, Height - 80);
 
+				OnCustomDraw.Invoke(g);
 				base.OnPaint(e);
 			}
 
@@ -283,7 +296,7 @@ namespace FriceEngine
 
 			protected override void OnClick(EventArgs e)
 			{
-				OnClickAction?.Invoke();
+				OnClickAction?.Invoke(e);
 				base.OnClick(e);
 			}
 

@@ -1,3 +1,6 @@
+using System;
+using System.Threading;
+
 namespace FriceEngine.Utils.Misc
 {
 	/// <summary>
@@ -15,6 +18,26 @@ namespace FriceEngine.Utils.Misc
 		{
 			Second = second;
 			First = first;
+		}
+	}
+
+	public class Utils
+	{
+		public static void ForceRun(Action action)
+		{
+			try
+			{
+				action.Invoke();
+			}
+			catch (Exception e)
+			{
+				// ignored
+			}
+		}
+
+		public static void Async(Action action)
+		{
+			new Thread(action.Invoke).Start();
 		}
 	}
 }
