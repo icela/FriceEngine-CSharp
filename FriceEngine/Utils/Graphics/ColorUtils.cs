@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using FriceEngine.Resource;
 
 namespace FriceEngine.Utils.Graphics
 {
@@ -37,5 +38,17 @@ namespace FriceEngine.Utils.Graphics
 					| ((color.R*2/3) << 16)
 					| (color.A << 24);
 		}
+
+		/// <summary>
+		/// convert dcolor to mcolor
+		/// from stackOverflow
+		/// </summary>
+		/// <param name="color"></param>
+		/// <returns></returns>
+		public static System.Windows.Media.Color ToMediaColor(Color color) =>
+			System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B);
+
+		public static System.Windows.Media.Color ToMediaColor(ColorResource color) =>
+			System.Windows.Media.Color.FromArgb(color.Color.A, color.Color.R, color.Color.G, color.Color.B);
 	}
 }

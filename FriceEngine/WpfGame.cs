@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -127,12 +128,11 @@ namespace FriceEngine
 			if (obj is ShapeObject)
 			{
 				var c = ((ShapeObject) obj).ColorResource.Color;
-				var brush = new SolidColorBrush(Color.FromArgb(c.A, c.R, c.G, c.B));
 				if (((ShapeObject) obj).Shape is FRectangle)
 				{
 					var rect = new Rectangle
 					{
-						Fill = brush,
+						Fill = new SolidColorBrush(Color.FromArgb(c.A, c.R, c.G, c.B)),
 						Width = (float) ((ShapeObject) obj).Width,
 						Height = (float) ((ShapeObject) obj).Height
 					};
@@ -145,7 +145,7 @@ namespace FriceEngine
 				{
 					var epse = new Ellipse
 					{
-						Fill = brush,
+						Fill = new SolidColorBrush(Color.FromArgb(c.A, c.R, c.G, c.B)),
 						Width = (float) ((ShapeObject) obj).Width,
 						Height = (float) ((ShapeObject) obj).Height
 					};
@@ -175,6 +175,16 @@ namespace FriceEngine
 					_objectsDict.Add(obj.Uid, img);
 					_canvas.Children.Add(img);
 				}
+			}
+			else if (obj is SimpleText)
+			{
+				var o = (SimpleText) obj;
+				var b = new TextBlock
+				{
+					Foreground = new SolidColorBrush(ColorUtils.ToMediaColor(o.Color)),
+					Text = o.Text
+				};
+				_canvas.Children.Add(b);
 			}
 		}
 

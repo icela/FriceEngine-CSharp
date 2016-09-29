@@ -1,4 +1,4 @@
-﻿using FriceEngine.Resource;
+﻿﻿using FriceEngine.Resource;
 
 namespace FriceEngine.Object
 {
