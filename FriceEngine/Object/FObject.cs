@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -71,14 +72,12 @@ namespace FriceEngine.Object
 	{
 		protected FObject()
 		{
-			_uid = StaticHelper.GetNewUid();
-			MoveList = new List<MoveAnim>();
+			MoveList = new ConcurrentDictionary<int, MoveAnim>();
 			TargetList = new List<Pair<PhysicalObject, Action>>();
 		}
 
-		private int _uid;
-		public override int Uid => _uid;
-		public List<MoveAnim> MoveList { get; }
+		public override int Uid { get; } = StaticHelper.GetNewUid();
+		public ConcurrentDictionary<int,MoveAnim> MoveList { get; }
 		public List<Pair<PhysicalObject, Action>> TargetList { get; }
 
 		public void Move(double x, double y)
@@ -94,7 +93,44 @@ namespace FriceEngine.Object
 		/// </summary>
 		public void RunAnims()
 		{
-			foreach (var anim in MoveList) Move(anim.Delta);
+			MoveAnim ma;
+			MoveList.Keys.ToList().ForEach(i =>
+			{
+				MoveList.TryGetValue(i, out ma);
+				if (ma != null)
+				{
+					Move(ma.Delta);
+				}
+			});
+		}
+		/// <summary>
+		/// Add animations
+		/// </summary>
+		public void AddAnims(params MoveAnim[] ma)
+		{
+			foreach (MoveAnim moveAnim in ma)
+			{
+				MoveList.TryAdd(moveAnim.Uid,moveAnim);
+			}
+			
+		}
+		/// <summary>
+		/// Remove animations
+		/// </summary>
+		public void RemoveAnims(params MoveAnim[] ma)
+		{
+			foreach (MoveAnim moveAnim in ma)
+			{
+				MoveAnim m;
+				MoveList.TryRemove(moveAnim.Uid, out m);
+			}
+		}
+		/// <summary>
+		/// Clear animations
+		/// </summary>
+		public void ClearAnims()
+		{
+			MoveList.Clear();
 		}
 
 		/// <summary>

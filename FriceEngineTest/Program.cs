@@ -7,6 +7,7 @@ using FriceEngine.Utils.Graphics;
 using FriceEngine.Utils.Message;
 using FriceEngine.Utils.Misc;
 using FriceEngine.Utils.Time;
+using System.Windows.Input;
 
 namespace FriceEngineTest
 {
@@ -43,7 +44,7 @@ namespace FriceEngineTest
 			//can resize：
 //			c.Height = 100;
 //			c.Width = 100;
-			_b.MoveList.Add(new SimpleMove(-10, -10));
+//			_b.MoveList.Add(new SimpleMove(-10, -10));
 //			c.MoveList.Add(new SimpleMove(-10, 10));
 			AddObject(_b);
 			AddObject(new SimpleText(ColorResource.高坂穗乃果, "Hello World", 10, 10));
@@ -57,9 +58,9 @@ namespace FriceEngineTest
 				Width = 100,
 				Height = 100
 			};
-			a.TargetList.Add(new Pair<PhysicalObject, Action>(_b, () => a.MoveList.Add(new SimpleMove(0, -400))));
-			a.MoveList.Add(new SimpleMove(0, -400));
-			a.MoveList.Add(new AccelerateMove(0, 1000));
+	//		a.TargetList.Add(new Pair<PhysicalObject, Action>(_b, () => a.MoveList.Add(new SimpleMove(0, -400))));
+//			a.MoveList.Add(new SimpleMove(0, -400));
+//			a.MoveList.Add(new AccelerateMove(0, 1000));
 			AddObject(a);
 		}
 
@@ -81,40 +82,25 @@ namespace FriceEngineTest
 	public class Test2 : WpfGame
 	{
 		ImageObject _x = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 0, 0, 50, 50);
+		SimpleText _t = new SimpleText("Click",300,200);
 
-		public override void OnInit()
+
+		public override void OnClick(double x,double y)
 		{
-			AddObject(new SimpleText(ColorResource.赤羽业, "蛤蛤蛤", 10, 10));
-			for (var i = 0; i < 1000; i++)
-			{
-				var o = _x.Clone();
-				o.X = 400;
-				o.Y = 300;
-				RandomMove(o, 500);
-				AddObject(o);
-			}
+			ImageObject a = _x.Clone();
+			a.X = x;
+			a.Y = y;
+			a.AddAnims(new SimpleMove(30, -500));
+			a.AddAnims(new AccelerateMove(0, 800));
+			AddObject(a);
 		}
 
-		private static void RandomMove(FObject obj, int time)
+		public override void OnMouseMove(double x, double y)
 		{
-			var ft2 = new FTimeListener2(time, true);
-			ft2.OnTimeUp += () =>
-			{
-				obj.MoveList.Clear();
-				obj.MoveList.Add(GetRandomMove());
-			};
-			ft2.Start();
-		}
-
-		private static int _seed;
-
-		private static SimpleMove GetRandomMove()
-		{
-			var r = new Random(_seed);
-			_seed = r.Next();
-			var x = r.Next(-100, 100);
-			var y = r.Next(-100, 100);
-			return new SimpleMove(x, y);
+			_t.X = x+30;
+			_t.Y = y;
+			_t.Text = $"点击：, {x}, {y}";
+			AddObject(_t);
 		}
 	}
 }
