@@ -40,10 +40,21 @@ namespace FriceEngine
 			OnInit();
 			Run();
 			_window.Closing += this.OnExit;
-			_window.MouseDown += this.OnClick;
+			_window.MouseDown += (s, e) =>
+			{
+				var p = e.GetPosition(_window.Canvas);
+				this.OnClick(p.X, p.Y);
+			};
+			_window.MouseMove += (s, e) =>
+			{
+				var p = e.GetPosition(_window.Canvas);
+				this.OnMouseMove(p.X,p.Y);
+			};
 
 			new Application().Run(_window);
 		}
+
+		
 
 		private void Run()
 		{
@@ -70,10 +81,14 @@ namespace FriceEngine
 		{
 		}
 
-		public virtual void OnClick(object sender, MouseButtonEventArgs e)
+		public virtual void OnClick(double x,double y)
 		{
 		}
 
+		public virtual void OnMouseMove(double x,double y)
+		{
+			
+		}
 		public void AddObject(IAbstractObject obj)
 		{
 			_buffer.Add(obj);

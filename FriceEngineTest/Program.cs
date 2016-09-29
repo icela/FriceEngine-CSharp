@@ -7,6 +7,7 @@ using FriceEngine.Utils.Graphics;
 using FriceEngine.Utils.Message;
 using FriceEngine.Utils.Misc;
 using FriceEngine.Utils.Time;
+using System.Windows.Input;
 
 namespace FriceEngineTest
 {
@@ -81,39 +82,25 @@ namespace FriceEngineTest
 	public class Test2 : WpfGame
 	{
 		ImageObject _x = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 0, 0, 50, 50);
+		SimpleText _t = new SimpleText("Click",300,200);
 
-		public override void OnInit()
+
+		public override void OnClick(double x,double y)
 		{
-			for (var i = 0; i < 100; i++)
-			{
-				var o = _x.Clone();
-				o.X = 500;
-				o.Y = 250;
-				RandomMove(o, 50);
-				AddObject(o);
-			}
+			ImageObject a = _x.Clone();
+			a.X = x;
+			a.Y = y;
+			a.AddAnims(new SimpleMove(30, -500));
+			a.AddAnims(new AccelerateMove(0, 800));
+			AddObject(a);
 		}
 
-		private static void RandomMove(FObject obj, int time)
+		public override void OnMouseMove(double x, double y)
 		{
-			var ft2 = new FTimeListener2(time, true);
-			ft2.OnTimeUp += () =>
-			{
-				obj.ClearAnims();
-				obj.AddAnims(GetRandomMove());
-			};
-			ft2.Start();
-		}
-
-		private static int _seed;
-
-		private static SimpleMove GetRandomMove()
-		{
-			var r = new Random(_seed);
-			_seed = r.Next();
-			var x = r.Next(-100, 100);
-			var y = r.Next(-100, 100);
-			return new SimpleMove(x, y);
+			_t.X = x+30;
+			_t.Y = y;
+			_t.Text = $"点击：, {x}, {y}";
+			AddObject(_t);
 		}
 	}
 }
