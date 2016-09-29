@@ -63,11 +63,11 @@ namespace FriceEngineTest
 			AddObject(a);
 		}
 
-		public override void OnClick(FPoint mousePosition)
+		public override void OnClick(EventArgs eventArgs, FPoint mousePosition)
 		{
 			FLog.D("On click called.");
 			Add();
-			base.OnClick(mousePosition);
+			base.OnClick(eventArgs, mousePosition);
 		}
 
 		public override void OnRefresh()
@@ -80,22 +80,21 @@ namespace FriceEngineTest
 
 	public class Test2 : WpfGame
 	{
-		ImageObject x = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 0, 0, 50, 50);
+		ImageObject _x = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 0, 0, 50, 50);
+
 		public override void OnInit()
 		{
-			for (int i = 0; i < 1000; i++)
+			for (var i = 0; i < 1000; i++)
 			{
-				var o = x.Clone();
+				var o = _x.Clone();
 				o.X = 400;
 				o.Y = 300;
 				RandomMove(o, 500);
 				AddObject(o);
-				
 			}
-			
 		}
 
-		private void RandomMove(FObject obj, int time)
+		private static void RandomMove(FObject obj, int time)
 		{
 			var ft2 = new FTimeListener2(time, true);
 			ft2.OnTimeUp += () =>
@@ -106,16 +105,15 @@ namespace FriceEngineTest
 			ft2.Start();
 		}
 
-		private static int seed = 0;
+		private static int _seed;
+
 		private static SimpleMove GetRandomMove()
 		{
-			var r = new Random(seed);
-			seed = r.Next();
-			var x = r.Next(-100,100);
-			var y = r.Next(-100,100);
+			var r = new Random(_seed);
+			_seed = r.Next();
+			var x = r.Next(-100, 100);
+			var y = r.Next(-100, 100);
 			return new SimpleMove(x, y);
 		}
 	}
-
-	
 }

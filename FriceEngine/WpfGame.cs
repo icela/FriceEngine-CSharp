@@ -19,13 +19,15 @@ namespace FriceEngine
 	/// A abstract Game Class based on WPF.
 	/// WPF 太难写了 T_T.
 	///
-	/// ifdog同学加油喔，不是很懂WPF的API所以帮不上什么忙啦。。。		——ice1000
+	/// ifdog同学加油喔，不是很懂WPF的API所以帮不上什么忙啦。。。只能根据Google和栈溢出加一些自己能加的东西。		——ice1000
 	/// </summary>
 	///<author>ifdog</author>
 	public class WpfGame
 	{
 		private readonly WpfWindow _window;
 		private readonly List<IAbstractObject> _buffer = new List<IAbstractObject>();
+
+		public Random Random = new Random();
 
 		protected WpfGame()
 		{
@@ -39,7 +41,7 @@ namespace FriceEngine
 			new Application().Run(_window);
 		}
 
-		public void Run()
+		private void Run()
 		{
 			CompositionTarget.Rendering += (sender, e) =>
 			{
