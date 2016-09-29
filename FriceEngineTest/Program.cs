@@ -43,7 +43,7 @@ namespace FriceEngineTest
 			//can resize：
 //			c.Height = 100;
 //			c.Width = 100;
-			_b.MoveList.Add(new SimpleMove(-10, -10));
+//			_b.MoveList.Add(new SimpleMove(-10, -10));
 //			c.MoveList.Add(new SimpleMove(-10, 10));
 			AddObject(_b);
 			AddObject(new SimpleText(ColorResource.高坂穗乃果, "Hello World", 10, 10));
@@ -57,9 +57,9 @@ namespace FriceEngineTest
 				Width = 100,
 				Height = 100
 			};
-			a.TargetList.Add(new Pair<PhysicalObject, Action>(_b, () => a.MoveList.Add(new SimpleMove(0, -400))));
-			a.MoveList.Add(new SimpleMove(0, -400));
-			a.MoveList.Add(new AccelerateMove(0, 1000));
+	//		a.TargetList.Add(new Pair<PhysicalObject, Action>(_b, () => a.MoveList.Add(new SimpleMove(0, -400))));
+//			a.MoveList.Add(new SimpleMove(0, -400));
+//			a.MoveList.Add(new AccelerateMove(0, 1000));
 			AddObject(a);
 		}
 
@@ -100,8 +100,8 @@ namespace FriceEngineTest
 			var ft2 = new FTimeListener2(time, true);
 			ft2.OnTimeUp += () =>
 			{
-				obj.MoveList.Clear();
-				obj.MoveList.Add(GetRandomMove());
+				obj.ClearAnims();
+				obj.AddAnims(GetRandomMove());
 			};
 			ft2.Start();
 		}

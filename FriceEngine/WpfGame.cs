@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -48,6 +49,7 @@ namespace FriceEngine
 			{
 				OnRefresh();
 				_window.Update(_buffer);
+				//Thread.Sleep(1);
 			};
 		}
 
@@ -159,7 +161,7 @@ namespace FriceEngine
 			else if (obj is ImageObject)
 			{
 				var bmp = (ImageObject) obj;
-
+				Image img;
 				using (var ms = new MemoryStream())
 				{
 					bmp.Bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
@@ -168,12 +170,12 @@ namespace FriceEngine
 					bImage.StreamSource = new MemoryStream(ms.ToArray());
 					bImage.EndInit();
 					bmp.Bitmap.Dispose();
-					var img = new Image {Source = bImage};
-					img.SetValue(Canvas.LeftProperty, obj.X);
-					img.SetValue(Canvas.TopProperty, obj.Y);
-					_objectsDict.Add(obj.Uid, img);
-					_canvas.Children.Add(img);
+					img = new Image {Source = bImage};
 				}
+				img.SetValue(Canvas.LeftProperty, obj.X);
+				img.SetValue(Canvas.TopProperty, obj.Y);
+				_objectsDict.Add(obj.Uid, img);
+				_canvas.Children.Add(img);
 			}
 			else if (obj is SimpleText)
 			{
