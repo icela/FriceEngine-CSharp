@@ -56,6 +56,10 @@ namespace FriceEngine
 		{
 		}
 
+		public virtual void OnExit()
+		{
+		}
+
 		public virtual void CustomDraw(Canvas canvas)
 		{
 		}

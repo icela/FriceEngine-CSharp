@@ -23,7 +23,7 @@ namespace FriceEngine.Utils.Misc
 
 	public static class StaticHelper
 	{
-		private static int _base = 0;
+		private static int _base;
 		public static int GetNewUid() => _base++;
 	}
 

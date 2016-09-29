@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using FriceEngine.Object;
 using FriceEngine.Utils.Graphics;
 using FriceEngine.Utils.Message;
@@ -28,10 +30,11 @@ namespace FriceEngine
 			_syncContext = SynchronizationContext.Current;
 			_gamePanel = new AbstractGame
 			{
-				OnClickAction = e =>
-						OnClick(e, Mouse),
+				OnClickAction = e => OnClick(e, Mouse),
 				OnCustomDraw = OnCustomDraw
 			};
+
+			FormClosing += OnExit;
 
 			// ReSharper disable once VirtualMemberCallInConstructor
 			OnInit();
@@ -145,6 +148,11 @@ namespace FriceEngine
 		{
 		}
 
+
+		public virtual void OnExit(object sender, FormClosingEventArgs args)
+		{
+		}
+
 		public virtual void OnRefresh()
 		{
 		}
@@ -152,6 +160,7 @@ namespace FriceEngine
 		/// <summary>
 		/// will be called when the window is clicked.
 		/// </summary>
+		/// <param name="e">event args</param>
 		/// <param name="mousePosition">the position of the mouse</param>
 		public virtual void OnClick(EventArgs e, FPoint mousePosition)
 		{
