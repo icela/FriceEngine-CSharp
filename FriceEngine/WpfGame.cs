@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using FriceEngine.Object;
 using FriceEngine.Utils.Graphics;
+using FriceEngine.Utils.Time;
 using Color = System.Windows.Media.Color;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
@@ -19,21 +20,18 @@ namespace FriceEngine
 {
 	/// <summary>
 	/// A abstract Game Class based on WPF.
-	/// WPF 太难写了 T_T.
-	///
 	/// ifdog同学加油喔，不是很懂WPF的API所以帮不上什么忙啦。。。只能根据Google和栈溢出加一些自己能加的东西。		——ice1000
+	/// 对，我现在也在面向Stackoverflow编程。 -ifdog
 	/// </summary>
 	///<author>ifdog</author>
 	public class WpfGame
 	{
 		private readonly WpfWindow _window;
 		private readonly List<IAbstractObject> _buffer = new List<IAbstractObject>();
-
-		public Random Random = new Random();
-
+		public bool ShowFps { get; set; } = true;
 		protected WpfGame()
 		{
-			_window = new WpfWindow
+			_window = new WpfWindow(ShowFps)
 			{
 				OnClickAction = OnClick,
 				CustomDrawAction = CustomDraw
@@ -49,7 +47,7 @@ namespace FriceEngine
 			{
 				OnRefresh();
 				_window.Update(_buffer);
-				//Thread.Sleep(1);
+				Thread.Sleep(2);//据观察基本不影响FPS，但能稍微降低CPU占用。
 			};
 		}
 
@@ -86,10 +84,33 @@ namespace FriceEngine
 
 		public Action<MouseButtonEventArgs> OnClickAction;
 		public Action<Canvas> CustomDrawAction;
+		private TextBlock _fpsTextBlock;
+		private int _fps;
+		private bool _showFps;
 
-		public WpfWindow()
+		public WpfWindow(bool showFps = true)
 		{
+			_showFps = showFps;
 			Content = _canvas;
+			if (_showFps)
+			{
+				_fpsTextBlock = new TextBlock()
+				{
+					Foreground = Brushes.Red,
+					Background = Brushes.White,
+				};
+				_fpsTextBlock.SetValue(Canvas.LeftProperty, 10.0);
+				_fpsTextBlock.SetValue(Canvas.RightProperty, 10.0);
+				_canvas.Children.Add(_fpsTextBlock);
+				new FTimer2(1000).Start(() =>
+				{
+					this.Dispatcher.Invoke(() =>
+					{
+						_fpsTextBlock.Text = $"FPS:{_fps}";
+					});
+					_fps = 0;
+				});
+			}
 		}
 
 		protected override void OnMouseDown(MouseButtonEventArgs e)
@@ -117,6 +138,10 @@ namespace FriceEngine
 			});
 
 			CustomDrawAction?.Invoke(_canvas);
+			if (_showFps)
+			{
+				_fps++;
+			}
 		}
 
 		private void _onRemove(int uid)
@@ -195,8 +220,6 @@ namespace FriceEngine
 		{
 			var element = _objectsDict[o.Uid];
 			(o as FObject)?.RunAnims();
-			//Canvas.SetLeft(element,o.X);
-			//Canvas.SetTop(element,o.Y);
 			element.SetValue(Canvas.LeftProperty, o.X);
 			element.SetValue(Canvas.TopProperty, o.Y);
 		}

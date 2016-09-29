@@ -187,7 +187,7 @@ namespace FriceEngine
 				_gamePanel.IncreaseFps();
 				_gamePanel.Refresh();
 			}, null));
-			new FTimer2(1000).Start(() => _gamePanel.ChangeFps());
+			new FTimer2(1000).Start(_gamePanel.ChangeFps);
 		}
 
 		private class AbstractGame : Panel

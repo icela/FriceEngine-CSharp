@@ -84,8 +84,7 @@ namespace FriceEngineTest
 
 		public override void OnInit()
 		{
-			AddObject(new SimpleText(ColorResource.赤羽业, "蛤蛤蛤", 10, 10));
-			for (var i = 0; i < 1000; i++)
+			for (var i = 0; i < 500; i++)
 			{
 				var o = _x.Clone();
 				o.X = 400;
