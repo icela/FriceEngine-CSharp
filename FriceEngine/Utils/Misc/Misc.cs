@@ -21,6 +21,12 @@ namespace FriceEngine.Utils.Misc
 		}
 	}
 
+	public static class StaticHelper
+	{
+		private static int _base = 0;
+		public static int GetNewUid() => _base++;
+	}
+
 	public class Utils
 	{
 		public static void ForceRun(Action action)
