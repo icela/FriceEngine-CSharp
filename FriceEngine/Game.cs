@@ -28,10 +28,9 @@ namespace FriceEngine
 			_syncContext = SynchronizationContext.Current;
 			_gamePanel = new AbstractGame
 			{
-				OnClickAction = (EventArgs e) =>
+				OnClickAction = e =>
 						OnClick(e, Mouse),
-				OnCustomDraw = (Graphics g) =>
-						CustomDraw(g)
+				OnCustomDraw = OnCustomDraw
 			};
 
 			// ReSharper disable once VirtualMemberCallInConstructor
@@ -41,6 +40,11 @@ namespace FriceEngine
 			Show();
 			Run();
 			// ReSharper disable VirtualMemberCallInConstructor
+		}
+
+		private void OnCustomDraw(Graphics g)
+		{
+			CustomDraw(g);
 		}
 
 		private readonly SynchronizationContext _syncContext;

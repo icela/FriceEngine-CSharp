@@ -1,6 +1,4 @@
 using System;
-using System.Threading;
-using System.Windows.Forms;
 using FriceEngine;
 using FriceEngine.Animation;
 using FriceEngine.Object;

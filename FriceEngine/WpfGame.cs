@@ -1,21 +1,16 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Windows.Threading;
 using FriceEngine.Object;
 using FriceEngine.Utils.Graphics;
-using FriceEngine.Utils.Time;
-using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
-using Point = System.Windows.Point;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace FriceEngine
@@ -24,15 +19,21 @@ namespace FriceEngine
 	/// A abstract Game Class based on WPF.
 	/// WPF 太难写了 T_T.
 	///
-	/// ifdog同学加油喔		——ice1000
+	/// ifdog同学加油喔，不是很懂WPF的API所以帮不上什么忙啦。。。		——ice1000
 	/// </summary>
 	///<author>ifdog</author>
-	public abstract class WpfGame
+	public class WpfGame
 	{
-		private WpfWindow _window = new WpfWindow();
-		private List<IAbstractObject> _buffer = new List<IAbstractObject>();
+		private readonly WpfWindow _window;
+		private readonly List<IAbstractObject> _buffer = new List<IAbstractObject>();
+
 		protected WpfGame()
 		{
+			_window = new WpfWindow
+			{
+				OnClickAction = OnClick,
+				CustomDrawAction = CustomDraw
+			};
 			OnInit();
 			Run();
 			new Application().Run(_window);
@@ -42,12 +43,26 @@ namespace FriceEngine
 		{
 			CompositionTarget.Rendering += (sender, e) =>
 			{
-				_window.Update(_buffer); 	
+				OnRefresh();
+				_window.Update(_buffer);
 			};
 		}
 
-		public abstract void OnInit();
-		
+		public virtual void OnInit()
+		{
+		}
+
+		public virtual void OnRefresh()
+		{
+		}
+
+		public virtual void CustomDraw(Canvas canvas)
+		{
+		}
+
+		public virtual void OnClick(MouseButtonEventArgs e)
+		{
+		}
 
 		public void AddObject(IAbstractObject obj)
 		{
@@ -58,14 +73,28 @@ namespace FriceEngine
 	public class WpfWindow : Window
 	{
 		private readonly Canvas _canvas = new Canvas();
-		private readonly Dictionary<int,FrameworkElement> _objectsDict = new Dictionary<int, FrameworkElement>();
+		private readonly Dictionary<int, FrameworkElement> _objectsDict = new Dictionary<int, FrameworkElement>();
+
+		public Action<MouseButtonEventArgs> OnClickAction;
+		public Action<Canvas> CustomDrawAction;
+
 		public WpfWindow()
 		{
-			this.Content = _canvas;
+			Content = _canvas;
 		}
+
+		protected override void OnMouseDown(MouseButtonEventArgs e)
+		{
+			OnClickAction?.Invoke(e);
+			base.OnMouseDown(e);
+		}
+
 		public void Update(List<IAbstractObject> objects)
 		{
-			_objectsDict.Keys.Where(o => !objects.Select(i => i.Uid).Contains(o)).ToList().ForEach(_onRemove);
+			_objectsDict.Keys.Where(o =>
+						!objects.Select(i => i.Uid).Contains(o)
+			).ToList().ForEach(_onRemove);
+
 			objects.ForEach(o =>
 			{
 				if (_objectsDict.ContainsKey(o.Uid))
@@ -77,6 +106,8 @@ namespace FriceEngine
 					_onAdd(o);
 				}
 			});
+
+			CustomDrawAction?.Invoke(_canvas);
 		}
 
 		private void _onRemove(int uid)
@@ -93,51 +124,50 @@ namespace FriceEngine
 				var brush = new SolidColorBrush(Color.FromArgb(c.A, c.R, c.G, c.B));
 				if (((ShapeObject) obj).Shape is FRectangle)
 				{
-					Rectangle rect = new Rectangle()
+					var rect = new Rectangle
 					{
 						Fill = brush,
 						Width = (float) ((ShapeObject) obj).Width,
-						Height = (float) ((ShapeObject) obj).Height,
+						Height = (float) ((ShapeObject) obj).Height
 					};
 					rect.SetValue(Canvas.LeftProperty, obj.X);
-					rect.SetValue(Canvas.TopProperty,  obj.Y);
+					rect.SetValue(Canvas.TopProperty, obj.Y);
 					_objectsDict.Add(obj.Uid, rect);
 					_canvas.Children.Add(rect);
 				}
 				else if (((ShapeObject) obj).Shape is FOval)
 				{
-					Ellipse epse = new Ellipse()
+					var epse = new Ellipse
 					{
 						Fill = brush,
 						Width = (float) ((ShapeObject) obj).Width,
-						Height = (float) ((ShapeObject) obj).Height,
+						Height = (float) ((ShapeObject) obj).Height
 					};
 					epse.SetValue(Canvas.LeftProperty, obj.X);
-					epse.SetValue(Canvas.TopProperty,  obj.Y);
-					
+					epse.SetValue(Canvas.TopProperty, obj.Y);
+
 					_objectsDict.Add(obj.Uid, epse);
 					_canvas.Children.Add(epse);
 				}
 			}
 			else if (obj is ImageObject)
 			{
-				var bmp = obj as ImageObject;
+				var bmp = (ImageObject) obj;
 
-				using (MemoryStream ms = new MemoryStream())
+				using (var ms = new MemoryStream())
 				{
 					bmp.Bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-					BitmapImage bImage = new BitmapImage();
+					var bImage = new BitmapImage();
 					bImage.BeginInit();
 					bImage.StreamSource = new MemoryStream(ms.ToArray());
 					bImage.EndInit();
 					bmp.Bitmap.Dispose();
-					Image img = new Image {Source = bImage};
-					int x = obj.Uid;
+					var img = new Image {Source = bImage};
+					var x = obj.Uid;
 					img.SetValue(Canvas.LeftProperty, obj.X);
 					img.SetValue(Canvas.TopProperty, obj.Y);
 					_objectsDict.Add(obj.Uid, img);
 					_canvas.Children.Add(img);
-					
 				}
 			}
 		}
@@ -150,9 +180,6 @@ namespace FriceEngine
 			//Canvas.SetTop(element,o.Y);
 			element.SetValue(Canvas.LeftProperty, o.X);
 			element.SetValue(Canvas.TopProperty, o.Y);
-			
-			
 		}
-		
 	}
 }
