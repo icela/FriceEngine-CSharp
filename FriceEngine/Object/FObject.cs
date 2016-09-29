@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using FriceEngine.Animation;
 using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
@@ -273,6 +274,11 @@ namespace FriceEngine.Object
 			if (width > 0) img.Width = width;
 			if (height > 0) img.Height = height;
 			return img;
+		}
+
+		public ImageObject Clone()
+		{
+			return  new ImageObject(this.Res.Bmp.Clone() as Bitmap, this.X,this.Y);
 		}
 	}
 

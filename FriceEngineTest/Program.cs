@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Windows.Forms;
 using FriceEngine;
 using FriceEngine.Animation;
@@ -81,17 +82,19 @@ namespace FriceEngineTest
 
 	public class Test2 : WpfGame
 	{
+		ImageObject x = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 0, 0, 50, 50);
 		public override void OnInit()
 		{
-			var a = new ShapeObject(ColorResource.吾王蓝, new FCircle(40), 300, 200);
-			var c = ImageObject.FromWeb("https://avatars3.githubusercontent.com/u/16398479", 500, 400, 200, 200);
-			var d = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 500, 400, 200, 200);
-			AddObject(a);
-			AddObject(c);
-			AddObject(d);
-			RandomMove(a, 300);
-			RandomMove(c, 450);
-			RandomMove(d, 250);
+			for (int i = 0; i < 1000; i++)
+			{
+				var o = x.Clone();
+				o.X = 400;
+				o.Y = 300;
+				RandomMove(o, 500);
+				AddObject(o);
+				
+			}
+			
 		}
 
 		private void RandomMove(FObject obj, int time)
@@ -105,12 +108,13 @@ namespace FriceEngineTest
 			ft2.Start();
 		}
 
+		private static int seed = 0;
 		private static SimpleMove GetRandomMove()
 		{
-			var r = new Random();
-			var x = r.Next(-500, 500);
-			var r2 = new Random(x);
-			var y = r.Next(-500, 500);
+			var r = new Random(seed);
+			seed = r.Next();
+			var x = r.Next(-100,100);
+			var y = r.Next(-100,100);
 			return new SimpleMove(x, y);
 		}
 	}

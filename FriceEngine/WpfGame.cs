@@ -99,8 +99,8 @@ namespace FriceEngine
 						Width = (float) ((ShapeObject) obj).Width,
 						Height = (float) ((ShapeObject) obj).Height,
 					};
-					rect.SetValue(Canvas.TopProperty,  obj.X);
-					rect.SetValue(Canvas.LeftProperty,  obj.Y);
+					rect.SetValue(Canvas.LeftProperty, obj.X);
+					rect.SetValue(Canvas.TopProperty,  obj.Y);
 					_objectsDict.Add(obj.Uid, rect);
 					_canvas.Children.Add(rect);
 				}
@@ -112,8 +112,9 @@ namespace FriceEngine
 						Width = (float) ((ShapeObject) obj).Width,
 						Height = (float) ((ShapeObject) obj).Height,
 					};
-					epse.SetValue(Canvas.TopProperty,  obj.X);
-					epse.SetValue(Canvas.LeftProperty,  obj.Y);
+					epse.SetValue(Canvas.LeftProperty, obj.X);
+					epse.SetValue(Canvas.TopProperty,  obj.Y);
+					
 					_objectsDict.Add(obj.Uid, epse);
 					_canvas.Children.Add(epse);
 				}
@@ -132,6 +133,8 @@ namespace FriceEngine
 					bmp.Bitmap.Dispose();
 					Image img = new Image {Source = bImage};
 					int x = obj.Uid;
+					img.SetValue(Canvas.LeftProperty, obj.X);
+					img.SetValue(Canvas.TopProperty, obj.Y);
 					_objectsDict.Add(obj.Uid, img);
 					_canvas.Children.Add(img);
 					
@@ -145,8 +148,9 @@ namespace FriceEngine
 			(o as FObject)?.RunAnims();
 			//Canvas.SetLeft(element,o.X);
 			//Canvas.SetTop(element,o.Y);
-			element.SetValue(Canvas.TopProperty, o.X);
-			element.SetValue(Canvas.LeftProperty, o.Y);
+			element.SetValue(Canvas.LeftProperty, o.X);
+			element.SetValue(Canvas.TopProperty, o.Y);
+			
 			
 		}
 		
