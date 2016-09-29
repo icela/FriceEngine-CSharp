@@ -71,13 +71,11 @@ namespace FriceEngine.Object
 	{
 		protected FObject()
 		{
-			_uid = StaticHelper.GetNewUid();
 			MoveList = new List<MoveAnim>();
 			TargetList = new List<Pair<PhysicalObject, Action>>();
 		}
 
-		private int _uid;
-		public override int Uid => _uid;
+		public override int Uid { get; } = StaticHelper.GetNewUid();
 		public List<MoveAnim> MoveList { get; }
 		public List<Pair<PhysicalObject, Action>> TargetList { get; }
 
