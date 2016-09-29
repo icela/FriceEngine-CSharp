@@ -84,12 +84,12 @@ namespace FriceEngineTest
 
 		public override void OnInit()
 		{
-			for (var i = 0; i < 500; i++)
+			for (var i = 0; i < 100; i++)
 			{
 				var o = _x.Clone();
-				o.X = 400;
-				o.Y = 300;
-				RandomMove(o, 500);
+				o.X = 500;
+				o.Y = 250;
+				RandomMove(o, 50);
 				AddObject(o);
 			}
 		}

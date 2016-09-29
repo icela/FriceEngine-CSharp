@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,11 +35,13 @@ namespace FriceEngine
 		{
 			_window = new WpfWindow(ShowFps)
 			{
-				OnClickAction = OnClick,
 				CustomDrawAction = CustomDraw
 			};
 			OnInit();
 			Run();
+			_window.Closing += this.OnExit;
+			_window.MouseDown += this.OnClick;
+
 			new Application().Run(_window);
 		}
 
@@ -47,7 +51,6 @@ namespace FriceEngine
 			{
 				OnRefresh();
 				_window.Update(_buffer);
-				Thread.Sleep(2);//据观察基本不影响FPS，但能稍微降低CPU占用。
 			};
 		}
 
@@ -59,7 +62,7 @@ namespace FriceEngine
 		{
 		}
 
-		public virtual void OnExit()
+		public virtual void OnExit(object sender,CancelEventArgs e)
 		{
 		}
 
@@ -67,7 +70,7 @@ namespace FriceEngine
 		{
 		}
 
-		public virtual void OnClick(MouseButtonEventArgs e)
+		public virtual void OnClick(object sender, MouseButtonEventArgs e)
 		{
 		}
 
@@ -79,10 +82,9 @@ namespace FriceEngine
 
 	public class WpfWindow : Window
 	{
-		private readonly Canvas _canvas = new Canvas();
+		public readonly Canvas Canvas = new Canvas();
 		private readonly Dictionary<int, FrameworkElement> _objectsDict = new Dictionary<int, FrameworkElement>();
 
-		public Action<MouseButtonEventArgs> OnClickAction;
 		public Action<Canvas> CustomDrawAction;
 		private TextBlock _fpsTextBlock;
 		private int _fps;
@@ -91,7 +93,7 @@ namespace FriceEngine
 		public WpfWindow(bool showFps = true)
 		{
 			_showFps = showFps;
-			Content = _canvas;
+			Content = Canvas;
 			if (_showFps)
 			{
 				_fpsTextBlock = new TextBlock()
@@ -101,7 +103,7 @@ namespace FriceEngine
 				};
 				_fpsTextBlock.SetValue(Canvas.LeftProperty, 10.0);
 				_fpsTextBlock.SetValue(Canvas.RightProperty, 10.0);
-				_canvas.Children.Add(_fpsTextBlock);
+				Canvas.Children.Add(_fpsTextBlock);
 				new FTimer2(1000).Start(() =>
 				{
 					this.Dispatcher.Invoke(() =>
@@ -110,14 +112,11 @@ namespace FriceEngine
 					});
 					_fps = 0;
 				});
+				Canvas.HorizontalAlignment = HorizontalAlignment.Stretch;
+				Canvas.VerticalAlignment = VerticalAlignment.Stretch;
 			}
 		}
 
-		protected override void OnMouseDown(MouseButtonEventArgs e)
-		{
-			OnClickAction?.Invoke(e);
-			base.OnMouseDown(e);
-		}
 
 		public void Update(List<IAbstractObject> objects)
 		{
@@ -137,7 +136,7 @@ namespace FriceEngine
 				}
 			});
 
-			CustomDrawAction?.Invoke(_canvas);
+			CustomDrawAction?.Invoke(Canvas);
 			if (_showFps)
 			{
 				_fps++;
@@ -147,7 +146,7 @@ namespace FriceEngine
 		private void _onRemove(int uid)
 		{
 			_objectsDict.Remove(uid);
-			_canvas.Children.Remove(_objectsDict[uid]);
+			Canvas.Children.Remove(_objectsDict[uid]);
 		}
 
 		private void _onAdd(IAbstractObject obj)
@@ -166,7 +165,7 @@ namespace FriceEngine
 					rect.SetValue(Canvas.LeftProperty, obj.X);
 					rect.SetValue(Canvas.TopProperty, obj.Y);
 					_objectsDict.Add(obj.Uid, rect);
-					_canvas.Children.Add(rect);
+					Canvas.Children.Add(rect);
 				}
 				else if (((ShapeObject) obj).Shape is FOval)
 				{
@@ -180,7 +179,7 @@ namespace FriceEngine
 					epse.SetValue(Canvas.TopProperty, obj.Y);
 
 					_objectsDict.Add(obj.Uid, epse);
-					_canvas.Children.Add(epse);
+					Canvas.Children.Add(epse);
 				}
 			}
 			else if (obj is ImageObject)
@@ -200,7 +199,7 @@ namespace FriceEngine
 				img.SetValue(Canvas.LeftProperty, obj.X);
 				img.SetValue(Canvas.TopProperty, obj.Y);
 				_objectsDict.Add(obj.Uid, img);
-				_canvas.Children.Add(img);
+				Canvas.Children.Add(img);
 			}
 			else if (obj is SimpleText)
 			{
@@ -212,7 +211,8 @@ namespace FriceEngine
 				};
 				b.SetValue(Canvas.LeftProperty, o.X);
 				b.SetValue(Canvas.RightProperty, o.Y);
-				_canvas.Children.Add(b);
+				_objectsDict.Add(o.Uid,b);
+				Canvas.Children.Add(b);
 			}
 		}
 
@@ -222,6 +222,10 @@ namespace FriceEngine
 			(o as FObject)?.RunAnims();
 			element.SetValue(Canvas.LeftProperty, o.X);
 			element.SetValue(Canvas.TopProperty, o.Y);
+			if (o is SimpleText)
+			{
+				((TextBlock)element).Text = ((SimpleText)o).Text;
+			}
 		}
 	}
 }
