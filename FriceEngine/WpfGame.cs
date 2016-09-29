@@ -169,7 +169,6 @@ namespace FriceEngine
 					bImage.EndInit();
 					bmp.Bitmap.Dispose();
 					var img = new Image {Source = bImage};
-					var x = obj.Uid;
 					img.SetValue(Canvas.LeftProperty, obj.X);
 					img.SetValue(Canvas.TopProperty, obj.Y);
 					_objectsDict.Add(obj.Uid, img);
@@ -184,6 +183,8 @@ namespace FriceEngine
 					Foreground = new SolidColorBrush(ColorUtils.ToMediaColor(o.Color)),
 					Text = o.Text
 				};
+				b.SetValue(Canvas.LeftProperty, o.X);
+				b.SetValue(Canvas.RightProperty, o.Y);
 				_canvas.Children.Add(b);
 			}
 		}
