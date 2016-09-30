@@ -119,8 +119,10 @@ namespace FriceEngineTest
 			t.Text = key;
 			t.AddAnims(new AccelerateMove(0,300));
 			AddObjects(t);
+			if (key.ToLower().Contains("x"))
+			{
+				EndGameWithADialog("Close?", "退出？");
+			}
 		}
-
-		
 	}
 }

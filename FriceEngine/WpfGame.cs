@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using FriceEngine.Object;
+using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
 using FriceEngine.Utils.Misc;
 using FriceEngine.Utils.Time;
@@ -33,19 +34,20 @@ namespace FriceEngine
 		public bool ShowFps { get; set; } = true;
 		public double Width { get; set; } = 1024;
 		public double Height { get; set; } = 768;
+		public bool LoseFocusChangeColor = false;
 
 		protected WpfGame()
 		{
 			_init();
-			_window = new WpfWindow(this.Width,this.Height,this.ShowFps)
+			_window = new WpfWindow(this.Width, this.Height, this.ShowFps)
 			{
 				CustomDrawAction = CustomDraw
 			};
-			_window.Closing += (s, e) => {this.OnExit();};
+			_window.Closing += (s, e) => { this.OnExit(); };
 			_window.MouseDown += (s, e) =>
 			{
 				var p = e.GetPosition(_window.Canvas);
-				this.OnClick(p.X, p.Y,(int)e.ChangedButton);
+				this.OnClick(p.X, p.Y, (int) e.ChangedButton);
 			};
 			_window.MouseMove += (s, e) =>
 			{
@@ -59,12 +61,12 @@ namespace FriceEngine
 			_window.DragOver += (s, e) =>
 			{
 				var p = e.GetPosition(_window.Canvas);
-				this.OnDragOver(p.X,p.Y);
+				this.OnDragOver(p.X, p.Y);
 			};
 			_window.Drop += (s, e) =>
 			{
 				var p = e.GetPosition(_window.Canvas);
-				this.OnDrop(p.X,p.Y);
+				this.OnDrop(p.X, p.Y);
 			};
 			_window.GotFocus += (s, e) => this.OnFocus();
 			_window.LostFocus += (s, e) => this.OnLoseFocus();
@@ -77,20 +79,66 @@ namespace FriceEngine
 		}
 
 		private void _init() => OnInit();
-		public virtual void OnInit(){}
-		public virtual void OnRefresh(){}
-		public virtual void OnExit(){}
-		public virtual void CustomDraw(Canvas canvas){}
-		public virtual void OnClick(double x,double y,int button){}
-		public virtual void OnMouseMove(double x,double y){}
-		public virtual void OnKeyDown(string key){}
-		public virtual void OnFocus(){}
-		public virtual void OnLoseFocus(){}
-		public virtual void OnDragOver(double x, double y){}
-		public virtual void OnDrop(double x,double y){}
+
+		public virtual void OnInit()
+		{
+		}
+
+		public virtual void OnRefresh()
+		{
+		}
+
+		public virtual void OnExit()
+		{
+		}
+
+		public virtual void CustomDraw(Canvas canvas)
+		{
+		}
+
+		public virtual void OnClick(double x, double y, int button)
+		{
+		}
+
+		public virtual void OnMouseMove(double x, double y)
+		{
+		}
+
+		public virtual void OnKeyDown(string key)
+		{
+		}
+
+		public virtual void OnFocus()
+		{
+		}
+
+		public virtual void OnLoseFocus()
+		{
+		}
+
+		public virtual void OnDragOver(double x, double y)
+		{
+		}
+
+		public virtual void OnDrop(double x, double y)
+		{
+		}
 
 		public void AddObjects(params IAbstractObject[] obj) => obj.ToList().ForEach(_buffer.Add);
-		public void RemoveObjects(params IAbstractObject[] obj) => obj.ToList().ForEach((i)=> { _buffer.Remove(i); });
+		public void RemoveObjects(params IAbstractObject[] obj) => obj.ToList().ForEach((i) => { _buffer.Remove(i); });
+
+		public void SetBack(ImageResource img) {}
+		public void SetCursor(ImageResource img) {}
+		public ImageResource GetScreenCut() => null;
+
+		public void EndGameWithADialog(string title, string content)
+		{
+			if (MessageBox.Show(content, title, MessageBoxButton.OK) == MessageBoxResult.OK)
+			{
+				_window.Close();
+			}
+		}
+
 	}
 
 	public class WpfWindow : Window
