@@ -83,11 +83,30 @@ namespace FriceEngineTest
 	{
 		ImageObject _x = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 0, 0, 50, 50);
 		SimpleText _t = new SimpleText("Click",300,200);
+		Random r = new Random();
 
-
-		public override void OnClick(double x,double y)
+		public override void OnInit()
 		{
-			ImageObject a = _x.Clone();
+			TextObject t = new TextObject(ColorResource.Black, "Press any Key (keyboard or mouse)",30,400,200);
+			AddObject(t);
+		}
+
+
+		public override void OnClick(double x,double y,int b)
+		{
+			FObject a;
+			switch (b)
+			{
+				case 0:
+					a = _x.Clone();
+					break;
+				case 2:
+					a = ImageObject.FromFile(@"C:\frice.png", 0, 0, 50, 50);
+					break;
+				default:
+					a = new ShapeObject(ColorResource.Black, new FCircle(50.0),0,0 );
+					break;
+			}
 			a.X = x;
 			a.Y = y;
 			a.AddAnims(new SimpleMove(30, -500));
@@ -102,5 +121,15 @@ namespace FriceEngineTest
 			_t.Text = $"点击：, {x}, {y}";
 			AddObject(_t);
 		}
+
+		public override void OnKeyDown(string key)
+		{
+			TextObject _to = new TextObject(ColorResource.赤羽业, "",50, r.Next(0,1000), 20);
+			_to.Text = key;
+			_to.AddAnims(new AccelerateMove(0,300));
+			AddObject(_to);
+		}
+
+		
 	}
 }

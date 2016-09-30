@@ -37,20 +37,24 @@ namespace FriceEngine
 			{
 				CustomDrawAction = CustomDraw
 			};
-			OnInit();
-			Run();
 			_window.Closing += this.OnExit;
 			_window.MouseDown += (s, e) =>
 			{
 				var p = e.GetPosition(_window.Canvas);
-				this.OnClick(p.X, p.Y);
+				this.OnClick(p.X, p.Y,(int)e.ChangedButton);
 			};
 			_window.MouseMove += (s, e) =>
 			{
 				var p = e.GetPosition(_window.Canvas);
-				this.OnMouseMove(p.X,p.Y);
+				this.OnMouseMove(p.X, p.Y);
 			};
-
+			_window.KeyDown += (s, e) =>
+			{
+				this.OnKeyDown(e.Key.ToString());
+			};
+			OnInit();
+			Run();
+			
 			new Application().Run(_window);
 		}
 
@@ -81,13 +85,15 @@ namespace FriceEngine
 		{
 		}
 
-		public virtual void OnClick(double x,double y)
+		public virtual void OnClick(double x,double y,int button)
 		{
 		}
 
 		public virtual void OnMouseMove(double x,double y)
-		{
-			
+		{		
+		}
+		public virtual void OnKeyDown(string key)
+		{	
 		}
 		public void AddObject(IAbstractObject obj)
 		{
@@ -216,6 +222,19 @@ namespace FriceEngine
 				_objectsDict.Add(obj.Uid, img);
 				Canvas.Children.Add(img);
 			}
+			else if(obj is TextObject)
+			{
+				var o = (TextObject) obj;
+				var b = new TextBlock
+				{
+					Foreground = new SolidColorBrush(ColorUtils.ToMediaColor(o.ColorResource.Color)),
+					Text = o.Text
+				};
+				b.SetValue(Canvas.LeftProperty, o.X);
+				b.SetValue(Canvas.RightProperty, o.Y);
+				_objectsDict.Add(o.Uid, b);
+				Canvas.Children.Add(b);
+			}
 			else if (obj is SimpleText)
 			{
 				var o = (SimpleText) obj;
@@ -234,13 +253,21 @@ namespace FriceEngine
 		private void _onChange(IAbstractObject o)
 		{
 			var element = _objectsDict[o.Uid];
-			(o as FObject)?.RunAnims();
-			element.SetValue(Canvas.LeftProperty, o.X);
-			element.SetValue(Canvas.TopProperty, o.Y);
 			if (o is SimpleText)
 			{
 				((TextBlock)element).Text = ((SimpleText)o).Text;
+			}	
+			else
+			{
+				if (o is TextObject)
+				{
+					((TextBlock)element).Text = ((TextObject)o).Text;
+					((TextBlock)element).FontSize = ((TextObject)o).Size;
+				}
+				(o as FObject)?.RunAnims();
 			}
+			element.SetValue(Canvas.LeftProperty, o.X);
+			element.SetValue(Canvas.TopProperty, o.Y);
 		}
 	}
 }
