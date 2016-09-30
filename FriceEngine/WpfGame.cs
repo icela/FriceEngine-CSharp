@@ -31,10 +31,13 @@ namespace FriceEngine
 		private readonly WpfWindow _window;
 		private readonly List<IAbstractObject> _buffer = new List<IAbstractObject>();
 		public bool ShowFps { get; set; } = true;
+		public double Width { get; set; } = 1024;
+		public double Height { get; set; } = 768;
 
 		protected WpfGame()
 		{
-			_window = new WpfWindow()
+			_init();
+			_window = new WpfWindow(this.Width,this.Height,this.ShowFps)
 			{
 				CustomDrawAction = CustomDraw
 			};
@@ -65,19 +68,12 @@ namespace FriceEngine
 			};
 			_window.GotFocus += (s, e) => this.OnFocus();
 			_window.LostFocus += (s, e) => this.OnLoseFocus();
-			_init();
-			Run();
-			
-			new Application().Run(_window);
-		}
-
-		private void Run()
-		{
 			CompositionTarget.Rendering += (sender, e) =>
 			{
 				OnRefresh();
 				_window.Update(_buffer);
 			};
+			new Application().Run(_window);
 		}
 
 		private void _init() => OnInit();
@@ -93,10 +89,8 @@ namespace FriceEngine
 		public virtual void OnDragOver(double x, double y){}
 		public virtual void OnDrop(double x,double y){}
 
-		public void AddObject(IAbstractObject obj)
-		{
-			_buffer.Add(obj);
-		}
+		public void AddObjects(params IAbstractObject[] obj) => obj.ToList().ForEach(_buffer.Add);
+		public void RemoveObjects(params IAbstractObject[] obj) => obj.ToList().ForEach((i)=> { _buffer.Remove(i); });
 	}
 
 	public class WpfWindow : Window

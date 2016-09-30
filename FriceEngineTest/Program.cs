@@ -78,9 +78,10 @@ namespace FriceEngineTest
 
 		public override void OnInit()
 		{
+			Height = 500;
+			Width = 1280;
 			TextObject t = new TextObject(ColorResource.Black, "Press any Key (keyboard or mouse)",30,400,200);
-			AddObject(t);
-			AddObject(_t);
+			AddObjects(t,_t);
 		}
 
 		public override void OnClick(double x,double y,int b)
@@ -102,7 +103,7 @@ namespace FriceEngineTest
 			a.Y = y;
 			a.AddAnims(new SimpleMove(30, -500));
 			a.AddAnims(new AccelerateMove(0, 800));
-			AddObject(a);
+			AddObjects(a);
 		}
 
 		public override void OnMouseMove(double x, double y)
@@ -117,7 +118,7 @@ namespace FriceEngineTest
 			TextObject t = new TextObject(ColorResource.赤羽业, "",50, r.Next(0,1000), 20);
 			t.Text = key;
 			t.AddAnims(new AccelerateMove(0,300));
-			AddObject(t);
+			AddObjects(t);
 		}
 
 		
