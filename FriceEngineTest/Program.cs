@@ -8,6 +8,7 @@ using FriceEngine.Utils.Message;
 using FriceEngine.Utils.Misc;
 using FriceEngine.Utils.Time;
 using System.Windows.Input;
+using System.Windows.Forms;
 
 namespace FriceEngineTest
 {
@@ -17,7 +18,7 @@ namespace FriceEngineTest
 		public static void Main(string[] args)
 		{
 			// ReSharper disable once ObjectCreationAsStatement
-//			Application.Run(new Test2());
+
 			//Application.Run(new Test());
 			new Test2();
 		}
@@ -37,18 +38,10 @@ namespace FriceEngineTest
 
 			SetTitle("Fuck the world");
 
-			//replace with a file path in desk
 			_b = ImageObject.FromFile(@"C:\frice.png", 300, 400, 50, 50);
-//			var c = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 400, 300);
-
-			//can resize：
-//			c.Height = 100;
-//			c.Width = 100;
-//			_b.MoveList.Add(new SimpleMove(-10, -10));
-//			c.MoveList.Add(new SimpleMove(-10, 10));
+			_b.AddAnims(new SimpleMove(-10, -10));
 			AddObject(_b);
-			AddObject(new SimpleText(ColorResource.高坂穗乃果, "Hello World", 10, 10));
-//			AddObject(c);
+			AddObject(new TextObject(ColorResource.高坂穗乃果, "Hello World", 30, 10, 10));
 		}
 
 		private void Add()
@@ -58,9 +51,7 @@ namespace FriceEngineTest
 				Width = 100,
 				Height = 100
 			};
-	//		a.TargetList.Add(new Pair<PhysicalObject, Action>(_b, () => a.MoveList.Add(new SimpleMove(0, -400))));
-//			a.MoveList.Add(new SimpleMove(0, -400));
-//			a.MoveList.Add(new AccelerateMove(0, 1000));
+			;
 			AddObject(a);
 		}
 
@@ -82,7 +73,7 @@ namespace FriceEngineTest
 	public class Test2 : WpfGame
 	{
 		ImageObject _x = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 0, 0, 50, 50);
-		SimpleText _t = new SimpleText("Click",300,200);
+		private TextObject _t = new TextObject(ColorResource.Black, "Click", 30, 300, 200);
 		Random r = new Random();
 
 		public override void OnInit()
@@ -90,7 +81,6 @@ namespace FriceEngineTest
 			TextObject t = new TextObject(ColorResource.Black, "Press any Key (keyboard or mouse)",30,400,200);
 			AddObject(t);
 		}
-
 
 		public override void OnClick(double x,double y,int b)
 		{
@@ -118,16 +108,16 @@ namespace FriceEngineTest
 		{
 			_t.X = x+30;
 			_t.Y = y;
-			_t.Text = $"点击：, {x}, {y}";
+			_t.Text = $"位置： {x}, {y}";
 			AddObject(_t);
 		}
 
 		public override void OnKeyDown(string key)
 		{
-			TextObject _to = new TextObject(ColorResource.赤羽业, "",50, r.Next(0,1000), 20);
-			_to.Text = key;
-			_to.AddAnims(new AccelerateMove(0,300));
-			AddObject(_to);
+			TextObject t = new TextObject(ColorResource.赤羽业, "",50, r.Next(0,1000), 20);
+			t.Text = key;
+			t.AddAnims(new AccelerateMove(0,300));
+			AddObject(t);
 		}
 
 		

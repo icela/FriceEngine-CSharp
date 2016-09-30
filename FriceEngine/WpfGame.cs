@@ -31,6 +31,7 @@ namespace FriceEngine
 		private readonly WpfWindow _window;
 		private readonly List<IAbstractObject> _buffer = new List<IAbstractObject>();
 		public bool ShowFps { get; set; } = true;
+
 		protected WpfGame()
 		{
 			_window = new WpfWindow(ShowFps)
@@ -52,13 +53,13 @@ namespace FriceEngine
 			{
 				this.OnKeyDown(e.Key.ToString());
 			};
+			_window.GotFocus += (s, e) => this.OnFocus();
+			_window.LostFocus += (s, e) => this.LoseFocus();
 			OnInit();
 			Run();
 			
 			new Application().Run(_window);
 		}
-
-		
 
 		private void Run()
 		{
@@ -92,9 +93,19 @@ namespace FriceEngine
 		public virtual void OnMouseMove(double x,double y)
 		{		
 		}
+
 		public virtual void OnKeyDown(string key)
 		{	
 		}
+
+		public virtual void OnFocus()
+		{
+		}
+
+		public virtual void LoseFocus()
+		{
+		}
+
 		public void AddObject(IAbstractObject obj)
 		{
 			_buffer.Add(obj);
@@ -137,7 +148,6 @@ namespace FriceEngine
 				Canvas.VerticalAlignment = VerticalAlignment.Stretch;
 			}
 		}
-
 
 		public void Update(List<IAbstractObject> objects)
 		{
@@ -235,37 +245,17 @@ namespace FriceEngine
 				_objectsDict.Add(o.Uid, b);
 				Canvas.Children.Add(b);
 			}
-			else if (obj is SimpleText)
-			{
-				var o = (SimpleText) obj;
-				var b = new TextBlock
-				{
-					Foreground = new SolidColorBrush(ColorUtils.ToMediaColor(o.Color)),
-					Text = o.Text
-				};
-				b.SetValue(Canvas.LeftProperty, o.X);
-				b.SetValue(Canvas.RightProperty, o.Y);
-				_objectsDict.Add(o.Uid,b);
-				Canvas.Children.Add(b);
-			}
 		}
 
 		private void _onChange(IAbstractObject o)
 		{
 			var element = _objectsDict[o.Uid];
-			if (o is SimpleText)
+			if (o is TextObject)
 			{
-				((TextBlock)element).Text = ((SimpleText)o).Text;
-			}	
-			else
-			{
-				if (o is TextObject)
-				{
-					((TextBlock)element).Text = ((TextObject)o).Text;
-					((TextBlock)element).FontSize = ((TextObject)o).Size;
-				}
-				(o as FObject)?.RunAnims();
+				((TextBlock) element).Text = ((TextObject) o).Text;
+				((TextBlock) element).FontSize = ((TextObject) o).Size;
 			}
+			(o as FObject)?.RunAnims();
 			element.SetValue(Canvas.LeftProperty, o.X);
 			element.SetValue(Canvas.TopProperty, o.Y);
 		}

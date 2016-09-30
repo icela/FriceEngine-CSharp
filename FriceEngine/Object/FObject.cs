@@ -317,22 +317,6 @@ namespace FriceEngine.Object
 		}
 	}
 
-	public sealed class TextObject:FObject
-	{
-		public String Text;
-		public double Size;
-		public ColorResource ColorResource;
-		public override double X { get; set; }
-		public override double Y { get; set; }
-		public TextObject(ColorResource colorResource, string text,double size, double x, double y)
-		{
-			this.ColorResource = colorResource;
-			this.Text = text;
-			this.X = x;
-			this.Y = y;
-			this.Size = size;
-		}
-	}
 
 	public class DoublePair
 	{
