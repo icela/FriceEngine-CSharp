@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
@@ -15,7 +16,9 @@ using System.Windows.Shapes;
 using FriceEngine.Object;
 using FriceEngine.Utils.Graphics;
 using FriceEngine.Utils.Time;
+using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
+using Image = System.Windows.Controls.Image;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace FriceEngine
@@ -157,14 +160,22 @@ namespace FriceEngine
 
 			objects.ForEach(o =>
 			{
-				if (_objectsDict.ContainsKey(o.Uid))
+				if (0 - Canvas.ActualWidth < o.X && o.X < Canvas.ActualWidth && 0 - Canvas.ActualHeight < o.Y &&
+				    o.Y < Canvas.ActualHeight)
 				{
-					_onChange(o);
+					if (_objectsDict.ContainsKey(o.Uid)) _onChange(o);
+					else _onAdd(o);
 				}
 				else
 				{
-					_onAdd(o);
+					if (_objectsDict.Keys.Contains(o.Uid))
+					{
+						Canvas.Children.Remove(_objectsDict[o.Uid]);
+						_objectsDict.Remove(o.Uid);
+					}
+					(o as FObject)?.RunAnims();
 				}
+
 			});
 
 			CustomDrawAction?.Invoke(Canvas);
@@ -215,18 +226,7 @@ namespace FriceEngine
 			}
 			else if (obj is ImageObject)
 			{
-				var bmp = (ImageObject) obj;
-				Image img;
-				using (var ms = new MemoryStream())
-				{
-					bmp.Bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-					var bImage = new BitmapImage();
-					bImage.BeginInit();
-					bImage.StreamSource = new MemoryStream(ms.ToArray());
-					bImage.EndInit();
-					bmp.Bitmap.Dispose();
-					img = new Image {Source = bImage};
-				}
+				var img = BitmapToImage(((ImageObject) obj).Bitmap);
 				img.SetValue(Canvas.LeftProperty, obj.X);
 				img.SetValue(Canvas.TopProperty, obj.Y);
 				_objectsDict.Add(obj.Uid, img);
@@ -258,6 +258,19 @@ namespace FriceEngine
 			(o as FObject)?.RunAnims();
 			element.SetValue(Canvas.LeftProperty, o.X);
 			element.SetValue(Canvas.TopProperty, o.Y);
+		}
+
+		private Image BitmapToImage(Bitmap bmp)
+		{
+			var bImage = new BitmapImage();
+			using (var ms = new MemoryStream())
+			{
+				bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+				bImage.BeginInit();
+				bImage.StreamSource = new MemoryStream(ms.ToArray());
+				bImage.EndInit();
+			}
+			return  new Image { Source = bImage };
 		}
 	}
 }
