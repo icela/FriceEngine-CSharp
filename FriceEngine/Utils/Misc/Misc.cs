@@ -1,5 +1,10 @@
 using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Threading;
+using System.Windows.Media.Imaging;
+using Image = System.Windows.Controls.Image;
 
 namespace FriceEngine.Utils.Misc
 {
@@ -25,6 +30,19 @@ namespace FriceEngine.Utils.Misc
 	{
 		private static int _base;
 		public static int GetNewUid() => _base++;
+
+		public static Image BitmapToImage(Bitmap bmp)
+		{
+			var bImage = new BitmapImage();
+			using (var ms = new MemoryStream())
+			{
+				bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+				bImage.BeginInit();
+				bImage.StreamSource = new MemoryStream(ms.ToArray());
+				bImage.EndInit();
+			}
+			return new Image { Source = bImage };
+		}
 	}
 
 	public class Utils

@@ -20,5 +20,10 @@ namespace FriceEngine.Object
 		}
 
 		public ColorResource GetColor() => this.ColorResource;
+
+		public override string ToString()
+		{
+			return Text;
+		}
 	}
 }
