@@ -5,10 +5,7 @@ using FriceEngine.Object;
 using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
 using FriceEngine.Utils.Message;
-using FriceEngine.Utils.Misc;
 using FriceEngine.Utils.Time;
-using System.Windows.Input;
-using System.Windows.Forms;
 
 namespace FriceEngineTest
 {

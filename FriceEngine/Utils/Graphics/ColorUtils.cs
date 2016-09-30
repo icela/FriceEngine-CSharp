@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
+using System.Windows.Media;
 using FriceEngine.Resource;
 
 namespace FriceEngine.Utils.Graphics
@@ -25,14 +25,14 @@ namespace FriceEngine.Utils.Graphics
 
 		public static int Gray(int argb)
 		{
-			var color = Color.FromArgb(argb);
+			var color = System.Drawing.Color.FromArgb(argb);
 			var c = (color.R + color.G + color.B)/3;
-			return Color.FromArgb(color.A, c, c, c).ToArgb();
+			return System.Drawing.Color.FromArgb(color.A, c, c, c).ToArgb();
 		}
 
 		public static int Darker(int argb)
 		{
-			var color = Color.FromArgb(argb);
+			var color = System.Drawing.Color.FromArgb(argb);
 			return (color.B*2/3)
 					| ((color.G*2/3) << 8)
 					| ((color.R*2/3) << 16)
@@ -45,10 +45,10 @@ namespace FriceEngine.Utils.Graphics
 		/// </summary>
 		/// <param name="color"></param>
 		/// <returns></returns>
-		public static System.Windows.Media.Color ToMediaColor(Color color) =>
-			System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B);
+		public static Color ToMediaColor(System.Drawing.Color color) =>
+			Color.FromArgb(color.A, color.R, color.G, color.B);
 
-		public static System.Windows.Media.Color ToMediaColor(ColorResource color) =>
-			System.Windows.Media.Color.FromArgb(color.Color.A, color.Color.R, color.Color.G, color.Color.B);
+		public static Color ToMediaColor(ColorResource color) =>
+			Color.FromArgb(color.Color.A, color.Color.R, color.Color.G, color.Color.B);
 	}
 }

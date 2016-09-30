@@ -36,7 +36,7 @@ namespace FriceEngine.Utils.Misc
 			var bImage = new BitmapImage();
 			using (var ms = new MemoryStream())
 			{
-				bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+				bmp.Save(ms, ImageFormat.Png);
 				bImage.BeginInit();
 				bImage.StreamSource = new MemoryStream(ms.ToArray());
 				bImage.EndInit();

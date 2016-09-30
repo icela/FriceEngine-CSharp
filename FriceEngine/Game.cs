@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Linq;
 using System.Threading;
-using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using FriceEngine.Object;
 using FriceEngine.Utils.Graphics;
 using FriceEngine.Utils.Message;
@@ -259,9 +259,9 @@ namespace FriceEngine
 				}
 
 				var g = e.Graphics;
-				g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-				g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+				g.SmoothingMode = SmoothingMode.AntiAlias;
+				g.CompositingQuality = CompositingQuality.HighQuality;
+				g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 				foreach (var o in _objects)
 				{
 					if (o is ShapeObject)

@@ -94,10 +94,10 @@ namespace FriceEngine.Utils.Time
 	{
 		public FTimeListener2(long milliSeconds, bool autoReset = false)
 		{
-			_timer = new Timer()
+			_timer = new Timer
 			{
 				Interval = milliSeconds,
-				AutoReset = autoReset,
+				AutoReset = autoReset
 			};
 			_timer.Elapsed += (sender, args) => { OnTimeUp?.Invoke(); };
 		}

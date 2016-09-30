@@ -12,14 +12,14 @@ namespace FriceEngine.Object
 		public override double Y { get; set; }
 		public TextObject(ColorResource colorResource, string text, double size, double x, double y)
 		{
-			this.ColorResource = colorResource;
-			this.Text = text;
-			this.X = x;
-			this.Y = y;
-			this.Size = size;
+			ColorResource = colorResource;
+			Text = text;
+			X = x;
+			Y = y;
+			Size = size;
 		}
 
-		public ColorResource GetColor() => this.ColorResource;
+		public ColorResource GetColor() => ColorResource;
 
 		public override string ToString()
 		{

@@ -313,7 +313,7 @@ namespace FriceEngine.Object
 
 		public ImageObject Clone()
 		{
-			return  new ImageObject(this.Res.Bmp.Clone() as Bitmap, this.X,this.Y);
+			return  new ImageObject(Res.Bmp.Clone() as Bitmap, X,Y);
 		}
 	}
 

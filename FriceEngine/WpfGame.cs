@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -14,10 +13,6 @@ using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
 using FriceEngine.Utils.Misc;
 using FriceEngine.Utils.Time;
-using Brushes = System.Windows.Media.Brushes;
-using Color = System.Windows.Media.Color;
-using Image = System.Windows.Controls.Image;
-using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace FriceEngine
 {
@@ -39,37 +34,34 @@ namespace FriceEngine
 		protected WpfGame()
 		{
 			_init();
-			_window = new WpfWindow(this.Width, this.Height, this.ShowFps)
+			_window = new WpfWindow(Width, Height, ShowFps)
 			{
 				CustomDrawAction = CustomDraw
 			};
-			_window.Closing += (s, e) => { this.OnExit(); };
+			_window.Closing += (s, e) => { OnExit(); };
 			_window.MouseDown += (s, e) =>
 			{
 				var p = e.GetPosition(_window.Canvas);
-				this.OnClick(p.X, p.Y, (int) e.ChangedButton);
+				OnClick(p.X, p.Y, (int) e.ChangedButton);
 			};
 			_window.MouseMove += (s, e) =>
 			{
 				var p = e.GetPosition(_window.Canvas);
-				this.OnMouseMove(p.X, p.Y);
+				OnMouseMove(p.X, p.Y);
 			};
-			_window.KeyDown += (s, e) =>
-			{
-				this.OnKeyDown(e.Key.ToString());
-			};
+			_window.KeyDown += (s, e) => { OnKeyDown(e.Key.ToString()); };
 			_window.DragOver += (s, e) =>
 			{
 				var p = e.GetPosition(_window.Canvas);
-				this.OnDragOver(p.X, p.Y);
+				OnDragOver(p.X, p.Y);
 			};
 			_window.Drop += (s, e) =>
 			{
 				var p = e.GetPosition(_window.Canvas);
-				this.OnDrop(p.X, p.Y);
+				OnDrop(p.X, p.Y);
 			};
-			_window.GotFocus += (s, e) => this.OnFocus();
-			_window.LostFocus += (s, e) => this.OnLoseFocus();
+			_window.GotFocus += (s, e) => OnFocus();
+			_window.LostFocus += (s, e) => OnLoseFocus();
 			CompositionTarget.Rendering += (sender, e) =>
 			{
 				OnRefresh();
@@ -125,10 +117,16 @@ namespace FriceEngine
 		}
 
 		public void AddObjects(params IAbstractObject[] obj) => obj.ToList().ForEach(_buffer.Add);
-		public void RemoveObjects(params IAbstractObject[] obj) => obj.ToList().ForEach((i) => { _buffer.Remove(i); });
+		public void RemoveObjects(params IAbstractObject[] obj) => obj.ToList().ForEach(i => { _buffer.Remove(i); });
 
-		public void SetBack(ImageResource img) {}
-		public void SetCursor(ImageResource img) {}
+		public void SetBack(ImageResource img)
+		{
+		}
+
+		public void SetCursor(ImageResource img)
+		{
+		}
+
 		public ImageResource GetScreenCut() => null;
 
 		public void EndGameWithADialog(string title, string content)
@@ -138,53 +136,44 @@ namespace FriceEngine
 				_window.Close();
 			}
 		}
-
 	}
 
 	public class WpfWindow : Window
 	{
 		public readonly Canvas Canvas = new Canvas();
-		private readonly Dictionary<int, FrameworkElement> _objectsDict = new Dictionary<int, FrameworkElement>();
+		public bool _showFps;
 		public Action<Canvas> CustomDrawAction;
+		private readonly Dictionary<int, FrameworkElement> _objectsDict = new Dictionary<int, FrameworkElement>();
 		private readonly TextBlock _fpsTextBlock;
 		private int _fps;
-		private readonly bool _showFps;
-		private List<IAbstractObject> _removing = new List<IAbstractObject>();
+		private readonly List<IAbstractObject> _removing = new List<IAbstractObject>();
 
-		public WpfWindow(double width = 1024.0,double height =768.0,bool showFps = true)
+		public WpfWindow(double width = 1024.0, double height = 768.0, bool showFps = true)
 		{
 			_showFps = showFps;
 			Content = Canvas;
-			this.Width = width;
-			this.Height = height;
-			this.Canvas.Width = width;
-			this.Canvas.Height = height;
-			this.SizeChanged += (sender, args) =>
+			Width = width;
+			Height = height;
+			Canvas.Width = width;
+			Canvas.Height = height;
+			SizeChanged += (sender, args) =>
 			{
 				Canvas.Height = args.NewSize.Height;
 				Canvas.Width = args.NewSize.Width;
-				if (showFps)
-				{
-					_fpsTextBlock.SetValue(Canvas.LeftProperty, Canvas.Width - 65.0);
-					_fpsTextBlock.SetValue(Canvas.TopProperty, Canvas.Height - 60.0);
-				}
 			};
 			if (_showFps)
 			{
-				_fpsTextBlock = new TextBlock()
+				_fpsTextBlock = new TextBlock
 				{
 					Foreground = Brushes.Red,
-					Background = Brushes.White,
+					Background = Brushes.White
 				};
-				_fpsTextBlock.SetValue(Canvas.LeftProperty, Canvas.Width -65.0);
-				_fpsTextBlock.SetValue(Canvas.TopProperty, Canvas.Height -60.0);
+				_fpsTextBlock.SetValue(Canvas.LeftProperty, Canvas.Width - 65.0);
+				_fpsTextBlock.SetValue(Canvas.TopProperty, Canvas.Height - 60.0);
 				Canvas.Children.Add(_fpsTextBlock);
 				new FTimer2(1000).Start(() =>
 				{
-					this.Dispatcher.Invoke(() =>
-					{
-						_fpsTextBlock.Text = $"FPS:{_fps}";
-					});
+					Dispatcher.Invoke(() => { _fpsTextBlock.Text = $"FPS:{_fps}"; });
 					_fps = 0;
 				});
 			}
@@ -197,11 +186,12 @@ namespace FriceEngine
 			).ToList().ForEach(_onRemove);
 			objects.ForEach(o =>
 			{
-				if (0 - Canvas.Width < o.X && o.X < Canvas.Width && 0 - Canvas.Height < o.Y &&o.Y < Canvas.Height)
+				if (0 - Canvas.Width < o.X && o.X < Canvas.Width && 0 - Canvas.Height < o.Y && o.Y < Canvas.Height)
 				{
 					if (_objectsDict.ContainsKey(o.Uid)) _onChange(o);
 					else _onAdd(o);
-				}else if (-10*Canvas.Width > o.X || o.X > 10*Canvas.Width || -10*Canvas.Height > o.Y || o.Y > 10*Canvas.Height)
+				}
+				else if (-10 * Canvas.Width > o.X || o.X > 10 * Canvas.Width || -10 * Canvas.Height > o.Y || o.Y > 10 * Canvas.Height)
 				{
 					_removing.Add(o);
 				}
@@ -215,13 +205,14 @@ namespace FriceEngine
 					(o as FObject)?.RunAnims();
 				}
 			});
-			_removing.ForEach(o=> {
+			_removing.ForEach(o =>
+			{
 				if (_objectsDict.ContainsKey(o.Uid)) _objectsDict.Remove(o.Uid);
 				objects.Remove(o);
 			});
 			_removing.Clear();
 			CustomDrawAction?.Invoke(Canvas);
-			if (_showFps)_fps++;
+			if (_showFps) _fps++;
 		}
 
 		private void _onRemove(int uid)
@@ -259,7 +250,7 @@ namespace FriceEngine
 			{
 				element = StaticHelper.BitmapToImage(((ImageObject) obj).Bitmap);
 			}
-			else if(obj is TextObject)
+			else if (obj is TextObject)
 			{
 				var o = (TextObject) obj;
 				element = new TextBlock
@@ -291,5 +282,17 @@ namespace FriceEngine
 		}
 
 
+		private static Image BitmapToImage(System.Drawing.Image bmp)
+		{
+			var bImage = new BitmapImage();
+			using (var ms = new MemoryStream())
+			{
+				bmp.Save(ms, ImageFormat.Png);
+				bImage.BeginInit();
+				bImage.StreamSource = new MemoryStream(ms.ToArray());
+				bImage.EndInit();
+			}
+			return new Image {Source = bImage};
+		}
 	}
 }
