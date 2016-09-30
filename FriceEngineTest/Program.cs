@@ -80,6 +80,7 @@ namespace FriceEngineTest
 		{
 			TextObject t = new TextObject(ColorResource.Black, "Press any Key (keyboard or mouse)",30,400,200);
 			AddObject(t);
+			AddObject(_t);
 		}
 
 		public override void OnClick(double x,double y,int b)
@@ -109,7 +110,6 @@ namespace FriceEngineTest
 			_t.X = x+30;
 			_t.Y = y;
 			_t.Text = $"位置： {x}, {y}";
-			AddObject(_t);
 		}
 
 		public override void OnKeyDown(string key)
