@@ -2,37 +2,23 @@
 
 namespace FriceEngine.Object
 {
-	public abstract class FText : IAbstractObject
-	{
-		public int Uid { get; }
-		public double Rotate { get; set; } = 0;
 
-		public double X { get; set; }
-		public double Y { get; set; }
+	public class TextObject : FObject
+	{
 		public string Text;
-
-		public abstract ColorResource GetColor();
-	}
-
-	public class SimpleText : FText
-	{
-		public ColorResource Color;
-		public override ColorResource GetColor() => Color;
-
-		public SimpleText(ColorResource color, string text, double x, double y)
+		public double Size;
+		public ColorResource ColorResource;
+		public override double X { get; set; }
+		public override double Y { get; set; }
+		public TextObject(ColorResource colorResource, string text, double size, double x, double y)
 		{
-			Color = color;
-			X = x;
-			Y = y;
-			Text = text;
+			this.ColorResource = colorResource;
+			this.Text = text;
+			this.X = x;
+			this.Y = y;
+			this.Size = size;
 		}
 
-		public SimpleText(string text, double x, double y)
-		{
-			Color = ColorResource.DrakGray;
-			X = x;
-			Y = y;
-			Text = text;
-		}
+		public ColorResource GetColor() => this.ColorResource;
 	}
 }

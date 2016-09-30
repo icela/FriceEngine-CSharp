@@ -317,6 +317,7 @@ namespace FriceEngine.Object
 		}
 	}
 
+
 	public class DoublePair
 	{
 		public double X;

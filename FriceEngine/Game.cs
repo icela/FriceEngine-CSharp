@@ -196,9 +196,9 @@ namespace FriceEngine
 			private readonly IList<IAbstractObject> _objectAddBuffer;
 			private readonly IList<IAbstractObject> _objectDeleteBuffer;
 
-			private readonly IList<FText> _texts;
-			private readonly IList<FText> _textAddBuffer;
-			private readonly IList<FText> _textDeleteBuffer;
+			private readonly IList<TextObject> _texts;
+			private readonly IList<TextObject> _textAddBuffer;
+			private readonly IList<TextObject> _textDeleteBuffer;
 
 			internal readonly IList<FTimeListener> FTimeListeners;
 			internal readonly IList<FTimeListener> FTimeListenerAddBuffer;
@@ -225,9 +225,9 @@ namespace FriceEngine
 				_objectAddBuffer = new List<IAbstractObject>(10);
 				_objectDeleteBuffer = new List<IAbstractObject>(10);
 
-				_texts = new List<FText>(20);
-				_textAddBuffer = new List<FText>(10);
-				_textDeleteBuffer = new List<FText>(10);
+				_texts = new List<TextObject>(20);
+				_textAddBuffer = new List<TextObject>(10);
+				_textDeleteBuffer = new List<TextObject>(10);
 
 				FTimeListeners = new List<FTimeListener>(10);
 				FTimeListenerAddBuffer = new List<FTimeListener>(10);
@@ -290,7 +290,7 @@ namespace FriceEngine
 				foreach (var t in _texts)
 				{
 					var brush = new SolidBrush(t.GetColor().Color);
-					if (t is SimpleText)
+					if (t is TextObject)
 						g.DrawString(t.Text, TextFont, brush, (float) t.X, (float) t.Y);
 				}
 				if (ShowFps)
@@ -318,7 +318,7 @@ namespace FriceEngine
 			internal void RemoveObject(IAbstractObject o)
 			{
 				if (o == null) return;
-				if (o is FText) _textDeleteBuffer.Add((FText) o);
+				if (o is TextObject) _textDeleteBuffer.Add((TextObject) o);
 				else _objectDeleteBuffer.Add(o);
 			}
 
@@ -331,7 +331,7 @@ namespace FriceEngine
 			internal void AddObject(IAbstractObject o)
 			{
 				if (o == null) return;
-				if (o is FText) _textAddBuffer.Add((FText) o);
+				if (o is TextObject) _textAddBuffer.Add((TextObject) o);
 				else _objectAddBuffer.Add(o);
 			}
 
