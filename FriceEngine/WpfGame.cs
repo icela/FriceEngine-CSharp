@@ -30,6 +30,8 @@ namespace FriceEngine
 		public double Width { get; set; } = 1024;
 		public double Height { get; set; } = 768;
 		public bool LoseFocusChangeColor = false;
+		private bool _gameStarted = false;
+		public bool GameStarted => _gameStarted;
 
 		protected WpfGame()
 		{
@@ -60,17 +62,37 @@ namespace FriceEngine
 				var p = e.GetPosition(_window.Canvas);
 				OnDrop(p.X, p.Y);
 			};
-			_window.GotFocus += (s, e) => OnFocus();
-			_window.LostFocus += (s, e) => OnLoseFocus();
-			CompositionTarget.Rendering += (sender, e) =>
-			{
-				OnRefresh();
-				_window.Update(_buffer);
-			};
+			_window.Activated += (s, e) => OnFocus();
+			_window.Deactivated += (s, e) => OnLoseFocus();
+			GameStart();
 			new Application().Run(_window);
 		}
 
 		private void _init() => OnInit();
+
+		public void GameStart()
+		{
+			if (!GameStarted)
+			{
+				CompositionTarget.Rendering += RegisterRefreshAction;
+				_gameStarted = true;
+			}
+		}
+
+		public void GamePause()
+		{
+			if (GameStarted)
+			{
+				CompositionTarget.Rendering -= RegisterRefreshAction;
+				_gameStarted = false;
+			}
+		}
+
+		private void RegisterRefreshAction(object sender,EventArgs e)
+		{
+			OnRefresh();
+			_window.Update(_buffer);
+		}
 
 		public virtual void OnInit()
 		{

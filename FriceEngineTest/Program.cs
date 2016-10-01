@@ -121,5 +121,15 @@ namespace FriceEngineTest
 				EndGameWithADialog("Close?", "退出？");
 			}
 		}
+
+		public override void OnLoseFocus()
+		{
+			GamePause();
+		}
+
+		public override void OnFocus()
+		{
+			GameStart();
+		}
 	}
 }
