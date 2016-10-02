@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -13,6 +14,10 @@ using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
 using FriceEngine.Utils.Misc;
 using FriceEngine.Utils.Time;
+using Brushes = System.Windows.Media.Brushes;
+using Color = System.Windows.Media.Color;
+using Image = System.Windows.Controls.Image;
+using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace FriceEngine
 {
@@ -149,7 +154,19 @@ namespace FriceEngine
 		{
 		}
 
-		public ImageResource GetScreenCut() => null;
+		public ImageResource GetScreenCut()
+		{
+			RenderTargetBitmap bmp = new RenderTargetBitmap((int)_window.Canvas.Width,
+				(int)_window.Canvas.Height,96,96,PixelFormats.Default);
+			bmp.Render(_window.Canvas);
+			var encoder = new PngBitmapEncoder();
+			encoder.Frames.Add(BitmapFrame.Create(bmp));
+			using (MemoryStream ms = new MemoryStream())
+			{
+				encoder.Save(ms);
+				return new ImageResource(new Bitmap(ms));
+			}
+		}
 
 		public void EndGameWithADialog(string title, string content)
 		{

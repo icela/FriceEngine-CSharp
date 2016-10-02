@@ -118,7 +118,9 @@ namespace FriceEngineTest
 			AddObjects(t);
 			if (key.ToLower().Contains("x"))
 			{
-				EndGameWithADialog("Close?", "退出？");
+				var s = GetScreenCut();
+				var o = new ImageObject(s,200,200);
+				AddObjects(o);
 			}
 		}
 
