@@ -317,6 +317,38 @@ namespace FriceEngine.Object
 		}
 	}
 
+	public class ButtonObject : FObject
+	{
+		public string Text;
+		public ColorResource BackgroundColor;
+		public ColorResource ForegroundColor;
+		public ImageResource Image;
+		public string Name;
+		public Action<string> OnClick;
+		public Action<string> OnMouseEnter;
+		public Action<string> OnMouseLeave;
+
+
+		public ButtonObject(string text, string name,ColorResource BackgroundColor, ColorResource ForegroundColor, double x, double y,
+			double width, double height, ImageResource image = null, Action<string> onClick = null,
+			Action<string> onMouseEnter = null,
+			Action<string> onMouseLeave = null)
+		{
+			this.Text = text;
+			this.Name = name;
+			this.BackgroundColor = BackgroundColor;
+			this.ForegroundColor = ForegroundColor;
+			this.X = x;
+			this.Y = y;
+			this.Width = width;
+			this.Height = height;
+			this.Image = image;
+			this.OnClick = onClick;
+			this.OnMouseEnter = onMouseEnter;
+			this.OnMouseLeave = onMouseLeave;
+		}
+	}
+
 
 	public class DoublePair
 	{

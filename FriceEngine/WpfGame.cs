@@ -265,12 +265,12 @@ namespace FriceEngine
 			FrameworkElement element = null;
 			if (obj is ShapeObject)
 			{
-				var c = ((ShapeObject) obj).ColorResource.Color;
+				var cBrush = new SolidColorBrush(ColorUtils.ToMediaColor(((ShapeObject) obj).ColorResource.Color));
 				if (((ShapeObject) obj).Shape is FRectangle)
 				{
 					element = new Rectangle
 					{
-						Fill = new SolidColorBrush(Color.FromArgb(c.A, c.R, c.G, c.B)),
+						Fill = cBrush,
 						Width = (float) ((ShapeObject) obj).Width,
 						Height = (float) ((ShapeObject) obj).Height
 					};
@@ -279,7 +279,7 @@ namespace FriceEngine
 				{
 					element = new Ellipse
 					{
-						Fill = new SolidColorBrush(Color.FromArgb(c.A, c.R, c.G, c.B)),
+						Fill = cBrush,
 						Width = (float) ((ShapeObject) obj).Width,
 						Height = (float) ((ShapeObject) obj).Height
 					};
@@ -297,6 +297,23 @@ namespace FriceEngine
 					Foreground = new SolidColorBrush(ColorUtils.ToMediaColor(o.ColorResource.Color)),
 					Text = o.Text
 				};
+			}else if (obj is ButtonObject)
+			{
+				var o = (ButtonObject) obj;
+				element = new Button()
+				{
+					Background = new SolidColorBrush(ColorUtils.ToMediaColor(o.BackgroundColor.Color)),
+					Foreground = new SolidColorBrush(ColorUtils.ToMediaColor(o.ForegroundColor.Color)),
+					Height = o.Height,
+					Width = o.Width,
+				};
+				if (o.Image == null) ((Button) element).Content = o.Text;
+				else ((Button) element).Content = StaticHelper.BitmapToImage(o.Image.Bmp);
+
+				if (o.OnClick!=null) ((Button)element).Click += (s,e)=> { o.OnClick(o.Name); };
+				if (o.OnMouseEnter != null) ((Button)element).Click += (s, e) => { o.OnMouseEnter(o.Name); };
+				if (o.OnMouseLeave != null) ((Button)element).Click += (s, e) => { o.OnMouseLeave(o.Name); };
+
 			}
 			if (element != null)
 			{
@@ -314,6 +331,23 @@ namespace FriceEngine
 			{
 				((TextBlock) element).Text = ((TextObject) o).Text;
 				((TextBlock) element).FontSize = ((TextObject) o).Size;
+			}
+			if (o is ButtonObject)
+			{
+				Button oldButton = (Button) element;
+				ButtonObject newButtonObject = (ButtonObject) o;
+				if (newButtonObject.Image == null)
+				{
+					oldButton.Content = newButtonObject.Text;
+				}
+				else
+				{
+					oldButton.Content = StaticHelper.BitmapToImage(newButtonObject.Image.Bmp);
+				}
+				oldButton.Width = newButtonObject.Width;
+				oldButton.Height = newButtonObject.Height;
+				oldButton.Background = new SolidColorBrush(ColorUtils.ToMediaColor(newButtonObject.BackgroundColor));
+				oldButton.Foreground = new SolidColorBrush(ColorUtils.ToMediaColor(newButtonObject.ForegroundColor));
 			}
 			(o as FObject)?.RunAnims();
 			element.SetValue(Canvas.LeftProperty, o.X);

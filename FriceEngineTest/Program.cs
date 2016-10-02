@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Forms;
 using FriceEngine;
 using FriceEngine.Animation;
 using FriceEngine.Object;
@@ -72,6 +73,7 @@ namespace FriceEngineTest
 		ImageObject _x = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 0, 0, 50, 50);
 		private TextObject _t = new TextObject(ColorResource.Black, "Click", 30, 300, 200);
 		Random r = new Random();
+		private ButtonObject b;
 
 		public override void OnInit()
 		{
@@ -79,7 +81,16 @@ namespace FriceEngineTest
 			Width = 1280;
 			TextObject t = new TextObject(ColorResource.Black, "Press any Key (keyboard or mouse)",30,400,200);
 			AddObjects(t,_t);
+			b = new ButtonObject(null,"Button1",ColorResource.Black, ColorResource.Red, 100,100,50,50,new ImageResource(_x.Bitmap),onClick:i=>
+			{
+				MessageBox.Show($"{i} clicked!");
+				b.Width *= 1.5;
+				b.Height *= 1.5;
+
+			});
+			AddObjects(b);
 		}
+
 
 		public override void OnClick(double x,double y,int b)
 		{
