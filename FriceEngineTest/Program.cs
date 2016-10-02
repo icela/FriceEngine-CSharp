@@ -70,29 +70,30 @@ namespace FriceEngineTest
 
 	public class Test2 : WpfGame
 	{
-		ImageObject _x = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 0, 0, 50, 50);
+		ImageObject _x = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 0, 0, 100, 100);
 		private TextObject _t = new TextObject(ColorResource.Black, "Click", 30, 300, 200);
 		Random r = new Random();
-		private ButtonObject b;
+		private ButtonObject _b;
 
 		public override void OnInit()
 		{
 			Height = 500;
 			Width = 1280;
-			TextObject t = new TextObject(ColorResource.Black, "Press any Key (keyboard or mouse)",30,400,200);
-			AddObjects(t,_t);
-			b = new ButtonObject(null,"Button1",ColorResource.Black, ColorResource.Red, 100,100,50,50,new ImageResource(_x.Bitmap),onClick:i=>
-			{
-				MessageBox.Show($"{i} clicked!");
-				b.Width *= 1.5;
-				b.Height *= 1.5;
-
-			});
-			AddObjects(b);
+			TextObject t = new TextObject(ColorResource.Black, "Press any Key (keyboard or mouse)", 30, 400, 200);
+			AddObjects(t, _t);
+			_b = new ButtonObject(null, "Button1", 100, 100, 50, 50,
+				ColorResource.Black, ColorResource.Red,
+				new ImageResource(_x.Bitmap), i =>
+				{
+					MessageBox.Show($"{i} clicked!");
+					_b.Width *= 1.5;
+					_b.Height *= 1.5;
+				});
+			AddObjects(_b);
 		}
 
 
-		public override void OnClick(double x,double y,int b)
+		public override void OnClick(double x, double y, int b)
 		{
 			FObject a;
 			switch (b)
@@ -104,7 +105,7 @@ namespace FriceEngineTest
 					a = ImageObject.FromFile(@"C:\frice.png", 0, 0, 50, 50);
 					break;
 				default:
-					a = new ShapeObject(ColorResource.Black, new FCircle(50.0),0,0 );
+					a = new ShapeObject(ColorResource.Black, new FCircle(50.0), 0, 0);
 					break;
 			}
 			a.X = x;
@@ -116,21 +117,20 @@ namespace FriceEngineTest
 
 		public override void OnMouseMove(double x, double y)
 		{
-			_t.X = x+30;
+			_t.X = x + 30;
 			_t.Y = y;
 			_t.Text = $"位置： {x}, {y}";
 		}
 
 		public override void OnKeyDown(string key)
 		{
-			TextObject t = new TextObject(ColorResource.赤羽业, "",50, r.Next(0,1000), 20);
-			t.Text = key;
-			t.AddAnims(new AccelerateMove(0,300));
+			var t = new TextObject(ColorResource.赤羽业, "", 50, r.Next(0, 1000), 20) {Text = key};
+			t.AddAnims(new AccelerateMove(0, 300));
 			AddObjects(t);
 			if (key.ToLower().Contains("x"))
 			{
 				var s = GetScreenCut();
-				var o = new ImageObject(s,200,200);
+				var o = new ImageObject(s, 200, 200);
 				AddObjects(o);
 			}
 		}

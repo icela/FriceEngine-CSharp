@@ -26,6 +26,7 @@ namespace FriceEngine.Object
 		public double Y { get; set; }
 		public double Rotate { get; set; }
 		public int Uid { get; }
+
 		public AbstractObject(double x, double y)
 		{
 			X = x;
@@ -77,7 +78,7 @@ namespace FriceEngine.Object
 		}
 
 		public override int Uid { get; } = StaticHelper.GetNewUid();
-		public ConcurrentDictionary<int,MoveAnim> MoveList { get; }
+		public ConcurrentDictionary<int, MoveAnim> MoveList { get; }
 		public List<Pair<PhysicalObject, Action>> TargetList { get; }
 
 		public void Move(double x, double y)
@@ -103,6 +104,7 @@ namespace FriceEngine.Object
 				}
 			});
 		}
+
 		/// <summary>
 		/// Add animations
 		/// </summary>
@@ -110,10 +112,10 @@ namespace FriceEngine.Object
 		{
 			foreach (MoveAnim moveAnim in ma)
 			{
-				MoveList.TryAdd(moveAnim.Uid,moveAnim);
+				MoveList.TryAdd(moveAnim.Uid, moveAnim);
 			}
-			
 		}
+
 		/// <summary>
 		/// Remove animations
 		/// </summary>
@@ -125,6 +127,7 @@ namespace FriceEngine.Object
 				MoveList.TryRemove(moveAnim.Uid, out m);
 			}
 		}
+
 		/// <summary>
 		/// Clear animations
 		/// </summary>
@@ -311,10 +314,7 @@ namespace FriceEngine.Object
 			return img;
 		}
 
-		public ImageObject Clone()
-		{
-			return  new ImageObject(Res.Bmp.Clone() as Bitmap, X,Y);
-		}
+		public ImageObject Clone() => new ImageObject(Res.Bmp.Clone() as Bitmap, X, Y);
 	}
 
 	public class ButtonObject : FObject
@@ -329,23 +329,26 @@ namespace FriceEngine.Object
 		public Action<string> OnMouseLeave;
 
 
-		public ButtonObject(string text, string name,ColorResource BackgroundColor, ColorResource ForegroundColor, double x, double y,
-			double width, double height, ImageResource image = null, Action<string> onClick = null,
+		public ButtonObject(string text, string name,
+			double x, double y, double width, double height,
+			ColorResource backgroundColor, ColorResource foregroundColor = null,
+			ImageResource image = null,
+			Action<string> onClick = null,
 			Action<string> onMouseEnter = null,
 			Action<string> onMouseLeave = null)
 		{
-			this.Text = text;
-			this.Name = name;
-			this.BackgroundColor = BackgroundColor;
-			this.ForegroundColor = ForegroundColor;
-			this.X = x;
-			this.Y = y;
-			this.Width = width;
-			this.Height = height;
-			this.Image = image;
-			this.OnClick = onClick;
-			this.OnMouseEnter = onMouseEnter;
-			this.OnMouseLeave = onMouseLeave;
+			Text = text;
+			Name = name;
+			BackgroundColor = backgroundColor;
+			ForegroundColor = foregroundColor ?? backgroundColor;
+			X = x;
+			Y = y;
+			Width = width;
+			Height = height;
+			Image = image;
+			OnClick = onClick;
+			OnMouseEnter = onMouseEnter;
+			OnMouseLeave = onMouseLeave;
 		}
 	}
 
