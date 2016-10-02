@@ -108,8 +108,8 @@ namespace FriceEngineTest
 					a = new ShapeObject(ColorResource.Black, new FCircle(50.0), 0, 0);
 					break;
 			}
-			a.X = x;
-			a.Y = y;
+			a.X = x - a.Width / 2;
+			a.Y = y - a.Height / 2;
 			a.AddAnims(new SimpleMove(30, -500));
 			a.AddAnims(new AccelerateMove(0, 800));
 			AddObjects(a);
