@@ -15,7 +15,6 @@ using FriceEngine.Utils.Graphics;
 using FriceEngine.Utils.Misc;
 using FriceEngine.Utils.Time;
 using Brushes = System.Windows.Media.Brushes;
-using Color = System.Windows.Media.Color;
 using Image = System.Windows.Controls.Image;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
@@ -35,11 +34,13 @@ namespace FriceEngine
 		public double Width { get; set; } = 1024;
 		public double Height { get; set; } = 768;
 		public bool LoseFocusChangeColor = false;
-		private bool _gameStarted = false;
+		private bool _gameStarted;
 		public bool GameStarted => _gameStarted;
+		public readonly Random Random;
 
 		protected WpfGame()
 		{
+			Random = new Random();
 			_init();
 			_window = new WpfWindow(Width, Height, ShowFps)
 			{
@@ -93,7 +94,7 @@ namespace FriceEngine
 			}
 		}
 
-		private void RegisterRefreshAction(object sender,EventArgs e)
+		private void RegisterRefreshAction(object sender, EventArgs e)
 		{
 			OnRefresh();
 			_window.Update(_buffer);
@@ -156,12 +157,12 @@ namespace FriceEngine
 
 		public ImageResource GetScreenCut()
 		{
-			RenderTargetBitmap bmp = new RenderTargetBitmap((int)_window.Canvas.Width,
-				(int)_window.Canvas.Height,96,96,PixelFormats.Default);
+			var bmp = new RenderTargetBitmap((int) _window.Canvas.Width,
+				(int) _window.Canvas.Height, 96, 96, PixelFormats.Default);
 			bmp.Render(_window.Canvas);
 			var encoder = new PngBitmapEncoder();
 			encoder.Frames.Add(BitmapFrame.Create(bmp));
-			using (MemoryStream ms = new MemoryStream())
+			using (var ms = new MemoryStream())
 			{
 				encoder.Save(ms);
 				return new ImageResource(new Bitmap(ms));
@@ -180,7 +181,7 @@ namespace FriceEngine
 	public class WpfWindow : Window
 	{
 		public readonly Canvas Canvas = new Canvas();
-		public bool _showFps;
+		internal bool ShowFps;
 		public Action<Canvas> CustomDrawAction;
 		private readonly Dictionary<int, FrameworkElement> _objectsDict = new Dictionary<int, FrameworkElement>();
 		private readonly TextBlock _fpsTextBlock;
@@ -189,7 +190,7 @@ namespace FriceEngine
 
 		public WpfWindow(double width = 1024.0, double height = 768.0, bool showFps = true)
 		{
-			_showFps = showFps;
+			ShowFps = showFps;
 			Content = Canvas;
 			Width = width;
 			Height = height;
@@ -200,11 +201,11 @@ namespace FriceEngine
 				Canvas.Height = args.NewSize.Height;
 				Canvas.Width = args.NewSize.Width;
 			};
-			if (_showFps)
+			if (ShowFps)
 			{
 				_fpsTextBlock = new TextBlock
 				{
-					Foreground = Brushes.Red,
+					Foreground = Brushes.Blue,
 					Background = Brushes.White
 				};
 				_fpsTextBlock.SetValue(Canvas.LeftProperty, Canvas.Width - 65.0);
@@ -251,7 +252,7 @@ namespace FriceEngine
 			});
 			_removing.Clear();
 			CustomDrawAction?.Invoke(Canvas);
-			if (_showFps) _fps++;
+			if (ShowFps) _fps++;
 		}
 
 		private void _onRemove(int uid)
@@ -297,7 +298,8 @@ namespace FriceEngine
 					Foreground = new SolidColorBrush(ColorUtils.ToMediaColor(o.ColorResource.Color)),
 					Text = o.Text
 				};
-			}else if (obj is ButtonObject)
+			}
+			else if (obj is ButtonObject)
 			{
 				var o = (ButtonObject) obj;
 				element = new Button()
@@ -310,10 +312,9 @@ namespace FriceEngine
 				if (o.Image == null) ((Button) element).Content = o.Text;
 				else ((Button) element).Content = StaticHelper.BitmapToImage(o.Image.Bmp);
 
-				if (o.OnClick!=null) ((Button)element).Click += (s,e)=> { o.OnClick(o.Name); };
-				if (o.OnMouseEnter != null) ((Button)element).Click += (s, e) => { o.OnMouseEnter(o.Name); };
-				if (o.OnMouseLeave != null) ((Button)element).Click += (s, e) => { o.OnMouseLeave(o.Name); };
-
+				if (o.OnClick != null) ((Button) element).Click += (s, e) => { o.OnClick(o.Name); };
+				if (o.OnMouseEnter != null) ((Button) element).Click += (s, e) => { o.OnMouseEnter(o.Name); };
+				if (o.OnMouseLeave != null) ((Button) element).Click += (s, e) => { o.OnMouseLeave(o.Name); };
 			}
 			if (element != null)
 			{
@@ -334,8 +335,8 @@ namespace FriceEngine
 			}
 			if (o is ButtonObject)
 			{
-				Button oldButton = (Button) element;
-				ButtonObject newButtonObject = (ButtonObject) o;
+				var oldButton = (Button) element;
+				var newButtonObject = (ButtonObject) o;
 				if (newButtonObject.Image == null)
 				{
 					oldButton.Content = newButtonObject.Text;

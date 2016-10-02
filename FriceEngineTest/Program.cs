@@ -49,7 +49,6 @@ namespace FriceEngineTest
 				Width = 100,
 				Height = 100
 			};
-			;
 			AddObject(a);
 		}
 
@@ -72,7 +71,6 @@ namespace FriceEngineTest
 	{
 		ImageObject _x = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 0, 0, 100, 100);
 		private TextObject _t = new TextObject(ColorResource.Black, "Click", 30, 300, 200);
-		Random r = new Random();
 		private ButtonObject _b;
 
 		public override void OnInit()
@@ -123,7 +121,7 @@ namespace FriceEngineTest
 
 		public override void OnKeyDown(string key)
 		{
-			var t = new TextObject(ColorResource.赤羽业, "", 50, r.Next(0, 1000), 20) {Text = key};
+			var t = new TextObject(ColorResource.赤羽业, "", 50, Random.Next(0, 1000), 20) {Text = key};
 			t.AddAnims(new AccelerateMove(0, 300));
 			AddObjects(t);
 			if (key.ToLower().Contains("x"))
