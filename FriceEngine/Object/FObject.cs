@@ -56,7 +56,7 @@ namespace FriceEngine.Object
 		public abstract int Uid { get; }
 		public double Rotate { get; set; } = 0;
 
-		public bool Died { get; set; } = false;
+		public bool Died { get; set; }
 
 		private double _mass = 1;
 
@@ -67,6 +67,12 @@ namespace FriceEngine.Object
 		}
 
 		public abstract bool IsCollide(ICollideBox other);
+
+		public void SetCentre(double x, double y)
+		{
+			X = x - Width / 2;
+			Y = y - Height / 2;
+		}
 	}
 
 	public abstract class FObject : PhysicalObject

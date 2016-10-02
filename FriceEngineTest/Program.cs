@@ -102,14 +102,13 @@ namespace FriceEngineTest
 					a = _x.Clone();
 					break;
 				case 2:
-					a = ImageObject.FromFile(@"C:\frice.png", 0, 0, 50, 50);
+					a = ImageObject.FromFile(@"C:\frice.png", 0, 0, 100, 100);
 					break;
 				default:
 					a = new ShapeObject(ColorResource.Black, new FCircle(50.0), 0, 0);
 					break;
 			}
-			a.X = x - a.Width / 2;
-			a.Y = y - a.Height / 2;
+			a.SetCentre(x, y);
 			a.AddAnims(new SimpleMove(30, -500));
 			a.AddAnims(new AccelerateMove(0, 800));
 			AddObjects(a);
