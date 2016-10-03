@@ -253,7 +253,6 @@ namespace FriceEngine.Object
 			set { Bitmap = _resize(Bitmap, Convert.ToInt32(value), Convert.ToInt32(Height)); }
 		}
 
-
 		public ImageObject(ImageResource img, double x, double y)
 		{
 			Res = img;

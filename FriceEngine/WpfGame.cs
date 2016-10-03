@@ -70,7 +70,12 @@ namespace FriceEngine
 			};
 			_window.Activated += (s, e) => OnFocus();
 			_window.Deactivated += (s, e) => OnLoseFocus();
-			GameStart();
+			CompositionTarget.Rendering += (s, e) =>
+			{
+				if(!_gameStarted) return;
+				OnRefresh();
+				_window.Update(_buffer);
+			};
 			new Application().Run(_window);
 		}
 
@@ -78,26 +83,12 @@ namespace FriceEngine
 
 		public void GameStart()
 		{
-			if (!GameStarted)
-			{
-				CompositionTarget.Rendering += RegisterRefreshAction;
-				_gameStarted = true;
-			}
+			_gameStarted = true;
 		}
 
 		public void GamePause()
 		{
-			if (GameStarted)
-			{
-				CompositionTarget.Rendering -= RegisterRefreshAction;
-				_gameStarted = false;
-			}
-		}
-
-		private void RegisterRefreshAction(object sender, EventArgs e)
-		{
-			OnRefresh();
-			_window.Update(_buffer);
+			_gameStarted = false;
 		}
 
 		public virtual void OnInit()
@@ -353,20 +344,6 @@ namespace FriceEngine
 			(o as FObject)?.RunAnims();
 			element.SetValue(Canvas.LeftProperty, o.X);
 			element.SetValue(Canvas.TopProperty, o.Y);
-		}
-
-
-		private static Image BitmapToImage(System.Drawing.Image bmp)
-		{
-			var bImage = new BitmapImage();
-			using (var ms = new MemoryStream())
-			{
-				bmp.Save(ms, ImageFormat.Png);
-				bImage.BeginInit();
-				bImage.StreamSource = new MemoryStream(ms.ToArray());
-				bImage.EndInit();
-			}
-			return new Image {Source = bImage};
 		}
 	}
 }
