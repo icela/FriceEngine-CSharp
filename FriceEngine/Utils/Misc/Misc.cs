@@ -31,7 +31,7 @@ namespace FriceEngine.Utils.Misc
 		private static int _base;
 		public static int GetNewUid() => _base++;
 
-		public static Image BitmapToImage(Bitmap bmp)
+		public static Image ToImage(this Bitmap bmp)
 		{
 			var bImage = new BitmapImage();
 			using (var ms = new MemoryStream())

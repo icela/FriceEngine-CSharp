@@ -279,7 +279,7 @@ namespace FriceEngine
 			}
 			else if (obj is ImageObject)
 			{
-				element = StaticHelper.BitmapToImage(((ImageObject) obj).Bitmap);
+				element = ((ImageObject) obj).Bitmap.ToImage();
 			}
 			else if (obj is TextObject)
 			{
@@ -301,7 +301,7 @@ namespace FriceEngine
 					Width = o.Width,
 				};
 				if (o.Image == null) ((Button) element).Content = o.Text;
-				else ((Button) element).Content = StaticHelper.BitmapToImage(o.Image.Bmp);
+				else ((Button) element).Content = o.Image.Bmp.ToImage();
 
 				if (o.OnClick != null) ((Button) element).Click += (s, e) => { o.OnClick(o.Name); };
 				if (o.OnMouseEnter != null) ((Button) element).Click += (s, e) => { o.OnMouseEnter(o.Name); };
@@ -334,7 +334,7 @@ namespace FriceEngine
 				}
 				else
 				{
-					oldButton.Content = StaticHelper.BitmapToImage(newButtonObject.Image.Bmp);
+					oldButton.Content = newButtonObject.Image.Bmp.ToImage();
 				}
 				oldButton.Width = newButtonObject.Width;
 				oldButton.Height = newButtonObject.Height;
