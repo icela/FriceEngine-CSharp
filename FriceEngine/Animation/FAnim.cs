@@ -1,5 +1,6 @@
 ﻿using System;
 using FriceEngine.Utils.Misc;
+using FriceEngine.Utils.Time;
 
 namespace FriceEngine.Animation
 {
@@ -10,10 +11,10 @@ namespace FriceEngine.Animation
 	{
 		public int Uid { get; } = StaticHelper.GetNewUid();
 
-		protected readonly long Start = DateTime.Now.Ticks;
+		protected readonly long Start = Clock.Current;
 
-		protected long Last = DateTime.Now.Ticks;
+		protected long Last = Clock.Current;
 
-		protected long Now = DateTime.Now.Ticks;
+		protected long Now = Clock.Current;
 	}
 }

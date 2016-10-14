@@ -1,5 +1,6 @@
 ﻿using System;
 using FriceEngine.Object;
+using FriceEngine.Utils.Time;
 
 namespace FriceEngine.Animation
 {
@@ -27,9 +28,9 @@ namespace FriceEngine.Animation
 		{
 			get
 			{
-				Now = DateTime.Now.Ticks;
+				Now = Clock.Current;
 				var d = DoublePair.FromTicks((Now - Last)*X, (Now - Last)*Y);
-				Last = DateTime.Now.Ticks;
+				Last = Clock.Current;
 				return d;
 			}
 		}
@@ -53,9 +54,9 @@ namespace FriceEngine.Animation
 		{
 			get
 			{
-				Now = DateTime.Now.Ticks;
+				Now = Clock.Current;
 				var d = DoublePair.FromTicks((Now - Last)*X, (Now - Last)*Y);
-				Last = DateTime.Now.Ticks;
+				Last = Clock.Current;
 				return d;
 			}
 		}
@@ -87,10 +88,10 @@ namespace FriceEngine.Animation
 			{
 				_mx = (Now - Start)*X/2;
 				_my = (Now - Start)*Y/2;
-				Now = DateTime.Now.Ticks;
+				Now = Clock.Current;
 				// not sure
 				var d = DoublePair.FromTicks((Now - Last)*_mx/1e7, (Now - Last)*_my/1e7);
-				Last = DateTime.Now.Ticks;
+				Last = Clock.Current;
 				return d;
 			}
 		}

@@ -40,6 +40,7 @@ namespace FriceEngine
 
 		protected WpfGame()
 		{
+			Clock.Init();
 			Random = new Random();
 			_init();
 			_window = new WpfWindow(Width, Height, ShowFps)
@@ -72,7 +73,6 @@ namespace FriceEngine
 			_window.Deactivated += (s, e) => OnLoseFocus();
 			CompositionTarget.Rendering += (s, e) =>
 			{
-				if(!_gameStarted) return;
 				OnRefresh();
 				_window.Update(_buffer);
 			};
@@ -83,12 +83,12 @@ namespace FriceEngine
 
 		public void GameStart()
 		{
-			_gameStarted = true;
+			Clock.Resume();
 		}
 
 		public void GamePause()
 		{
-			_gameStarted = false;
+			Clock.Pause();
 		}
 
 		public virtual void OnInit()

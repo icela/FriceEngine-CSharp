@@ -66,6 +66,7 @@
     <Compile Include="Utils\Graphics\FShape.cs" />
     <Compile Include="Utils\Message\FLog.cs" />
     <Compile Include="Utils\Misc\Misc.cs" />
+    <Compile Include="Utils\Time\Clock.cs" />
     <Compile Include="Utils\Time\FTimer.cs" />
     <Compile Include="WpfGame.cs" />
   </ItemGroup>
