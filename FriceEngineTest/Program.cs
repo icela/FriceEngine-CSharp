@@ -87,15 +87,11 @@ namespace FriceEngineTest
 					_b.Width *= 1.5;
 					_b.Height *= 1.5;
 				});
-			ButtonObject pause = new ButtonObject("Pause","pause",200,200,50,25,ColorResource.Blue,ColorResource.Black,onClick:s =>
-			{
-				GamePause();
-			});
-			ButtonObject start = new ButtonObject("Resume","resume",200,250,50,25,ColorResource.Blue,ColorResource.Black,onClick:s =>
-			{
-				GameStart();
-			} );
-			AddObjects(_b,pause,start);
+			ButtonObject pause = new ButtonObject("Pause", "pause", 200, 200, 50, 25, ColorResource.Blue, ColorResource.Black,
+				onClick: s => { GamePause(); });
+			ButtonObject start = new ButtonObject("Resume", "resume", 200, 250, 50, 25, ColorResource.Blue, ColorResource.Black,
+				onClick: s => { GameStart(); });
+			AddObjects(_b, pause, start);
 		}
 
 
