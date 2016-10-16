@@ -69,7 +69,11 @@ namespace FriceEngineTest
 
 	public class Test2 : WpfGame
 	{
-		ImageObject _x = ImageObject.FromWeb("https://avatars1.githubusercontent.com/u/21008243", 0, 0, 100, 100);
+		private ImageObject _x = ImageObject.FromWeb(
+//			"https://avatars1.githubusercontent.com/u/21008243"
+			"http://codevs.cn/accounts/avatar/d5dcee637319a7623c61aaa6eae5c45d-80.png"
+			, 0, 0, 100, 100);
+
 		private TextObject _t = new TextObject(ColorResource.Black, "Click", 30, 300, 200);
 		private ButtonObject _b;
 
@@ -77,7 +81,7 @@ namespace FriceEngineTest
 		{
 			Height = 500;
 			Width = 1280;
-			TextObject t = new TextObject(ColorResource.Black, "Press any Key (keyboard or mouse)", 30, 400, 200);
+			var t = new TextObject(ColorResource.Black, "Press any Key (keyboard or mouse)", 30, 400, 200);
 			AddObjects(t, _t);
 			_b = new ButtonObject(null, "Button1", 100, 100, 50, 50,
 				ColorResource.Black, ColorResource.Red,
@@ -87,9 +91,9 @@ namespace FriceEngineTest
 					_b.Width *= 1.5;
 					_b.Height *= 1.5;
 				});
-			ButtonObject pause = new ButtonObject("Pause", "pause", 200, 200, 50, 25, ColorResource.Blue, ColorResource.Black,
+			var pause = new ButtonObject("Pause", "pause", 200, 200, 50, 25, ColorResource.Blue, ColorResource.Black,
 				onClick: s => { GamePause(); });
-			ButtonObject start = new ButtonObject("Resume", "resume", 200, 250, 50, 25, ColorResource.Blue, ColorResource.Black,
+			var start = new ButtonObject("Resume", "resume", 200, 250, 50, 25, ColorResource.Blue, ColorResource.Black,
 				onClick: s => { GameStart(); });
 			AddObjects(_b, pause, start);
 		}
