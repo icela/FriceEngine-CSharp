@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FriceEngine.Utils.Time
 {
@@ -21,14 +17,14 @@ namespace FriceEngine.Utils.Time
 
 		public static void Resume()
 		{
-			if(IsStarted)return;
-			StartTicks += DateTime.Now.Ticks-PauseTicks;
+			if (IsStarted) return;
+			StartTicks += DateTime.Now.Ticks - PauseTicks;
 			IsStarted = true;
 		}
 
 		public static void Pause()
 		{
-			if(!IsStarted)return;
+			if (!IsStarted) return;
 			PauseTicks = DateTime.Now.Ticks;
 			IsStarted = false;
 		}
