@@ -38,7 +38,7 @@ namespace FriceEngineTest
 			Height = 500;
 			Width = 1280;
 			var t = new TextObject(ColorResource.Black, "Press any Key (keyboard or mouse)", 30, 400, 200);
-			AddObjects(t, _t);
+			AddObject(t, _t);
 			_b = new ButtonObject(null, "Button1", 100, 100, 50, 50,
 				ColorResource.Black, ColorResource.Red,
 				new ImageResource(_x.Bitmap), i =>
@@ -51,7 +51,7 @@ namespace FriceEngineTest
 				onClick: s => { GamePause(); });
 			var start = new ButtonObject("Resume", "resume", 200, 250, 50, 25, ColorResource.Blue, ColorResource.Black,
 				onClick: s => { GameStart(); });
-			AddObjects(_b, pause, start);
+			AddObject(_b, pause, start);
 		}
 
 
