@@ -45,10 +45,10 @@ namespace FriceEngine.Utils.Graphics
 		/// </summary>
 		/// <param name="color"></param>
 		/// <returns></returns>
-		public static Color ToMediaColor(System.Drawing.Color color) =>
+		public static Color ToMediaColor(this System.Drawing.Color color) =>
 			Color.FromArgb(color.A, color.R, color.G, color.B);
 
-		public static Color ToMediaColor(ColorResource color) =>
+		public static Color ToMediaColor(this ColorResource color) =>
 			Color.FromArgb(color.Color.A, color.Color.R, color.Color.G, color.Color.B);
 	}
 }

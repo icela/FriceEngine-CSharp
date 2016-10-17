@@ -180,14 +180,14 @@ namespace FriceEngine
 		/// </summary>
 		private void Run()
 		{
-			var fTimer2 = new FTimer2(1);
+			var fTimer2 = new FTimer(1);
 			fTimer2.Start(() => _syncContext.Send(state =>
 			{
 				OnRefresh();
 				_gamePanel.IncreaseFps();
 				_gamePanel.Refresh();
 			}, null));
-			new FTimer2(1000).Start(_gamePanel.ChangeFps);
+			new FTimer(1000).Start(_gamePanel.ChangeFps);
 		}
 
 		private class AbstractGame : Panel
@@ -251,7 +251,6 @@ namespace FriceEngine
 				}
 
 				ProcessBuffer();
-				foreach (var l in FTimeListeners) l.Check();
 				foreach (var o in _objects)
 				{
 					(o as FObject)?.RunAnims();

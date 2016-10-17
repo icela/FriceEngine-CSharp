@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -41,7 +43,15 @@ namespace FriceEngine.Utils.Misc
 				bImage.StreamSource = new MemoryStream(ms.ToArray());
 				bImage.EndInit();
 			}
-			return new Image { Source = bImage };
+			return new Image {Source = bImage};
+		}
+
+		public static void ForEach<T>(this IEnumerable<T> ieEnumerable, Action<T> action)
+		{
+			foreach (var o in ieEnumerable)
+			{
+				action.Invoke(o);
+			}
 		}
 	}
 
@@ -53,7 +63,7 @@ namespace FriceEngine.Utils.Misc
 			{
 				action.Invoke();
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				// ignored
 			}

@@ -30,6 +30,7 @@ namespace FriceEngine
 	{
 		private readonly WpfWindow _window;
 		private readonly List<IAbstractObject> _buffer = new List<IAbstractObject>();
+		private readonly List<FTimeListener> _fTimeListeners = new List<FTimeListener>();
 		public bool ShowFps { get; set; } = true;
 		public double Width { get; set; } = 1024;
 		public double Height { get; set; } = 768;
@@ -84,11 +85,13 @@ namespace FriceEngine
 		public void GameStart()
 		{
 			Clock.Resume();
+			_fTimeListeners.ForEach(i=>i.Start());
 		}
 
 		public void GamePause()
 		{
 			Clock.Pause();
+			_fTimeListeners.ForEach(i=>i.Stop());
 		}
 
 		public virtual void OnInit()
@@ -135,8 +138,10 @@ namespace FriceEngine
 		{
 		}
 
-		public void AddObjects(params IAbstractObject[] obj) => obj.ToList().ForEach(_buffer.Add);
-		public void RemoveObjects(params IAbstractObject[] obj) => obj.ToList().ForEach(i => { _buffer.Remove(i); });
+		public void AddObject(params IAbstractObject[] obj) => obj.ForEach(_buffer.Add);
+		public void RemoveObject(params IAbstractObject[] obj) => obj.ForEach(i => _buffer.Remove(i));
+		public void AddTimelistener(params FTimeListener[] obj) => obj.ForEach(_fTimeListeners.Add);
+		public void RemoveTimeListener(params FTimeListener[] obj) => obj.ForEach(i => _fTimeListeners.Remove(i));
 
 		public void SetBack(ImageResource img)
 		{
@@ -202,7 +207,7 @@ namespace FriceEngine
 				_fpsTextBlock.SetValue(Canvas.LeftProperty, Canvas.Width - 65.0);
 				_fpsTextBlock.SetValue(Canvas.TopProperty, Canvas.Height - 60.0);
 				Canvas.Children.Add(_fpsTextBlock);
-				new FTimer2(1000).Start(() =>
+				new FTimer(1000).Start(() =>
 				{
 					Dispatcher.Invoke(() => { _fpsTextBlock.Text = $"FPS:{_fps}"; });
 					_fps = 0;
@@ -257,7 +262,7 @@ namespace FriceEngine
 			FrameworkElement element = null;
 			if (obj is ShapeObject)
 			{
-				var cBrush = new SolidColorBrush(ColorUtils.ToMediaColor(((ShapeObject) obj).ColorResource.Color));
+				var cBrush = new SolidColorBrush(((ShapeObject) obj).ColorResource.Color.ToMediaColor());
 				if (((ShapeObject) obj).Shape is FRectangle)
 				{
 					element = new Rectangle
@@ -286,7 +291,7 @@ namespace FriceEngine
 				var o = (TextObject) obj;
 				element = new TextBlock
 				{
-					Foreground = new SolidColorBrush(ColorUtils.ToMediaColor(o.ColorResource.Color)),
+					Foreground = new SolidColorBrush(o.ColorResource.Color.ToMediaColor()),
 					Text = o.Text
 				};
 			}
@@ -295,8 +300,8 @@ namespace FriceEngine
 				var o = (ButtonObject) obj;
 				element = new Button()
 				{
-					Background = new SolidColorBrush(ColorUtils.ToMediaColor(o.BackgroundColor.Color)),
-					Foreground = new SolidColorBrush(ColorUtils.ToMediaColor(o.ForegroundColor.Color)),
+					Background = new SolidColorBrush(o.BackgroundColor.Color.ToMediaColor()),
+					Foreground = new SolidColorBrush(o.ForegroundColor.Color.ToMediaColor()),
 					Height = o.Height,
 					Width = o.Width,
 				};
@@ -338,8 +343,8 @@ namespace FriceEngine
 				}
 				oldButton.Width = newButtonObject.Width;
 				oldButton.Height = newButtonObject.Height;
-				oldButton.Background = new SolidColorBrush(ColorUtils.ToMediaColor(newButtonObject.BackgroundColor));
-				oldButton.Foreground = new SolidColorBrush(ColorUtils.ToMediaColor(newButtonObject.ForegroundColor));
+				oldButton.Background = new SolidColorBrush(newButtonObject.BackgroundColor.ToMediaColor());
+				oldButton.Foreground = new SolidColorBrush(newButtonObject.ForegroundColor.ToMediaColor());
 			}
 			(o as FObject)?.RunAnims();
 			element.SetValue(Canvas.LeftProperty, o.X);
