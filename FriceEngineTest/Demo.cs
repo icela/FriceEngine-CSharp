@@ -29,8 +29,7 @@ namespace FriceEngineTest
 			ImageObject.FromFile("lo5u.png", 550, -50)
 		};
 
-		private int _loLast;
-		private int _louLast;
+		private int _loLast, _louLast;
 		private FTimeListener _timer;
 		private Action _lambda;
 		private int _s;
