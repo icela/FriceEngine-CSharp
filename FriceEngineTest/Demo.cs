@@ -29,10 +29,9 @@ namespace FriceEngineTest
 			ImageObject.FromFile("lo5u.png", 550, -50)
 		};
 
-		private int _loLast, _louLast;
+		private int _loLast, _louLast,  _s;
 		private FTimeListener _timer;
 		private Action _lambda;
-		private int _s;
 		private ImageObject _bird;
 		private TextObject _score;
 
@@ -50,7 +49,7 @@ namespace FriceEngineTest
 				_bird.Y = 200;
 				_bird.ClearAnims();
 				ResetGravity();
-				MessageBox.Show("GG!");
+				MessageBox.Show(@"GG!");
 				_score.Text = "Restart!";
 				_s = 0;
 			};
