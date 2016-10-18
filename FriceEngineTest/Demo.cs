@@ -9,7 +9,7 @@ namespace FriceEngineTest
 	{
 		private ImageObject _bird;
 
-		private ImageObject[] _lo =
+		private readonly ImageObject[] _lo =
 		{
 			ImageObject.FromFile("lo1.png", 600, 400),
 			ImageObject.FromFile("lo2.png", 600, 400),
@@ -18,7 +18,7 @@ namespace FriceEngineTest
 			ImageObject.FromFile("lo5.png", 600, 400)
 		};
 
-		private ImageObject[] _lou =
+		private readonly ImageObject[] _lou =
 		{
 			ImageObject.FromFile("lo1u.png", 600, 0),
 			ImageObject.FromFile("lo2u.png", 600, 0),
@@ -29,6 +29,7 @@ namespace FriceEngineTest
 
 		private int _loLast;
 		private int _louLast;
+		private FTimeListener _timer;
 
 		public override void OnInit()
 		{
@@ -37,11 +38,11 @@ namespace FriceEngineTest
 			_bird = ImageObject.FromFile("an.png", 20, 300);
 			ResetGravity();
 			AddObject(_bird);
-			AddTimelistener(new FTimeListener(1000, () =>
+			_timer = new FTimeListener(1000, delegate
 			{
+				RemoveObject(_lo[_loLast], _lou[_louLast]);
 				_lou[_louLast].ClearAnims();
 				_lo[_loLast].ClearAnims();
-				RemoveObject(_lo[_loLast], _lou[_louLast]);
 				_loLast = Random.Next(_lo.Length);
 				_louLast = Random.Next(_lou.Length);
 				_lou[_louLast].X = 600;
@@ -49,7 +50,7 @@ namespace FriceEngineTest
 				_lou[_louLast].AddAnims(new SimpleMove(-100, 0));
 				_lo[_loLast].AddAnims(new SimpleMove(-100, 0));
 				AddObject(_lo[_loLast], _lou[_louLast]);
-			}));
+			}, true);
 			base.OnInit();
 		}
 
@@ -58,6 +59,11 @@ namespace FriceEngineTest
 			_bird.ClearAnims();
 			ResetGravity();
 			base.OnClick(x, y, button);
+		}
+
+		public override void OnRefresh()
+		{
+			base.OnRefresh();
 		}
 
 		public override void OnLoseFocus()

@@ -35,21 +35,21 @@ namespace FriceEngine.Utils.Time
 			_timer = new Timer
 			{
 				Interval = milliSeconds,
-				
 				AutoReset = autoReset
 			};
 			_timer.Elapsed += (sender, args) => { onTimeUp?.Invoke(); };
 		}
+
 		private readonly Timer _timer;
 
 		public void Start()
 		{
-			if(!_timer.Enabled) _timer.Start();
+			if (!_timer.Enabled) _timer.Start();
 		}
 
 		public void Stop()
 		{
-			if(_timer.Enabled) _timer.Stop();
+			if (_timer.Enabled) _timer.Stop();
 		}
 	}
 }
