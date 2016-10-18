@@ -116,7 +116,7 @@ namespace FriceEngine.Object
 		/// </summary>
 		public void AddAnims(params MoveAnim[] ma)
 		{
-			foreach (MoveAnim moveAnim in ma)
+			foreach (var moveAnim in ma)
 			{
 				MoveList.TryAdd(moveAnim.Uid, moveAnim);
 			}
@@ -127,7 +127,7 @@ namespace FriceEngine.Object
 		/// </summary>
 		public void RemoveAnims(params MoveAnim[] ma)
 		{
-			foreach (MoveAnim moveAnim in ma)
+			foreach (var moveAnim in ma)
 			{
 				MoveAnim m;
 				MoveList.TryRemove(moveAnim.Uid, out m);
@@ -314,6 +314,14 @@ namespace FriceEngine.Object
 		public static ImageObject FromFile(string path, double x, double y, int width = -1, int height = -1)
 		{
 			var img = new ImageObject(new Bitmap(path, true), x, y);
+			if (width > 0) img.Width = width;
+			if (height > 0) img.Height = height;
+			return img;
+		}
+
+		public static ImageObject FromBitmap(Bitmap bitmap, double x, double y, int width = -1, int height = -1)
+		{
+			var img = new ImageObject(bitmap, x, y);
 			if (width > 0) img.Width = width;
 			if (height > 0) img.Height = height;
 			return img;
