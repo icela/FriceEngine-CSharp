@@ -1,7 +1,6 @@
 ﻿using FriceEngine;
 using FriceEngine.Animation;
 using FriceEngine.Object;
-using FriceEngine.Utils.Misc;
 using FriceEngine.Utils.Time;
 
 namespace FriceEngineTest
