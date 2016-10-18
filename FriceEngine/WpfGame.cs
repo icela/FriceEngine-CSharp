@@ -83,13 +83,13 @@ namespace FriceEngine
 		public void GameStart()
 		{
 			Clock.Resume();
-			_fTimeListeners.ForEach(i=>i.Start());
+			_fTimeListeners.ForEach(i => i.Start());
 		}
 
 		public void GamePause()
 		{
 			Clock.Pause();
-			_fTimeListeners.ForEach(i=>i.Stop());
+			_fTimeListeners.ForEach(i => i.Stop());
 		}
 
 		public virtual void OnInit()
@@ -141,10 +141,6 @@ namespace FriceEngine
 		public void AddTimelistener(params FTimeListener[] obj) => obj.ForEach(_fTimeListeners.Add);
 		public void RemoveTimeListener(params FTimeListener[] obj) => obj.ForEach(i => _fTimeListeners.Remove(i));
 
-		public void SetBack(ImageResource img)
-		{
-		}
-
 		public void SetCursor(ImageResource img)
 		{
 		}
@@ -175,7 +171,7 @@ namespace FriceEngine
 	public class WpfWindow : Window
 	{
 		public readonly Canvas Canvas = new Canvas();
-		internal bool ShowFps;
+		private bool _showFps;
 		public Action<Canvas> CustomDrawAction;
 		private readonly Dictionary<int, FrameworkElement> _objectsDict = new Dictionary<int, FrameworkElement>();
 		private readonly TextBlock _fpsTextBlock;
@@ -184,7 +180,7 @@ namespace FriceEngine
 
 		public WpfWindow(double width = 1024.0, double height = 768.0, bool showFps = true)
 		{
-			ShowFps = showFps;
+			_showFps = showFps;
 			Content = Canvas;
 			Width = width;
 			Height = height;
@@ -195,7 +191,7 @@ namespace FriceEngine
 				Canvas.Height = args.NewSize.Height;
 				Canvas.Width = args.NewSize.Width;
 			};
-			if (ShowFps)
+			if (_showFps)
 			{
 				_fpsTextBlock = new TextBlock
 				{
@@ -236,7 +232,12 @@ namespace FriceEngine
 						Canvas.Children.Remove(_objectsDict[o.Uid]);
 						_objectsDict.Remove(o.Uid);
 					}
-					(o as FObject)?.RunAnims();
+				}
+				(o as FObject)?.RunAnims();
+				(o as FObject)?.CheckCollitions();
+				if ((o as FObject)?.Died == true)
+				{
+					_removing.Add(o);
 				}
 			});
 			_removing.ForEach(o =>
@@ -246,7 +247,7 @@ namespace FriceEngine
 			});
 			_removing.Clear();
 			CustomDrawAction?.Invoke(Canvas);
-			if (ShowFps) _fps++;
+			if (_showFps) _fps++;
 		}
 
 		private void _onRemove(int uid)
@@ -260,12 +261,12 @@ namespace FriceEngine
 			FrameworkElement element = null;
 			if (obj is ShapeObject)
 			{
-				var cBrush = new SolidColorBrush(((ShapeObject) obj).ColorResource.Color.ToMediaColor());
+				var brush = new SolidColorBrush(((ShapeObject) obj).ColorResource.Color.ToMediaColor());
 				if (((ShapeObject) obj).Shape is FRectangle)
 				{
 					element = new Rectangle
 					{
-						Fill = cBrush,
+						Fill = brush,
 						Width = (float) ((ShapeObject) obj).Width,
 						Height = (float) ((ShapeObject) obj).Height
 					};
@@ -274,7 +275,7 @@ namespace FriceEngine
 				{
 					element = new Ellipse
 					{
-						Fill = cBrush,
+						Fill = brush,
 						Width = (float) ((ShapeObject) obj).Width,
 						Height = (float) ((ShapeObject) obj).Height
 					};
