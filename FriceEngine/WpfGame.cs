@@ -39,7 +39,6 @@ namespace FriceEngine
 
 		protected WpfGame()
 		{
-			Clock.Init();
 			Random = new Random();
 			_init();
 			_window = new WpfWindow(Width, Height, ShowFps)

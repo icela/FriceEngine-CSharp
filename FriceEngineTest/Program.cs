@@ -15,16 +15,14 @@ namespace FriceEngineTest
 		public static void Main(string[] args)
 		{
 			// ReSharper disable once ObjectCreationAsStatement
-
-			//Application.Run(new Test());
-			new Demo();
+			//new Demo();
+			new Test2();
 		}
 	}
 
 	public class Test2 : WpfGame
 	{
 		private ImageObject _x = ImageObject.FromWeb(
-//			"https://avatars1.githubusercontent.com/u/21008243"
 			"http://codevs.cn/accounts/avatar/d5dcee637319a7623c61aaa6eae5c45d-80.png"
 			, 0, 0, 100, 100);
 

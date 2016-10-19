@@ -9,7 +9,7 @@ namespace FriceEngine.Utils.Time
 		public static long PauseTicks { get; internal set; }
 		public static long Current => IsStarted ? DateTime.Now.Ticks - StartTicks : PauseTicks - StartTicks;
 
-		public static void Init()
+		 static Clock()
 		{
 			StartTicks = DateTime.Now.Ticks;
 			IsStarted = true;
