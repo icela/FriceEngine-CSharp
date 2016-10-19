@@ -152,6 +152,14 @@ namespace FriceEngine.Object
 				p.Second.Invoke();
 		}
 
+		public void CheckCollision(ICollideBox other)
+		{
+			if (IsCollide(other))
+			{
+				
+			}
+		}
+
 		/// <summary>
 		/// check if two collideBoxes are collided.
 		/// if 'other' isn't a PhysicalObject, it will always return false;

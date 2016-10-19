@@ -7,14 +7,14 @@ namespace FriceEngine.Utils.Misc
 {
 	public class QuadTree
 	{
-		public int MaxObjects { get; set; } = 3;
-		public int MaxLevels { get; set; } = 5;
+		public int MaxObjects { get; set; } = 10;
+		public int MaxLevels { get; set; } = 10;
 		internal List<PhysicalObject> Objects = new List<PhysicalObject>();
 		internal QuadTree[] Nodes = new QuadTree[4];
 		internal int Level;
 		internal Rectangle Bounds;
 
-		public QuadTree(int level, Rectangle bounds)
+		public QuadTree(Rectangle bounds, int level = 0)
 		{
 			Level = level;
 			Bounds = bounds;
@@ -39,10 +39,10 @@ namespace FriceEngine.Utils.Misc
 			int subHeight = Bounds.Height/2;
 			int x = Bounds.X;
 			int y = Bounds.Y;
-			Nodes[0] = new QuadTree(Level + 1, new Rectangle(x + subWidth, y, subWidth, subHeight));
-			Nodes[1] = new QuadTree(Level, new Rectangle(x, y, subWidth, subHeight));
-			Nodes[2] = new QuadTree(Level + 1, new Rectangle(x, y + subHeight, subWidth, subHeight));
-			Nodes[3] = new QuadTree(Level + 1, new Rectangle(x + subWidth, y + subHeight, subWidth, subHeight));
+			Nodes[0] = new QuadTree(new Rectangle(x + subWidth, y, subWidth, subHeight), Level + 1);
+			Nodes[1] = new QuadTree(new Rectangle(x, y, subWidth, subHeight), Level + 1);
+			Nodes[2] = new QuadTree(new Rectangle(x, y + subHeight, subWidth, subHeight), Level + 1);
+			Nodes[3] = new QuadTree(new Rectangle(x + subWidth, y + subHeight, subWidth, subHeight), Level + 1);
 		}
 
 		internal int GetIndex(PhysicalObject rectF)
@@ -110,6 +110,11 @@ namespace FriceEngine.Utils.Misc
 					}
 				}
 			}
+		}
+
+		public void Insert(IEnumerable<PhysicalObject> physicalObjects)
+		{
+			physicalObjects.ForEach(Insert);
 		}
 
 		public List<PhysicalObject> Retrieve(List<PhysicalObject> returnObjects, PhysicalObject rectF)

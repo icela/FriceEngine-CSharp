@@ -36,11 +36,14 @@ namespace FriceEngine
 		private bool _gameStarted;
 		public bool GameStarted => _gameStarted;
 		public readonly Random Random;
+		internal QuadTree Tree;
+		internal IEnumerable<PhysicalObject> ExistingPhysicalObjects;
 
 		protected WpfGame()
 		{
 			Random = new Random();
 			_init();
+			Tree = new QuadTree(new System.Drawing.Rectangle(0,0,(int)Width,(int)Height));
 			_window = new WpfWindow(Width, Height, ShowFps)
 			{
 				CustomDrawAction = CustomDraw
@@ -73,11 +76,30 @@ namespace FriceEngine
 			{
 				OnRefresh();
 				_window.Update(_buffer);
+				//CollisionDetection();
 			};
 			new Application().Run(_window);
 		}
 
 		private void _init() => OnInit();
+
+		internal void CollisionDetection()
+		{
+			ExistingPhysicalObjects = _buffer.Where(i => _window.ObjectsDict.ContainsKey(i.Uid)).OfType<PhysicalObject>().ToArray();
+			Tree.Clear();
+			Tree.Insert(ExistingPhysicalObjects);
+			List<PhysicalObject> detect = new List<PhysicalObject>();
+			ExistingPhysicalObjects.ForEach(i =>
+			{
+				Tree.Retrieve(detect, i);
+				detect.ForEach(o =>
+				{
+					i.IsCollide(o);
+					//TODO.
+				});
+			});
+			
+		}
 
 		public void GameStart()
 		{
@@ -172,7 +194,7 @@ namespace FriceEngine
 		public readonly Canvas Canvas = new Canvas();
 		private bool _showFps;
 		public Action<Canvas> CustomDrawAction;
-		private readonly Dictionary<int, FrameworkElement> _objectsDict = new Dictionary<int, FrameworkElement>();
+		public  Dictionary<int, FrameworkElement> ObjectsDict { get;internal set; } = new Dictionary<int, FrameworkElement>();
 		private readonly TextBlock _fpsTextBlock;
 		private int _fps;
 		private readonly List<IAbstractObject> _removing = new List<IAbstractObject>();
@@ -210,14 +232,14 @@ namespace FriceEngine
 
 		public void Update(List<IAbstractObject> objects)
 		{
-			_objectsDict.Keys.Where(o =>
+			ObjectsDict.Keys.Where(o =>
 						!objects.Select(i => i.Uid).Contains(o)
 			).ToList().ForEach(_onRemove);
 			objects.ForEach(o =>
 			{
 				if (0 - Canvas.Width < o.X && o.X < Canvas.Width && 0 - Canvas.Height < o.Y && o.Y < Canvas.Height)
 				{
-					if (_objectsDict.ContainsKey(o.Uid)) _onChange(o);
+					if (ObjectsDict.ContainsKey(o.Uid)) _onChange(o);
 					else _onAdd(o);
 				}
 				else if (-10 * Canvas.Width > o.X || o.X > 10 * Canvas.Width || -10 * Canvas.Height > o.Y || o.Y > 10 * Canvas.Height)
@@ -226,10 +248,10 @@ namespace FriceEngine
 				}
 				else
 				{
-					if (_objectsDict.Keys.Contains(o.Uid))
+					if (ObjectsDict.Keys.Contains(o.Uid))
 					{
-						Canvas.Children.Remove(_objectsDict[o.Uid]);
-						_objectsDict.Remove(o.Uid);
+						Canvas.Children.Remove(ObjectsDict[o.Uid]);
+						ObjectsDict.Remove(o.Uid);
 					}
 				}
 				(o as FObject)?.RunAnims();
@@ -241,7 +263,7 @@ namespace FriceEngine
 			});
 			_removing.ForEach(o =>
 			{
-				if (_objectsDict.ContainsKey(o.Uid)) _objectsDict.Remove(o.Uid);
+				if (ObjectsDict.ContainsKey(o.Uid)) ObjectsDict.Remove(o.Uid);
 				objects.Remove(o);
 			});
 			_removing.Clear();
@@ -251,8 +273,8 @@ namespace FriceEngine
 
 		private void _onRemove(int uid)
 		{
-			_objectsDict.Remove(uid);
-			Canvas.Children.Remove(_objectsDict[uid]);
+			ObjectsDict.Remove(uid);
+			Canvas.Children.Remove(ObjectsDict[uid]);
 		}
 
 		private void _onAdd(IAbstractObject obj)
@@ -314,14 +336,14 @@ namespace FriceEngine
 			{
 				element.SetValue(Canvas.LeftProperty, obj.X);
 				element.SetValue(Canvas.TopProperty, obj.Y);
-				_objectsDict.Add(obj.Uid, element);
+				ObjectsDict.Add(obj.Uid, element);
 				Canvas.Children.Add(element);
 			}
 		}
 
 		private void _onChange(IAbstractObject o)
 		{
-			var element = _objectsDict[o.Uid];
+			var element = ObjectsDict[o.Uid];
 			if (o is TextObject)
 			{
 				((TextBlock) element).Text = ((TextObject) o).Text;
