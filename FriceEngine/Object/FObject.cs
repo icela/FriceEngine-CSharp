@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
@@ -49,15 +50,13 @@ namespace FriceEngine.Object
 	{
 		public virtual double X { get; set; }
 		public virtual double Y { get; set; }
-
 		public virtual double Width { get; set; }
 		public virtual double Height { get; set; }
-
+		public virtual event EventHandler<OnCollosionEventArgs> Collision;
 		public abstract int Uid { get; }
 		public double Rotate { get; set; } = 0;
-
 		public bool Died { get; set; }
-
+		public abstract bool IsCollide(ICollideBox other);
 		private double _mass = 1;
 
 		public double Mass
@@ -66,13 +65,18 @@ namespace FriceEngine.Object
 			set { _mass = value <= 0 ? 0.001 : value; }
 		}
 
-		public abstract bool IsCollide(ICollideBox other);
-
 		public void SetCentre(double x, double y)
 		{
 			X = x - Width / 2;
 			Y = y - Height / 2;
 		}
+
+		public void OnCollision(OnCollosionEventArgs e)
+		{
+			EventHandler<OnCollosionEventArgs> temp = Collision;
+			temp?.Invoke(this, e);
+		}
+
 	}
 
 	public abstract class FObject : PhysicalObject
@@ -150,14 +154,6 @@ namespace FriceEngine.Object
 			TargetList.RemoveAll(p => p.First.Died);
 			foreach (var p in TargetList.Where(p => IsCollide(p.First)))
 				p.Second.Invoke();
-		}
-
-		public void CheckCollision(ICollideBox other)
-		{
-			if (IsCollide(other))
-			{
-				
-			}
 		}
 
 		/// <summary>

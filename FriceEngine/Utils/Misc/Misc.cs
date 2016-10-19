@@ -6,6 +6,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Threading;
 using System.Windows.Media.Imaging;
+using FriceEngine.Object;
 using Image = System.Windows.Controls.Image;
 
 namespace FriceEngine.Utils.Misc
@@ -90,6 +91,16 @@ namespace FriceEngine.Utils.Misc
 		public static void Async(Action action)
 		{
 			new Thread(action.Invoke).Start();
+		}
+	}
+
+	public class OnCollosionEventArgs : EventArgs
+	{
+		public PhysicalObject CollideObject;
+
+		public OnCollosionEventArgs(PhysicalObject collideObject)
+		{
+			CollideObject = collideObject;
 		}
 	}
 }

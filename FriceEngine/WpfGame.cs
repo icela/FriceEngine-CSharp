@@ -94,11 +94,9 @@ namespace FriceEngine
 				Tree.Retrieve(detect, i);
 				detect.ForEach(o =>
 				{
-					i.IsCollide(o);
-					//TODO.
+					if(i.IsCollide(o)) i.OnCollision(new OnCollosionEventArgs(o));
 				});
 			});
-			
 		}
 
 		public void GameStart()
