@@ -23,14 +23,14 @@ namespace FriceEngine.Utils.Misc
 		public void Clear()
 		{
 			Objects.Clear();
-			Nodes.Length.ForEach(i =>
+			for (int i = 0; i < 4; i++)
 			{
 				if (Nodes[i] != null)
 				{
 					Nodes[i].Clear();
 					Nodes[i] = null;
 				}
-			});
+			}
 		}
 
 		public void Split()

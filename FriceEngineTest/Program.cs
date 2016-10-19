@@ -57,6 +57,7 @@ namespace FriceEngineTest
 			{
 				case 0:
 					a = _x.Clone();
+					a.Collision += A_Collision;
 					break;
 				case 2:
 					a = ImageObject.FromFile(@"C:\frice.png", 0, 0, 100, 100);
@@ -69,6 +70,13 @@ namespace FriceEngineTest
 			a.AddAnims(new SimpleMove(30, -500));
 			a.AddAnims(new AccelerateMove(0, 800));
 			AddObject(a);
+		}
+
+		private void A_Collision(object sender, FriceEngine.Utils.Misc.OnCollosionEventArgs e)
+		{
+			var oc = new TextObject(ColorResource.Black, "", 50, 200, 20) {Text = e.CollideObject.Uid.ToString()};
+			oc.AddAnims(new AccelerateMove(0,500));
+			AddObject(oc);
 		}
 
 		public override void OnMouseMove(double x, double y)

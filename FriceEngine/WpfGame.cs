@@ -76,7 +76,7 @@ namespace FriceEngine
 			{
 				OnRefresh();
 				_window.Update(_buffer);
-				//CollisionDetection();
+				CollisionDetection();
 			};
 			new Application().Run(_window);
 		}
