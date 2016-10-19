@@ -85,7 +85,8 @@ namespace FriceEngine
 
 		internal void CollisionDetection()
 		{
-			ExistingPhysicalObjects = _buffer.Where(i => _window.ObjectsDict.ContainsKey(i.Uid)).OfType<PhysicalObject>().ToArray();
+			ExistingPhysicalObjects =
+				_buffer.Where(i => _window.ObjectsDict.ContainsKey(i.Uid)).OfType<PhysicalObject>().ToArray();
 			Tree.Clear();
 			Tree.Insert(ExistingPhysicalObjects);
 			List<PhysicalObject> detect = new List<PhysicalObject>();
@@ -94,7 +95,7 @@ namespace FriceEngine
 				Tree.Retrieve(detect, i);
 				detect.ForEach(o =>
 				{
-					if(i.IsCollide(o)) i.OnCollision(new OnCollosionEventArgs(o));
+					if (i.Uid != o.Uid && i.IsCollide(o)) i.OnCollision(new OnCollosionEventArgs(o));
 				});
 			});
 		}
