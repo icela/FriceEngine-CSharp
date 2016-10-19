@@ -96,11 +96,13 @@ namespace FriceEngine.Utils.Misc
 
 	public class OnCollosionEventArgs : EventArgs
 	{
-		public PhysicalObject CollideObject;
+		public PhysicalObject ThisObject;
+		public PhysicalObject ThatObject;
 
-		public OnCollosionEventArgs(PhysicalObject collideObject)
+		public OnCollosionEventArgs(PhysicalObject thisObj,PhysicalObject thatObj)
 		{
-			CollideObject = collideObject;
+			ThisObject = thisObj;
+			ThatObject = thatObj;
 		}
 	}
 }

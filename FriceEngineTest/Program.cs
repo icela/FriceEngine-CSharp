@@ -58,7 +58,6 @@ namespace FriceEngineTest
 			{
 				case 0:
 					a = _x.Clone();
-					a.Collision += A_Collision;
 					break;
 				case 2:
 					a = ImageObject.FromFile(@"C:\frice.png", 0, 0, 100, 100);
@@ -73,14 +72,7 @@ namespace FriceEngineTest
 			AddObject(a);
 		}
 
-		private void A_Collision(object sender, FriceEngine.Utils.Misc.OnCollosionEventArgs e)
-		{
-			var x = ((PhysicalObject) sender).Centre.X - e.CollideObject.Centre.X;
-			var y = ((PhysicalObject) sender).Centre.Y - e.CollideObject.Centre.Y;
-			var z = Math.Sqrt(Math.Pow(x, 2)+ Math.Pow(y, 2));
-			(sender as FObject)?.AddAnims(new SimpleMove(y*10/z,-x*10/z));
 
-		}
 
 
 		public override void OnKeyDown(string key)
@@ -127,8 +119,8 @@ namespace FriceEngineTest
 
 		private void A_Collision(object sender, FriceEngine.Utils.Misc.OnCollosionEventArgs e)
 		{
-			var x = ((PhysicalObject)sender).Centre.X - e.CollideObject.Centre.X;
-			var y = ((PhysicalObject)sender).Centre.Y - e.CollideObject.Centre.Y;
+			var x = e.ThisObject.Centre.X - e.ThatObject.Centre.X;
+			var y = e.ThisObject.Centre.Y - e.ThatObject.Centre.Y;
 			var z = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 			(sender as FObject)?.AddAnims(new SimpleMove(y*20/z, x*20/z));
 		}

@@ -95,7 +95,9 @@ namespace FriceEngine
 				Tree.Retrieve(detect, i);
 				detect.ForEach(o =>
 				{
-					if (i.Uid != o.Uid && i.IsCollide(o)) i.OnCollision(new OnCollosionEventArgs(o));
+					if (i.Uid != o.Uid &&
+					    i.X + i.Width >= o.X && o.Y <= i.Y + i.Height && i.X <= o.X + o.Width && i.Y <= o.Y + o.Height)
+						i.OnCollision(new OnCollosionEventArgs(i, o));
 				});
 			});
 		}
