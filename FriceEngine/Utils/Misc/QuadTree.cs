@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using FriceEngine.Object;
 
 namespace FriceEngine.Utils.Misc
@@ -22,40 +23,35 @@ namespace FriceEngine.Utils.Misc
 		public void Clear()
 		{
 			Objects.Clear();
-			Nodes.Length.ForEach(i => Nodes[i] = null);
+			Nodes.Length.ForEach(i =>
+			{
+				if (Nodes[i] != null)
+				{
+					Nodes[i].Clear();
+					Nodes[i] = null;
+				}
+			});
 		}
 
 		public void Split()
 		{
-			// width & height
 			int subWidth = Bounds.Width/2;
 			int subHeight = Bounds.Height/2;
 			int x = Bounds.X;
 			int y = Bounds.Y;
-			// split to four nodes
 			Nodes[0] = new QuadTree(Level + 1, new Rectangle(x + subWidth, y, subWidth, subHeight));
 			Nodes[1] = new QuadTree(Level, new Rectangle(x, y, subWidth, subHeight));
 			Nodes[2] = new QuadTree(Level + 1, new Rectangle(x, y + subHeight, subWidth, subHeight));
 			Nodes[3] = new QuadTree(Level + 1, new Rectangle(x + subWidth, y + subHeight, subWidth, subHeight));
 		}
 
-		/**
-		 * 获取rect 所在的 index
-		 *
-		 * @param rectF 传入对象所在的矩形
-		 * @return index 使用类别区分所在象限
-		 */
-
 		internal int GetIndex(PhysicalObject rectF)
 		{
 			int index = -1;
 			int verticalMidpoint = Bounds.X + Bounds.Width/2;
 			int horizontalMidpoint = Bounds.Y + Bounds.Height/2;
-			// contain top
 			bool topQuadrant = rectF.Y < horizontalMidpoint && rectF.Height < horizontalMidpoint;
-			// contain bottom
 			bool bottomQuadrant = rectF.Y > horizontalMidpoint;
-			// contain left
 			if (rectF.X < verticalMidpoint && rectF.X + rectF.Width < verticalMidpoint)
 			{
 				if (topQuadrant)
@@ -67,7 +63,6 @@ namespace FriceEngine.Utils.Misc
 					index = 2;
 				}
 			}
-			// contain right
 			else if (rectF.X > verticalMidpoint)
 			{
 				if (topQuadrant)
@@ -81,12 +76,6 @@ namespace FriceEngine.Utils.Misc
 			}
 			return index;
 		}
-
-		/**
-		* insert object to tree
-		*
-		* @param rectF object
-		*/
 
 		public void Insert(PhysicalObject rectF)
 		{
@@ -102,8 +91,6 @@ namespace FriceEngine.Utils.Misc
 			Objects.Add(rectF);
 			if (Objects.Count > MaxObjects && Level < MaxLevels)
 			{
-				// don't have subNodes
-				// split node
 				if (Nodes[0] == null)
 				{
 					Split();
@@ -119,29 +106,20 @@ namespace FriceEngine.Utils.Misc
 					}
 					else
 					{
-						// don't in subNode save to parent node.
-						// eq: object on line
 						i++;
 					}
 				}
 			}
 		}
 
-		/**
-		* return all the object collision with the object
-		 * @param returnObjects return list
-		 * @param rectF         object
-		 * @return list of collision
-		 */
-
-		public List<List<PhysicalObject>> Retrieve(List<List<PhysicalObject>> returnObjects, PhysicalObject rectF)
+		public List<PhysicalObject> Retrieve(List<PhysicalObject> returnObjects, PhysicalObject rectF)
 		{
 			int index = GetIndex(rectF);
 			if (index != -1 && Nodes[0] != null)
 			{
 				Nodes[index]?.Retrieve(returnObjects, rectF);
 			}
-			returnObjects.Add(Objects);
+			Objects.ForEach(returnObjects.Add);
 			return returnObjects;
 		}
 	}
