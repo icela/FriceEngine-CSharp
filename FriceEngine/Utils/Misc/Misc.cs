@@ -53,6 +53,24 @@ namespace FriceEngine.Utils.Misc
 				action.Invoke(o);
 			}
 		}
+
+		public static void ForEach(this int i, Action<int> action)
+		{
+			if (i >= 0)
+			{
+				for (int x = 0; x < i; x++)
+				{
+					action(i);
+				}
+			}
+			else
+			{
+				for (int x = i; x < 0; x++)
+				{
+					action(i);
+				}
+			}
+		}
 	}
 
 	public class Utils
