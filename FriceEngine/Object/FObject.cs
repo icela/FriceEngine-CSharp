@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using FriceEngine.Animation;
 using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
@@ -58,6 +59,7 @@ namespace FriceEngine.Object
 		public bool Died { get; set; }
 		public abstract bool IsCollide(ICollideBox other);
 		private double _mass = 1;
+		public DoublePair Centre =>new DoublePair(X+0.5*Width,Y+0.5*Height);
 
 		public double Mass
 		{

@@ -8,7 +8,7 @@ namespace FriceEngine.Utils.Misc
 	public class QuadTree
 	{
 		public int MaxObjects { get; set; } = 10;
-		public int MaxLevels { get; set; } = 10;
+		public int MaxLevels { get; set; } = 5;
 		internal List<PhysicalObject> Objects = new List<PhysicalObject>();
 		internal QuadTree[] Nodes = new QuadTree[4];
 		internal int Level;

@@ -17,8 +17,14 @@ namespace FriceEngine.Animation
 			X = x;
 		}
 
-		public int X { get; }
-		public int Y { get; }
+		public SimpleMove(double y, double x)
+		{
+			Y = y;
+			X = x;
+		}
+
+		public double X { get; }
+		public double Y { get; }
 
 		/// <summary>
 		/// 感谢ifdog老司机帮我修改这个问题。。。

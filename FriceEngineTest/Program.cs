@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 using FriceEngine;
 using FriceEngine.Animation;
@@ -16,7 +17,7 @@ namespace FriceEngineTest
 		{
 			// ReSharper disable once ObjectCreationAsStatement
 			//new Demo();
-			new Test2();
+			new Test();
 		}
 	}
 
@@ -74,17 +75,13 @@ namespace FriceEngineTest
 
 		private void A_Collision(object sender, FriceEngine.Utils.Misc.OnCollosionEventArgs e)
 		{
-			var oc = new TextObject(ColorResource.Black, "", 50, 200, 20) {Text = e.CollideObject.Uid.ToString()};
-			oc.AddAnims(new AccelerateMove(0,500));
-			AddObject(oc);
+			var x = ((PhysicalObject) sender).Centre.X - e.CollideObject.Centre.X;
+			var y = ((PhysicalObject) sender).Centre.Y - e.CollideObject.Centre.Y;
+			var z = Math.Sqrt(Math.Pow(x, 2)+ Math.Pow(y, 2));
+			(sender as FObject)?.AddAnims(new SimpleMove(y*10/z,-x*10/z));
+
 		}
 
-		public override void OnMouseMove(double x, double y)
-		{
-			_t.X = x + 30;
-			_t.Y = y;
-			_t.Text = $"位置： {x}, {y}";
-		}
 
 		public override void OnKeyDown(string key)
 		{
@@ -109,4 +106,32 @@ namespace FriceEngineTest
 			GameStart();
 		}
 	}
+
+	public class Test : WpfGame
+	{
+		public override void OnInit()
+		{
+			Height = 600;
+			Width = 800;
+		}
+
+		public override void OnClick(double x, double y, int b)
+		{
+			FObject a = new ShapeObject(ColorResource.Black, new FCircle(30.0), 0, 0);
+			a.SetCentre(x, y);
+			a.AddAnims(new SimpleMove(30, -500));
+			a.AddAnims(new AccelerateMove(0, 800));
+			a.Collision += A_Collision;
+			AddObject(a);
+		}
+
+		private void A_Collision(object sender, FriceEngine.Utils.Misc.OnCollosionEventArgs e)
+		{
+			var x = ((PhysicalObject)sender).Centre.X - e.CollideObject.Centre.X;
+			var y = ((PhysicalObject)sender).Centre.Y - e.CollideObject.Centre.Y;
+			var z = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+			(sender as FObject)?.AddAnims(new SimpleMove(y*20/z, x*20/z));
+		}
+	}
 }
+
