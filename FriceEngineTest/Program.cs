@@ -6,6 +6,7 @@ using FriceEngine.Animation;
 using FriceEngine.Object;
 using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
+using FriceEngine.Utils.Misc;
 
 
 namespace FriceEngineTest
@@ -63,7 +64,7 @@ namespace FriceEngineTest
 					a = ImageObject.FromFile(@"C:\frice.png", 0, 0, 100, 100);
 					break;
 				default:
-					a = new ShapeObject(ColorResource.Black, new FCircle(50.0), 0, 0);
+					a = new ShapeObject(ColorResource.DrakGray, new FCircle(50.0), 0, 0);
 					break;
 			}
 			a.SetCentre(x, y);
@@ -71,9 +72,6 @@ namespace FriceEngineTest
 			a.AddAnims(new AccelerateMove(0, 800));
 			AddObject(a);
 		}
-
-
-
 
 		public override void OnKeyDown(string key)
 		{
@@ -86,24 +84,20 @@ namespace FriceEngineTest
 				var o = new ImageObject(s, 200, 200);
 				AddObject(o);
 			}
+			else if (key.ToLower().Contains("s"))
+				OnClick(Control.MousePosition.X, Control.MousePosition.X, Random.Next(4));
 		}
 
-		public override void OnLoseFocus()
-		{
-			GamePause();
-		}
+		public override void OnLoseFocus() => GamePause();
 
-		public override void OnFocus()
-		{
-			GameStart();
-		}
+		public override void OnFocus() => GameStart();
 	}
 
 	public class Test : WpfGame
 	{
 		public override void OnInit()
 		{
-			Height = 600;
+			Height = 800;
 			Width = 800;
 		}
 
@@ -117,7 +111,7 @@ namespace FriceEngineTest
 			AddObject(a);
 		}
 
-		private void A_Collision(object sender, FriceEngine.Utils.Misc.OnCollosionEventArgs e)
+		private static void A_Collision(object sender, OnCollosionEventArgs e)
 		{
 			var x = e.ThisObject.Centre.X - e.ThatObject.Centre.X;
 			var y = e.ThisObject.Centre.Y - e.ThatObject.Centre.Y;
