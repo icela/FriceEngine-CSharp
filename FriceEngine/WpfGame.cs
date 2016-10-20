@@ -43,7 +43,7 @@ namespace FriceEngine
 		{
 			Random = new Random();
 			_init();
-			Tree = new QuadTree(new System.Drawing.Rectangle(0,0,(int)Width,(int)Height));
+			Tree = new QuadTree(new System.Drawing.Rectangle(0, 0, (int) Width, (int) Height));
 			_window = new WpfWindow(Width, Height, ShowFps)
 			{
 				CustomDrawAction = CustomDraw
@@ -96,7 +96,7 @@ namespace FriceEngine
 				detect.ForEach(o =>
 				{
 					if (i.Uid != o.Uid &&
-					    i.X + i.Width >= o.X && o.Y <= i.Y + i.Height && i.X <= o.X + o.Width && i.Y <= o.Y + o.Height)
+						i.X + i.Width >= o.X && o.Y <= i.Y + i.Height && i.X <= o.X + o.Width && i.Y <= o.Y + o.Height)
 						i.OnCollision(new OnCollosionEventArgs(i, o));
 				});
 			});
@@ -195,7 +195,7 @@ namespace FriceEngine
 		public readonly Canvas Canvas = new Canvas();
 		private bool _showFps;
 		public Action<Canvas> CustomDrawAction;
-		public  Dictionary<int, FrameworkElement> ObjectsDict { get;internal set; } = new Dictionary<int, FrameworkElement>();
+		public Dictionary<int, FrameworkElement> ObjectsDict { get; internal set; } = new Dictionary<int, FrameworkElement>();
 		private readonly TextBlock _fpsTextBlock;
 		private int _fps;
 		private readonly List<IAbstractObject> _removing = new List<IAbstractObject>();

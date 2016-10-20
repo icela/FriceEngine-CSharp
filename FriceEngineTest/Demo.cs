@@ -11,22 +11,25 @@ namespace FriceEngineTest
 {
 	public class Demo : WpfGame
 	{
+		private const int H1 = 310;
+		private const int H2 = -10;
+
 		private readonly ImageObject[] _lo =
 		{
-			ImageObject.FromFile("lo1.png", 550, 300),
-			ImageObject.FromFile("lo2.png", 550, 300),
-			ImageObject.FromFile("lo3.png", 550, 300),
-			ImageObject.FromFile("lo4.png", 550, 300),
-			ImageObject.FromFile("lo5.png", 550, 300)
+			ImageObject.FromFile("lo1.png", 550, H1),
+			ImageObject.FromFile("lo2.png", 550, H1),
+			ImageObject.FromFile("lo3.png", 550, H1),
+			ImageObject.FromFile("lo4.png", 550, H1),
+			ImageObject.FromFile("lo5.png", 550, H1)
 		};
 
 		private readonly ImageObject[] _lou =
 		{
-			ImageObject.FromFile("lo1u.png", 550, -50),
-			ImageObject.FromFile("lo2u.png", 550, -50),
-			ImageObject.FromFile("lo3u.png", 550, -50),
-			ImageObject.FromFile("lo4u.png", 550, -50),
-			ImageObject.FromFile("lo5u.png", 550, -50)
+			ImageObject.FromFile("lo1u.png", 550, H2),
+			ImageObject.FromFile("lo2u.png", 550, H2),
+			ImageObject.FromFile("lo3u.png", 550, H2),
+			ImageObject.FromFile("lo4u.png", 550, H2),
+			ImageObject.FromFile("lo5u.png", 550, H2)
 		};
 
 		private int _loLast, _louLast, _s;
@@ -37,12 +40,13 @@ namespace FriceEngineTest
 
 		public override void OnInit()
 		{
+			ShowFps = true;
 			AddObject(ImageObject.FromFile("back.png", 0, 0));
 			Height = 500;
 			Width = 400;
 			_bird = ImageObject.FromFile("an.png", 20, 300);
 			_score = new TextObject(ColorResource.Black,
-				"Click to jump.", 16, 10, 10);
+				"Click to jump.", 16, 10, 20);
 			ResetGravity();
 			_lambda = () =>
 			{
@@ -56,14 +60,13 @@ namespace FriceEngineTest
 			foreach (var o in _lo) _bird.TargetList.Add(new Pair<PhysicalObject, Action>(o, _lambda));
 			foreach (var o in _lou) _bird.TargetList.Add(new Pair<PhysicalObject, Action>(o, _lambda));
 			AddObject(_bird, _score);
-			_timer = new FTimeListener(1800, () =>
+			_timer = new FTimeListener(1700, () =>
 			{
 				_score.Text = "Score: " + _s++;
-//				RemoveObject(_lo[_loLast], _lou[_louLast]);
 				_lou[_louLast].ClearAnims();
 				_lo[_loLast].ClearAnims();
-				_lou[_louLast].Y = -50;
-				_lo[_loLast].Y = 300;
+				_lou[_louLast].Y = H2;
+				_lo[_loLast].Y = H1;
 				_loLast = Random.Next(_lo.Length);
 				_louLast = Random.Next(_lou.Length);
 				var delta = Random.Next(50) - 50;
