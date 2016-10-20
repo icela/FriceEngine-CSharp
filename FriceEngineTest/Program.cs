@@ -17,7 +17,7 @@ namespace FriceEngineTest
 		public static void Main(string[] args)
 		{
 			// ReSharper disable once ObjectCreationAsStatement
-			//new Demo();
+//			new Demo();
 			new Test();
 		}
 	}
@@ -84,8 +84,6 @@ namespace FriceEngineTest
 				var o = new ImageObject(s, 200, 200);
 				AddObject(o);
 			}
-			else if (key.ToLower().Contains("s"))
-				OnClick(Control.MousePosition.X, Control.MousePosition.X, Random.Next(4));
 		}
 
 		public override void OnLoseFocus() => GamePause();
@@ -117,6 +115,12 @@ namespace FriceEngineTest
 			var y = e.ThisObject.Centre.Y - e.ThatObject.Centre.Y;
 			var z = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 			(sender as FObject)?.AddAnims(new SimpleMove(y*20/z, x*20/z));
+		}
+
+		public override void OnKeyDown(string key)
+		{
+			if (key.ToLower().Contains("s"))
+				OnClick(Control.MousePosition.X, Control.MousePosition.Y, -1);
 		}
 	}
 }
