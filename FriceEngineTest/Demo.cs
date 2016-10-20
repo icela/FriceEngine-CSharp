@@ -29,7 +29,7 @@ namespace FriceEngineTest
 			ImageObject.FromFile("lo5u.png", 550, -50)
 		};
 
-		private int _loLast, _louLast,  _s;
+		private int _loLast, _louLast, _s;
 		private FTimeListener _timer;
 		private Action _lambda;
 		private ImageObject _bird;
@@ -62,10 +62,15 @@ namespace FriceEngineTest
 //				RemoveObject(_lo[_loLast], _lou[_louLast]);
 				_lou[_louLast].ClearAnims();
 				_lo[_loLast].ClearAnims();
+				_lou[_louLast].Y = -50;
+				_lo[_loLast].Y = 300;
 				_loLast = Random.Next(_lo.Length);
 				_louLast = Random.Next(_lou.Length);
+				var delta = Random.Next(50) - 50;
 				_lou[_louLast].X = 550;
 				_lo[_loLast].X = 550;
+				_lou[_louLast].Y += delta;
+				_lo[_loLast].Y += delta;
 				_lou[_louLast].AddAnims(new SimpleMove(-400, 0));
 				_lo[_loLast].AddAnims(new SimpleMove(-400, 0));
 				AddObject(_lo[_loLast], _lou[_louLast]);

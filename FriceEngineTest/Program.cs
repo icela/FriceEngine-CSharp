@@ -17,8 +17,8 @@ namespace FriceEngineTest
 		public static void Main(string[] args)
 		{
 			// ReSharper disable once ObjectCreationAsStatement
-//			new Demo();
-			new Test();
+			new Demo();
+//			new Test();
 		}
 	}
 
