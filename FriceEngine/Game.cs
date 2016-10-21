@@ -289,7 +289,7 @@ namespace FriceEngine
 				foreach (var t in _texts)
 				{
 					var brush = new SolidBrush(t.GetColor().Color);
-					if (t is TextObject)
+					if (t != null)
 						g.DrawString(t.Text, TextFont, brush, (float) t.X, (float) t.Y);
 				}
 				if (ShowFps)

@@ -1,5 +1,4 @@
-﻿using System;
-using FriceEngine.Utils.Misc;
+﻿using FriceEngine.Utils.Misc;
 using FriceEngine.Utils.Time;
 
 namespace FriceEngine.Animation
