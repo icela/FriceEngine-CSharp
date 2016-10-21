@@ -33,9 +33,9 @@ namespace FriceEngine
 		public double Width { get; set; } = 1024;
 		public double Height { get; set; } = 768;
 		public bool LoseFocusChangeColor = false;
-		private bool _gameStarted;
-		public bool GameStarted => _gameStarted;
-		public readonly Random Random;
+	    public bool GameStarted { get; }
+
+	    public readonly Random Random;
 		internal QuadTree Tree;
 		internal IEnumerable<PhysicalObject> ExistingPhysicalObjects;
 
