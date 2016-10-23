@@ -195,7 +195,7 @@ namespace FriceEngine
 		public readonly Canvas Canvas = new Canvas();
 		private bool _showFps;
 		public Action<Canvas> CustomDrawAction;
-		public Dictionary<int, FrameworkElement> ObjectsDict { get; internal set; } = new Dictionary<int, FrameworkElement>();
+		public Dictionary<int, FrameworkElement> ObjectsDict { get; } = new Dictionary<int, FrameworkElement>();
 		private readonly TextBlock _fpsTextBlock;
 		private int _fps;
 		private readonly List<IAbstractObject> _removing = new List<IAbstractObject>();
