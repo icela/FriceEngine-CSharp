@@ -24,9 +24,8 @@ namespace FriceEngineTest
 
 	public class Test2 : WpfGame
 	{
-		private ImageObject _x = ImageObject.FromWeb(
-			"http://codevs.cn/accounts/avatar/d5dcee637319a7623c61aaa6eae5c45d-80.png"
-			, 0, 0, 100, 100);
+		private const string Url = "http://codevs.cn/accounts/avatar/d5dcee637319a7623c61aaa6eae5c45d-80.png";
+		private ImageObject _x = ImageObject.FromWeb(Url, 0, 0, 100, 100);
 
 		private TextObject _t = new TextObject(ColorResource.Black, "Click", 30, 300, 200);
 		private ButtonObject _b;
@@ -39,7 +38,7 @@ namespace FriceEngineTest
 			AddObject(t, _t);
 			_b = new ButtonObject(null, "Button1", 100, 100, 50, 50,
 				ColorResource.Black, ColorResource.Red,
-				new ImageResource(_x.Bitmap), i =>
+				new ImageResource(Url), i =>
 				{
 					MessageBox.Show($"{i} clicked!");
 					_b.Width *= 1.5;

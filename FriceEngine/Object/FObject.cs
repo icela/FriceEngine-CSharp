@@ -265,6 +265,15 @@ namespace FriceEngine.Object
 			Point = new Point(Convert.ToInt32(_x), Convert.ToInt32(_y));
 		}
 
+		public ImageObject(Bitmap img, double x, double y)
+		{
+			Res = ImageResource.Empty();
+			Bitmap = img;
+			_x = x;
+			_y = y;
+			Point = new Point(Convert.ToInt32(_x), Convert.ToInt32(_y));
+		}
+
 		public static ImageObject FromWeb(string url, double x, double y, int width = -1, int height = -1)
 		{
 				var img = new ImageObject(new WebImageResource(url), x, y);

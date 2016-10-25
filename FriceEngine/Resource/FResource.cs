@@ -91,7 +91,12 @@ namespace FriceEngine.Resource
 			Bitmap = ImageManger.Instance[path];
 		}
 
+		private ImageResource()
+		{
+		}
+
 		public static ImageResource FromFile(string path) => new ImageResource(path);
+		public static ImageResource Empty() => new ImageResource();
 	}
 
 	public sealed class WebImageResource : ImageResource

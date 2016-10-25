@@ -167,7 +167,7 @@ namespace FriceEngine
 		{
 		}
 
-		public ImageResource GetScreenCut()
+		public Bitmap GetScreenCut()
 		{
 			var bmp = new RenderTargetBitmap((int) _window.Canvas.Width,
 				(int) _window.Canvas.Height, 96, 96, PixelFormats.Default);
@@ -177,7 +177,7 @@ namespace FriceEngine
 			using (var ms = new MemoryStream())
 			{
 				encoder.Save(ms);
-				return new ImageResource(new Bitmap(ms));
+				return new Bitmap(ms);
 			}
 		}
 
