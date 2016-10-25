@@ -33,9 +33,9 @@ namespace FriceEngine
 		public double Width { get; set; } = 1024;
 		public double Height { get; set; } = 768;
 		public bool LoseFocusChangeColor = false;
-	    public bool GameStarted { get; }
+		public bool GameStarted { get; }
 
-	    public readonly Random Random;
+		public readonly Random Random;
 		internal QuadTree Tree;
 		internal IEnumerable<PhysicalObject> ExistingPhysicalObjects;
 
@@ -238,12 +238,18 @@ namespace FriceEngine
 			).ToList().ForEach(_onRemove);
 			objects.ForEach(o =>
 			{
-				if (0 - Canvas.Width < o.X && o.X < Canvas.Width && 0 - Canvas.Height < o.Y && o.Y < Canvas.Height)
+				if (0 - Canvas.Width < o.X &&
+					o.X < Canvas.Width &&
+					0 - Canvas.Height < o.Y &&
+					o.Y < Canvas.Height)
 				{
 					if (ObjectsDict.ContainsKey(o.Uid)) _onChange(o);
 					else _onAdd(o);
 				}
-				else if (-10 * Canvas.Width > o.X || o.X > 10 * Canvas.Width || -10 * Canvas.Height > o.Y || o.Y > 10 * Canvas.Height)
+				else if (-10 * Canvas.Width > o.X ||
+						o.X > 10 * Canvas.Width ||
+						-10 * Canvas.Height > o.Y ||
+						o.Y > 10 * Canvas.Height)
 				{
 					_removing.Add(o);
 				}
@@ -327,7 +333,7 @@ namespace FriceEngine
 					Width = o.Width,
 				};
 				if (o.Image == null) ((Button) element).Content = o.Text;
-				else ((Button) element).Content = o.Image.Bmp.ToImage();
+				else ((Button) element).Content = o.Image.Bitmap.ToImage();
 
 				if (o.OnClick != null) ((Button) element).Click += (s, e) => { o.OnClick(o.Name); };
 				if (o.OnMouseEnter != null) ((Button) element).Click += (s, e) => { o.OnMouseEnter(o.Name); };
@@ -354,14 +360,8 @@ namespace FriceEngine
 			{
 				var oldButton = (Button) element;
 				var newButtonObject = (ButtonObject) o;
-				if (newButtonObject.Image == null)
-				{
-					oldButton.Content = newButtonObject.Text;
-				}
-				else
-				{
-					oldButton.Content = newButtonObject.Image.Bmp.ToImage();
-				}
+				if (newButtonObject.Image == null) oldButton.Content = newButtonObject.Text;
+				else oldButton.Content = newButtonObject.Image.Bitmap.ToImage();
 				oldButton.Width = newButtonObject.Width;
 				oldButton.Height = newButtonObject.Height;
 				oldButton.Background = new SolidColorBrush(newButtonObject.BackgroundColor.ToMediaColor());

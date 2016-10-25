@@ -1,12 +1,10 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
 using FriceEngine.Animation;
 using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
@@ -59,7 +57,7 @@ namespace FriceEngine.Object
 		public bool Died { get; set; }
 		public abstract bool IsCollide(ICollideBox other);
 		private double _mass = 1;
-		public DoublePair Centre =>new DoublePair(X+0.5*Width,Y+0.5*Height);
+		public DoublePair Centre => new DoublePair(X + 0.5 * Width, Y + 0.5 * Height);
 
 		public double Mass
 		{
@@ -75,10 +73,9 @@ namespace FriceEngine.Object
 
 		public void OnCollision(OnCollosionEventArgs e)
 		{
-			EventHandler<OnCollosionEventArgs> temp = Collision;
+			var temp = Collision;
 			temp?.Invoke(this, e);
 		}
-
 	}
 
 	public abstract class FObject : PhysicalObject
@@ -219,8 +216,8 @@ namespace FriceEngine.Object
 
 		public Bitmap Bitmap
 		{
-			get { return Res.Bmp; }
-			set { Res.Bmp = value; }
+			get { return Res.Bitmap; }
+			set { Res.Bitmap = value; }
 		}
 
 		public Point Point { get; set; }
@@ -267,21 +264,12 @@ namespace FriceEngine.Object
 			Point = new Point(Convert.ToInt32(_x), Convert.ToInt32(_y));
 		}
 
-		public ImageObject(Bitmap img, double x, double y) :
-			this(new ImageResource(img), x, y)
-		{
-		}
-
 		public static ImageObject FromWeb(string url, double x, double y, int width = -1, int height = -1)
 		{
-			var r = WebRequest.Create(url).GetResponse() as HttpWebResponse;
-			using (var imageStream = r?.GetResponseStream())
-			{
-				var img = imageStream == null ? null : new ImageObject(new Bitmap(imageStream, true), x, y);
-				if (width > 0 && img != null) img.Width = width;
-				if (height > 0 && img != null) img.Height = height;
+				var img = new ImageObject(new WebImageResource(url), x, y);
+				if (width > 0) img.Width = width;
+				if (height > 0) img.Height = height;
 				return img;
-			}
 		}
 
 		/// <summary>
@@ -319,7 +307,7 @@ namespace FriceEngine.Object
 		/// <returns></returns>
 		public static ImageObject FromFile(string path, double x, double y, int width = -1, int height = -1)
 		{
-			var img = new ImageObject(new Bitmap(path, true), x, y);
+			var img = new ImageObject(ImageManger.Instance[path], x, y);
 			if (width > 0) img.Width = width;
 			if (height > 0) img.Height = height;
 			return img;
@@ -333,7 +321,7 @@ namespace FriceEngine.Object
 			return img;
 		}
 
-		public ImageObject Clone() => new ImageObject(Res.Bmp.Clone() as Bitmap, X, Y);
+		public ImageObject Clone() => new ImageObject(Res.Bitmap.Clone() as Bitmap, X, Y);
 	}
 
 	public class ButtonObject : FObject

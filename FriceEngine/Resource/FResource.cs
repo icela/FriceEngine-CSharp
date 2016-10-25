@@ -15,13 +15,11 @@ namespace FriceEngine.Resource
 			Color = color;
 		}
 
-		public ColorResource(int argb)
-			: this(Color.FromArgb(argb))
+		public ColorResource(int argb) : this(Color.FromArgb(argb))
 		{
 		}
 
-		public ColorResource(string name)
-			: this(Color.FromName(name))
+		public ColorResource(string name) : this(Color.FromName(name))
 		{
 		}
 
@@ -31,16 +29,10 @@ namespace FriceEngine.Resource
 			return ((ColorResource) obj).Color.Equals(Color);
 		}
 
-		public bool Equals(ColorResource other)
-		{
-			return Color.Equals(other.Color);
-		}
+		public bool Equals(ColorResource other) => Color.Equals(other.Color);
 
-		public override int GetHashCode()
-		{
-			// ReSharper disable once NonReadonlyMemberInGetHashCode
-			return Color.GetHashCode();
-		}
+		// ReSharper disable once NonReadonlyMemberInGetHashCode
+		public override int GetHashCode() => Color.GetHashCode();
 
 		public static ColorResource From(int argb) => new ColorResource(argb);
 		public static ColorResource From(Color color) => new ColorResource(color);
@@ -85,20 +77,27 @@ namespace FriceEngine.Resource
 		public static readonly ColorResource 赤羽业 = 西木野真姬;
 	}
 
-	public sealed class ImageResource
+	public class ImageResource
 	{
-		public Bitmap Bmp;
+		public Bitmap Bitmap;
 
-		public ImageResource(Bitmap bmp)
+		protected ImageResource(Bitmap bitmap)
 		{
-			Bmp = bmp;
+			Bitmap = bitmap;
 		}
 
 		public ImageResource(string path)
-			: this((Bitmap) Image.FromFile(path))
 		{
+			Bitmap = ImageManger.Instance[path];
 		}
 
 		public static ImageResource FromFile(string path) => new ImageResource(path);
+	}
+
+	public sealed class WebImageResource : ImageResource
+	{
+		public WebImageResource(string path) : base(WebImageManger.Instance[path])
+		{
+		}
 	}
 }
