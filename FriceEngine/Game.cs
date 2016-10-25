@@ -14,10 +14,10 @@ using FriceEngine.Utils.Time;
 
 namespace FriceEngine
 {
-	public class Game : Form
+	public class WinFormGame : Form
 	{
 		// ReSharper disable once MemberCanBeProtected.Global
-		public Game()
+		public WinFormGame()
 		{
 			SetBounds(300, 300, 500, 500);
 			FormBorderStyle = FormBorderStyle.FixedSingle;
