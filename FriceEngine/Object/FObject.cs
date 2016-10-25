@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Net;
+using System.Security.Policy;
 using FriceEngine.Animation;
 using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
@@ -307,19 +308,19 @@ namespace FriceEngine.Object
 		/// <returns></returns>
 		public static ImageObject FromFile(string path, double x, double y, int width = -1, int height = -1)
 		{
-			var img = new ImageObject(ImageManger.Instance[path], x, y);
+			var img = new ImageObject(ImageResource.FromFile(path), x, y);
 			if (width > 0) img.Width = width;
 			if (height > 0) img.Height = height;
 			return img;
 		}
 
-		public static ImageObject FromBitmap(Bitmap bitmap, double x, double y, int width = -1, int height = -1)
-		{
-			var img = new ImageObject(bitmap, x, y);
-			if (width > 0) img.Width = width;
-			if (height > 0) img.Height = height;
-			return img;
-		}
+//		public static ImageObject FromBitmap(Bitmap bitmap, double x, double y, int width = -1, int height = -1)
+//		{
+//			var img = new ImageObject(bitmap, x, y);
+//			if (width > 0) img.Width = width;
+//			if (height > 0) img.Height = height;
+//			return img;
+//		}
 
 		public ImageObject Clone() => new ImageObject(Res.Bitmap.Clone() as Bitmap, X, Y);
 	}
