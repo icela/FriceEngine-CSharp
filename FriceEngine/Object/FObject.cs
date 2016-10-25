@@ -322,7 +322,7 @@ namespace FriceEngine.Object
 //			return img;
 //		}
 
-		public ImageObject Clone() => new ImageObject(Res.Bitmap.Clone() as Bitmap, X, Y);
+		public ImageObject Clone() => new ImageObject(Res, X, Y);
 	}
 
 	public class ButtonObject : FObject
