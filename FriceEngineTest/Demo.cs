@@ -7,6 +7,7 @@ using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
 using FriceEngine.Utils.Misc;
 using FriceEngine.Utils.Time;
+using System.Windows.Controls;
 
 namespace FriceEngineTest
 {
@@ -79,7 +80,7 @@ namespace FriceEngineTest
 				_lo[_loLast].AddAnims(new SimpleMove(-400, 0));
 				AddObject(_lo[_loLast], _lou[_louLast]);
 			}, true);
-			AddTimelistener(_timer);
+			AddTimeListener(_timer);
 			base.OnInit();
 		}
 
@@ -110,27 +111,34 @@ namespace FriceEngineTest
 	internal class Demo2 : WpfGame
 	{
 		private ShapeObject[] _objects;
-		private double ShitShit { get { return -100; } }
+
+		private double ShitShit
+		{
+			get { return -100; }
+		}
 
 		public override void OnClick(double x, double y, int button)
 		{
-//			_objects.ForEach(o =>
-//			{
-//				if (o.ContainsPoint(x, y))
-//					o.ColorResource = ColorResource.Gray;
-//			});
-//			MessageBox.Show($@"x = {x}, y = {y}");
+			_objects.ForEach(o =>
+			{
+				if (o.ContainsPoint(x, y))
+				{
+					o.ColorResource = ColorResource.Gray;
+//	                RemoveObject(o);
+//					MessageBox.Show($@"x = {x}, y = {y}");
+				}
+			});
 			base.OnClick(x, y, button);
 		}
 
 		public override void OnInit()
 		{
 			SetSize(500, 600);
-			var t = new FTimer(500);
+			var t = new FTimer(1500);
 			t.Start(() =>
 			{
-				var a = Random.Next(_objects.Length) - 1;
-				while (_objects[a].Y < Height) a = Random.Next(_objects.Length) - 1;
+				var a = Random.Next(_objects.Length);
+				while (_objects[a].Y < Height) a = Random.Next(_objects.Length);
 				_objects[a].ColorResource = ColorResource.Black;
 				_objects[a].Y = ShitShit;
 			});
@@ -145,11 +153,15 @@ namespace FriceEngineTest
 				new ShapeObject(ColorResource.Black, new FRectangle(Width / 4, Height / 6), Width / 2, Height),
 				new ShapeObject(ColorResource.Black, new FRectangle(Width / 4, Height / 6), Width * 3 / 4, Height)
 			};
-			_objects.ForEach(o => 
+			_objects.ForEach(o =>
 			{
 				o.AddAnims(new SimpleMove(0, 250));
 				AddObject(o);
 			});
 		}
+
+		public override void OnFocus() => GameStart();
+
+		public override void OnLoseFocus() => GamePause();
 	}
 }

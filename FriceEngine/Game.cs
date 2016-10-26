@@ -19,7 +19,8 @@ namespace FriceEngine
 		// ReSharper disable once MemberCanBeProtected.Global
 		public WinFormGame()
 		{
-			SetBounds(300, 300, 500, 500);
+            Random = new Random(DateTime.Now.Millisecond);
+            SetBounds(300, 300, 500, 500);
 			FormBorderStyle = FormBorderStyle.FixedSingle;
 			// ReSharper disable once VirtualMemberCallInConstructor
 			DoubleBuffered = true;
@@ -53,7 +54,7 @@ namespace FriceEngine
 		private readonly SynchronizationContext _syncContext;
 		private readonly AbstractGame _gamePanel;
 
-		public Random Random = new Random();
+		public Random Random;
 
 //        private readonly Graphics _gameScene;
 //        private readonly Bitmap _screenCut;

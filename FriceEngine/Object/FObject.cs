@@ -171,8 +171,8 @@ namespace FriceEngine.Object
 			return false;
 		}
 
-		public bool ContainsPoint(double px, double py) => px >= X && px <= X + Width && py >= Y && py <= Y + Height;
-		public bool ContainsPoint(int px, int py) => px >= X && px <= X + Width && py >= Y && py <= Y + Height;
+		public bool ContainsPoint(double px, double py) => (px >= X && px <= X + Width && py >= Y && py <= Y + Height);
+		public bool ContainsPoint(int px, int py) => (px >= X && px <= X + Width && py >= Y && py <= Y + Height);
 	}
 
 	public sealed class ShapeObject : FObject

@@ -8,7 +8,6 @@
       <excludeFolder url="file://$MODULE_DIR$/../../FriceEngine/obj" />
       <excludeFolder url="file://$MODULE_DIR$/../../FriceEngineTest/bin" />
       <excludeFolder url="file://$MODULE_DIR$/../../FriceEngineTest/obj" />
-      <excludeFolder url="file://$MODULE_DIR$/../../_ReSharper.Caches/ReSharperHost7.Frice-dotNet.00" />
       <excludeFolder url="file://$MODULE_DIR$/../../packages" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
