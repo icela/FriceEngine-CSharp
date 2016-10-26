@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 using FriceEngine;
 using FriceEngine.Animation;
@@ -7,7 +6,6 @@ using FriceEngine.Object;
 using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
 using FriceEngine.Utils.Misc;
-
 
 namespace FriceEngineTest
 {
@@ -17,7 +15,10 @@ namespace FriceEngineTest
 		public static void Main(string[] args)
 		{
 			// ReSharper disable once ObjectCreationAsStatement
-			new Demo();
+//			{var a = new Random();
+//				while (true)
+//					Console.WriteLine($@"{a.Next(4)}\n");}
+			new Demo2();
 //			new Test();
 		}
 	}
@@ -36,11 +37,11 @@ namespace FriceEngineTest
 			Width = 1280;
 			var t = new TextObject(ColorResource.Black, "Press any Key (keyboard or mouse)", 30, 400, 200);
 			AddObject(t, _t);
-			_b = new ButtonObject(null, "Button1", 100, 100, 50, 50,
+			_b = new ButtonObject(null, "Button", 100, 100, 50, 50,
 				ColorResource.Black, ColorResource.Red,
 				new ImageResource(Url), i =>
 				{
-					MessageBox.Show($"{i} clicked!");
+					MessageBox.Show($@"{i} clicked!");
 					_b.Width *= 1.5;
 					_b.Height *= 1.5;
 				});
@@ -113,7 +114,7 @@ namespace FriceEngineTest
 			var x = e.ThisObject.Centre.X - e.ThatObject.Centre.X;
 			var y = e.ThisObject.Centre.Y - e.ThatObject.Centre.Y;
 			var z = Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
-			(sender as FObject)?.AddAnims(new SimpleMove(y*20/z, x*20/z));
+			(sender as FObject)?.AddAnims(new SimpleMove(y * 20 / z, x * 20 / z));
 		}
 
 		public override void OnKeyDown(string key)
@@ -123,4 +124,3 @@ namespace FriceEngineTest
 		}
 	}
 }
-

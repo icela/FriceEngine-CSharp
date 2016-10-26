@@ -4,6 +4,7 @@ using FriceEngine;
 using FriceEngine.Animation;
 using FriceEngine.Object;
 using FriceEngine.Resource;
+using FriceEngine.Utils.Graphics;
 using FriceEngine.Utils.Misc;
 using FriceEngine.Utils.Time;
 
@@ -104,5 +105,51 @@ namespace FriceEngineTest
 		public override void OnLoseFocus() => GamePause();
 		public override void OnFocus() => GameStart();
 		private void ResetGravity() => _bird.AddAnims(new AccelerateMove(0, 1800), new SimpleMove(0, -500));
+	}
+
+	internal class Demo2 : WpfGame
+	{
+		private ShapeObject[] _objects;
+		private double ShitShit { get { return -100; } }
+
+		public override void OnClick(double x, double y, int button)
+		{
+//			_objects.ForEach(o =>
+//			{
+//				if (o.ContainsPoint(x, y))
+//					o.ColorResource = ColorResource.Gray;
+//			});
+//			MessageBox.Show($@"x = {x}, y = {y}");
+			base.OnClick(x, y, button);
+		}
+
+		public override void OnInit()
+		{
+			SetSize(500, 600);
+			var t = new FTimer(500);
+			t.Start(() =>
+			{
+				var a = Random.Next(_objects.Length) - 1;
+				while (_objects[a].Y < Height) a = Random.Next(_objects.Length) - 1;
+				_objects[a].ColorResource = ColorResource.Black;
+				_objects[a].Y = ShitShit;
+			});
+			_objects = new[]
+			{
+				new ShapeObject(ColorResource.Black, new FRectangle(Width / 4, Height / 6), 0, Height),
+				new ShapeObject(ColorResource.Black, new FRectangle(Width / 4, Height / 6), Width / 4, Height),
+				new ShapeObject(ColorResource.Black, new FRectangle(Width / 4, Height / 6), Width / 2, Height),
+				new ShapeObject(ColorResource.Black, new FRectangle(Width / 4, Height / 6), Width * 3 / 4, Height),
+				new ShapeObject(ColorResource.Black, new FRectangle(Width / 4, Height / 6), 0, Height),
+				new ShapeObject(ColorResource.Black, new FRectangle(Width / 4, Height / 6), Width / 4, Height),
+				new ShapeObject(ColorResource.Black, new FRectangle(Width / 4, Height / 6), Width / 2, Height),
+				new ShapeObject(ColorResource.Black, new FRectangle(Width / 4, Height / 6), Width * 3 / 4, Height)
+			};
+			_objects.ForEach(o => 
+			{
+				o.AddAnims(new SimpleMove(0, 250));
+				AddObject(o);
+			});
+		}
 	}
 }

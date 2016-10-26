@@ -167,6 +167,17 @@ namespace FriceEngine
 		{
 		}
 
+		public void SetSize(int width, int height)
+		{
+			Width = width;
+			Height = height;
+		}
+
+//		public void SetLocation(int x, int y)
+//		{
+//
+//		}
+
 		public Bitmap GetScreenCut()
 		{
 			var bmp = new RenderTargetBitmap((int) _window.Canvas.Width,
