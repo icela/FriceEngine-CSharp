@@ -112,10 +112,7 @@ namespace FriceEngineTest
 	{
 		private ShapeObject[] _objects;
 
-		private double ShitShit
-		{
-			get { return -100; }
-		}
+		private double ShitShit => -Height;
 
 		public override void OnClick(double x, double y, int button)
 		{
