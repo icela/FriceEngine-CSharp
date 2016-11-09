@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Net;
-using System.Security.Policy;
 using FriceEngine.Animation;
 using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
@@ -26,7 +25,7 @@ namespace FriceEngine.Object
 		public double X { get; set; }
 		public double Y { get; set; }
 		public double Rotate { get; set; }
-		public int Uid { get; }
+		public int Uid { get; } = -1;
 
 		public AbstractObject(double x, double y)
 		{
@@ -346,9 +345,16 @@ namespace FriceEngine.Object
 		public Action<string> OnMouseLeave;
 
 
-		public ButtonObject(string text, string name,
-			double x, double y, double width, double height,
-			ColorResource backgroundColor, ColorResource foregroundColor = null,
+		[SuppressMessage("ReSharper", "VirtualMemberCallInConstructor")]
+		public ButtonObject(
+			string text,
+			string name,
+			double x,
+			double y,
+			double width,
+			double height,
+			ColorResource backgroundColor,
+			ColorResource foregroundColor = null,
 			ImageResource image = null,
 			Action<string> onClick = null,
 			Action<string> onMouseEnter = null,
@@ -387,5 +393,6 @@ namespace FriceEngine.Object
 
 		public static DoublePair FromTicks(long x, long y) => new DoublePair(x / 1e7, y / 1e7);
 		public static DoublePair FromTicks(double x, double y) => new DoublePair(x / 1e7, y / 1e7);
+		public static DoublePair Empty() => new DoublePair(0, 0);
 	}
 }
