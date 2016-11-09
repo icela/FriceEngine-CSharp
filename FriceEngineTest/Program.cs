@@ -18,7 +18,7 @@ namespace FriceEngineTest
 //			{var a = new Random();
 //				while (true)
 //					Console.WriteLine($@"{a.Next(4)}\n");}
-			new Demo2();
+			new Demo3();
 //			new Test();
 		}
 	}

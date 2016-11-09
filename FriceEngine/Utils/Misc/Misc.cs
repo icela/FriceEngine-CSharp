@@ -57,19 +57,11 @@ namespace FriceEngine.Utils.Misc
 		public static void ForEach(this int i, Action<int> action)
 		{
 			if (i >= 0)
-			{
-				for (int x = 0; x < i; x++)
-				{
+				for (var x = 0; x < i; x++)
 					action(i);
-				}
-			}
 			else
-			{
-				for (int x = i; x < 0; x++)
-				{
+				for (var x = i; x < 0; x++)
 					action(i);
-				}
-			}
 		}
 	}
 
@@ -87,10 +79,7 @@ namespace FriceEngine.Utils.Misc
 			}
 		}
 
-		public static void Async(Action action)
-		{
-			new Thread(action.Invoke).Start();
-		}
+		public static void Async(Action action) => new Thread(action.Invoke).Start();
 	}
 
 	public class OnCollosionEventArgs : EventArgs

@@ -7,7 +7,6 @@ using FriceEngine.Resource;
 using FriceEngine.Utils.Graphics;
 using FriceEngine.Utils.Misc;
 using FriceEngine.Utils.Time;
-using System.Windows.Controls;
 
 namespace FriceEngineTest
 {
@@ -160,5 +159,50 @@ namespace FriceEngineTest
 		public override void OnFocus() => GameStart();
 
 		public override void OnLoseFocus() => GamePause();
+	}
+
+	public class Demo3 : WpfGame
+	{
+		private GravityMove _o;
+
+		public override void OnInit()
+		{
+			SetSize(500, 600);
+			_o = new GravityMove();
+			var obj = new ShapeObject(ColorResource.DrakGray, new FCircle(50), 200, 200);
+//			obj.AddAnims(new SimpleMove(10, 0));
+			obj.AddAnims(_o);
+			AddObject(obj);
+		}
+
+		public override void OnMouseMove(double x, double y)
+		{
+			_o.Centre.X = x;
+			_o.Centre.Y = y;
+		}
+
+		internal class GravityMove : MoveAnim
+		{
+			public DoublePair Centre = new DoublePair(225, 225);
+			public DoublePair Self = new DoublePair(200, 200);
+			public DoublePair Speed = DoublePair.Empty();
+
+			public override DoublePair Delta
+			{
+				get
+				{
+//					MessageBox.Show(@"Shit");
+					Now = Clock.Current;
+					var d = Math.Sqrt((Self.X - Centre.X) * (Self.X - Centre.X) +
+					                  (Self.Y - Centre.Y) * (Self.Y - Centre.Y));
+					Speed.X += (Now - Last) * Math.Cos(d);
+					Speed.Y += (Now - Last) * Math.Sin(d);
+					var ret = DoublePair.FromTicks((Now - Last) * Speed.X, (Now - Last) * Speed.Y);
+					Last = Clock.Current;
+					Self = Self + ret;
+					return ret;
+				}
+			}
+		}
 	}
 }

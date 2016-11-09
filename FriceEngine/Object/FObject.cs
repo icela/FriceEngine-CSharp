@@ -107,10 +107,7 @@ namespace FriceEngine.Object
 			MoveList.Keys.ToList().ForEach(i =>
 			{
 				MoveList.TryGetValue(i, out ma);
-				if (ma != null)
-				{
-					Move(ma.Delta);
-				}
+				if (ma != null) Move(ma.Delta);
 			});
 		}
 
@@ -120,9 +117,7 @@ namespace FriceEngine.Object
 		public void AddAnims(params MoveAnim[] ma)
 		{
 			foreach (var moveAnim in ma)
-			{
 				MoveList.TryAdd(moveAnim.Uid, moveAnim);
-			}
 		}
 
 		/// <summary>
@@ -140,10 +135,7 @@ namespace FriceEngine.Object
 		/// <summary>
 		/// Clear animations
 		/// </summary>
-		public void ClearAnims()
-		{
-			MoveList.Clear();
-		}
+		public void ClearAnims() => MoveList.Clear();
 
 		/// <summary>
 		/// check all collition targets
@@ -386,6 +378,13 @@ namespace FriceEngine.Object
 			Y = y;
 			X = x;
 		}
+
+		public static DoublePair operator +(DoublePair p1, DoublePair p2) => new DoublePair(p1.X + p2.X, p1.Y + p2.Y);
+		public static DoublePair operator -(DoublePair p1, DoublePair p2) => new DoublePair(p1.X - p2.X, p1.Y - p2.Y);
+		public static DoublePair operator +(DoublePair p1, int n) => new DoublePair(p1.X + n, p1.Y + n);
+		public static DoublePair operator -(DoublePair p1, int n) => new DoublePair(p1.X - n, p1.Y - n);
+
+		public DoublePair Clone() => new DoublePair(X, Y);
 
 		public static DoublePair From1000(double x, double y) => new DoublePair(x / 1000.0, y / 1000.0);
 
