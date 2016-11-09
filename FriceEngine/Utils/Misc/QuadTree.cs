@@ -23,7 +23,7 @@ namespace FriceEngine.Utils.Misc
 		public void Clear()
 		{
 			Objects.Clear();
-			for (int i = 0; i < 4; i++)
+			for (var i = 0; i < 4; i++)
 			{
 				if (Nodes[i] != null)
 				{
@@ -35,10 +35,10 @@ namespace FriceEngine.Utils.Misc
 
 		public void Split()
 		{
-			int subWidth = Bounds.Width/2;
-			int subHeight = Bounds.Height/2;
-			int x = Bounds.X;
-			int y = Bounds.Y;
+			var subWidth = Bounds.Width / 2;
+			var subHeight = Bounds.Height / 2;
+			var x = Bounds.X;
+			var y = Bounds.Y;
 			Nodes[0] = new QuadTree(new Rectangle(x + subWidth, y, subWidth, subHeight), Level + 1);
 			Nodes[1] = new QuadTree(new Rectangle(x, y, subWidth, subHeight), Level + 1);
 			Nodes[2] = new QuadTree(new Rectangle(x, y + subHeight, subWidth, subHeight), Level + 1);
@@ -47,32 +47,22 @@ namespace FriceEngine.Utils.Misc
 
 		internal int GetIndex(PhysicalObject rectF)
 		{
-			int index = -1;
-			int verticalMidpoint = Bounds.X + Bounds.Width/2;
-			int horizontalMidpoint = Bounds.Y + Bounds.Height/2;
-			bool topQuadrant = rectF.Y < horizontalMidpoint && rectF.Height < horizontalMidpoint;
-			bool bottomQuadrant = rectF.Y > horizontalMidpoint;
+			var index = -1;
+			var verticalMidpoint = Bounds.X + Bounds.Width / 2;
+			var horizontalMidpoint = Bounds.Y + Bounds.Height / 2;
 			if (rectF.X < verticalMidpoint && rectF.X + rectF.Width < verticalMidpoint)
 			{
-				if (topQuadrant)
-				{
+				if (rectF.Y < horizontalMidpoint && rectF.Height < horizontalMidpoint)
 					index = 1;
-				}
-				else if (bottomQuadrant)
-				{
+				else if (rectF.Y > horizontalMidpoint)
 					index = 2;
-				}
 			}
 			else if (rectF.X > verticalMidpoint)
 			{
-				if (topQuadrant)
-				{
+				if (rectF.Y < horizontalMidpoint && rectF.Height < horizontalMidpoint)
 					index = 0;
-				}
-				else if (bottomQuadrant)
-				{
+				else if (rectF.Y > horizontalMidpoint)
 					index = 3;
-				}
 			}
 			return index;
 		}
@@ -81,7 +71,7 @@ namespace FriceEngine.Utils.Misc
 		{
 			if (Nodes[0] != null)
 			{
-				int index = GetIndex(rectF);
+				var index = GetIndex(rectF);
 				if (index != -1)
 				{
 					Nodes[index]?.Insert(rectF);
@@ -92,41 +82,31 @@ namespace FriceEngine.Utils.Misc
 			if (Objects.Count > MaxObjects && Level < MaxLevels)
 			{
 				if (Nodes[0] == null)
-				{
 					Split();
-				}
-				int i = 0;
+				var i = 0;
 				while (i < Objects.Count)
 				{
-					int index = GetIndex(Objects[i]);
+					var index = GetIndex(Objects[i]);
 					if (index != -1)
 					{
 						Nodes[index]?.Insert(Objects[i]);
 						Objects.RemoveAt(i);
 					}
 					else
-					{
 						i++;
-					}
 				}
 			}
 		}
 
-		public void Insert(IEnumerable<PhysicalObject> physicalObjects)
-		{
-			physicalObjects.ForEach(Insert);
-		}
+		public void Insert(IEnumerable<PhysicalObject> physicalObjects) => physicalObjects.ForEach(Insert);
 
 		public List<PhysicalObject> Retrieve(List<PhysicalObject> returnObjects, PhysicalObject rectF)
 		{
-			int index = GetIndex(rectF);
+			var index = GetIndex(rectF);
 			if (index != -1 && Nodes[0] != null)
-			{
 				Nodes[index]?.Retrieve(returnObjects, rectF);
-			}
 			Objects.ForEach(returnObjects.Add);
 			return returnObjects;
 		}
 	}
-
 }

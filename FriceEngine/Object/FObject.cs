@@ -166,8 +166,8 @@ namespace FriceEngine.Object
 		{
 			if (other is PhysicalObject)
 				return X + Width >= ((PhysicalObject) other).X && ((PhysicalObject) other).Y <= Y + Height &&
-						X <= ((PhysicalObject) other).X + ((PhysicalObject) other).Width &&
-						Y <= ((PhysicalObject) other).Y + ((PhysicalObject) other).Height;
+				       X <= ((PhysicalObject) other).X + ((PhysicalObject) other).Width &&
+				       Y <= ((PhysicalObject) other).Y + ((PhysicalObject) other).Height;
 			return false;
 		}
 
@@ -276,10 +276,10 @@ namespace FriceEngine.Object
 
 		public static ImageObject FromWeb(string url, double x, double y, int width = -1, int height = -1)
 		{
-				var img = new ImageObject(new WebImageResource(url), x, y);
-				if (width > 0) img.Width = width;
-				if (height > 0) img.Height = height;
-				return img;
+			var img = new ImageObject(new WebImageResource(url), x, y);
+			if (width > 0) img.Width = width;
+			if (height > 0) img.Height = height;
+			return img;
 		}
 
 		/// <summary>

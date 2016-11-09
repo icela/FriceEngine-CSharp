@@ -99,7 +99,7 @@ namespace FriceEngine.Utils.Misc
 		public PhysicalObject ThisObject;
 		public PhysicalObject ThatObject;
 
-		public OnCollosionEventArgs(PhysicalObject thisObj,PhysicalObject thatObj)
+		public OnCollosionEventArgs(PhysicalObject thisObj, PhysicalObject thatObj)
 		{
 			ThisObject = thisObj;
 			ThatObject = thatObj;

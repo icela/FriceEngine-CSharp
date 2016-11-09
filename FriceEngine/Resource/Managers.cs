@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Net;
-using FriceEngine.Object;
 
 namespace FriceEngine.Resource
 {
@@ -65,8 +64,7 @@ namespace FriceEngine.Resource
 				return img;
 			}
 		}
+
 		public override Bitmap this[string path] => (Bitmap) base[path].Clone();
 	}
-
-
 }

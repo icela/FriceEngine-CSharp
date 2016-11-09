@@ -35,7 +35,7 @@ namespace FriceEngine.Animation
 			get
 			{
 				Now = Clock.Current;
-				var d = DoublePair.FromTicks((Now - Last)*X, (Now - Last)*Y);
+				var d = DoublePair.FromTicks((Now - Last) * X, (Now - Last) * Y);
 				Last = Clock.Current;
 				return d;
 			}
@@ -61,7 +61,7 @@ namespace FriceEngine.Animation
 			get
 			{
 				Now = Clock.Current;
-				var d = DoublePair.FromTicks((Now - Last)*X, (Now - Last)*Y);
+				var d = DoublePair.FromTicks((Now - Last) * X, (Now - Last) * Y);
 				Last = Clock.Current;
 				return d;
 			}
@@ -92,11 +92,11 @@ namespace FriceEngine.Animation
 		{
 			get
 			{
-				_mx = (Now - Start)*X/2;
-				_my = (Now - Start)*Y/2;
+				_mx = (Now - Start) * X / 2;
+				_my = (Now - Start) * Y / 2;
 				Now = Clock.Current;
 				// not sure
-				var d = DoublePair.FromTicks((Now - Last)*_mx/1e7, (Now - Last)*_my/1e7);
+				var d = DoublePair.FromTicks((Now - Last) * _mx / 1e7, (Now - Last) * _my / 1e7);
 				Last = Clock.Current;
 				return d;
 			}
