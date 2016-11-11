@@ -195,8 +195,8 @@ namespace FriceEngineTest
 					Now = Clock.Current;
 					var d = Math.Sqrt((Self.X - Centre.X) * (Self.X - Centre.X) +
 					                  (Self.Y - Centre.Y) * (Self.Y - Centre.Y));
-					Speed.X += (Now - Last) * Math.Cos(d);
-					Speed.Y += (Now - Last) * Math.Sin(d);
+					Speed.X += (Now - Last)/1e7 * Math.Cos(d) *50;
+					Speed.Y += (Now - Last)/1e7 * Math.Sin(d) *50;
 					var ret = DoublePair.FromTicks((Now - Last) * Speed.X, (Now - Last) * Speed.Y);
 					Last = Clock.Current;
 					Self = Self + ret;
