@@ -24,38 +24,26 @@ namespace FriceEngine.Resource
 	}
 
 	/// <summary>
-	/// 我只能这样实现单例了，感觉好丑陋
+	/// 觉得丑陋就写简单一点啊
 	/// </summary>
 	public class ImageManger : FManager<Bitmap>
 	{
-		private static ImageManger _instance;
+	    public static ImageManger Instance { get; } = new ImageManger();
 
-		public static ImageManger Instance
-		{
-			get { return _instance ?? (_instance = new ImageManger()); }
-			set { _instance = value; }
-		}
-
-		public override Bitmap Create(string path) => (Bitmap) Image.FromFile(path);
+	    public override Bitmap Create(string path) => (Bitmap) Image.FromFile(path);
 
 		public override Bitmap this[string path] => (Bitmap) base[path].Clone();
 	}
 
 
 	/// <summary>
-	/// 我只能这样实现单例了，感觉好丑陋
+	/// 我随便写了个能用的，应该比复制代码要好
 	/// </summary>
 	public class WebImageManger : FManager<Bitmap>
 	{
-		private static WebImageManger _instance;
+	    public static WebImageManger Instance { get; } = new WebImageManger();
 
-		public static WebImageManger Instance
-		{
-			get { return _instance ?? (_instance = new WebImageManger()); }
-			set { _instance = value; }
-		}
-
-		public override Bitmap Create(string path)
+	    public override Bitmap Create(string path)
 		{
 			var r = WebRequest.Create(path).GetResponse() as HttpWebResponse;
 			using (var imageStream = r?.GetResponseStream())

@@ -64,8 +64,8 @@ namespace FriceEngine
 
 		public FPoint Mouse
 		{
-			get { return MousePosition(); }
-			set
+			get => MousePosition();
+		    set
 			{
 				MousePosition().X = (int) value.X;
 				MousePosition().Y = (int) value.Y;
@@ -246,7 +246,7 @@ namespace FriceEngine
 						o.X > Width + Width ||
 						o.Y > Height + Height))
 					{
-						if (o is PhysicalObject) ((PhysicalObject) o).Died = true;
+						if (o is PhysicalObject po) po.Died = true;
 						RemoveObject(o);
 					}
 				}
@@ -254,8 +254,11 @@ namespace FriceEngine
 				ProcessBuffer();
 				foreach (var o in _objects)
 				{
-					(o as FObject)?.RunAnims();
-					(o as FObject)?.CheckCollitions();
+				    if (o is FObject f)
+				    {
+				        f.RunAnims();
+				        f.CheckCollitions();
+                    }
 				}
 
 				var g = e.Graphics;
@@ -264,34 +267,33 @@ namespace FriceEngine
 				g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 				foreach (var o in _objects)
 				{
-					if (o is ShapeObject)
+					if (o is ShapeObject shape)
 					{
-						var brush = new SolidBrush((o as ShapeObject).ColorResource.Color);
-						if ((o as ShapeObject).Shape is FRectangle)
+						var brush = new SolidBrush(shape.ColorResource.Color);
+						if (shape.Shape is FRectangle)
 							g.FillRectangle(brush,
 								(float) o.X,
 								(float) o.Y,
-								(float) (o as ShapeObject).Width,
-								(float) (o as ShapeObject).Height
+								(float) shape.Width,
+								(float) shape.Height
 							);
-						else if ((o as ShapeObject).Shape is FOval)
+						else if (shape.Shape is FOval)
 							g.FillEllipse(brush,
 								(float) o.X,
 								(float) o.Y,
-								(float) (o as ShapeObject).Width,
-								(float) (o as ShapeObject).Height
+								(float) shape.Width,
+								(float) shape.Height
 							);
 					}
-					else if (o is ImageObject)
+					else if (o is ImageObject image)
 					{
-						g.DrawImage((o as ImageObject).Bitmap, (o as ImageObject).Point);
+						g.DrawImage(image.Bitmap, image.Point);
 					}
 				}
 				foreach (var t in _texts)
 				{
-					var brush = new SolidBrush(t.GetColor().Color);
-					if (t != null)
-						g.DrawString(t.Text, TextFont, brush, (float) t.X, (float) t.Y);
+				    var brush = new SolidBrush(t.GetColor().Color);
+				    g.DrawString(t.Text, TextFont, brush, (float) t.X, (float) t.Y);
 				}
 				if (ShowFps)
 					g.DrawString("fps: " + _fpsDisplay, TextFont, new SolidBrush(Color.Black), 20, Height - 80);
@@ -318,7 +320,7 @@ namespace FriceEngine
 			internal void RemoveObject(IAbstractObject o)
 			{
 				if (o == null) return;
-				if (o is TextObject) _textDeleteBuffer.Add((TextObject) o);
+				if (o is TextObject text) _textDeleteBuffer.Add(text);
 				else _objectDeleteBuffer.Add(o);
 			}
 
@@ -331,7 +333,7 @@ namespace FriceEngine
 			internal void AddObject(IAbstractObject o)
 			{
 				if (o == null) return;
-				if (o is TextObject) _textAddBuffer.Add((TextObject) o);
+				if (o is TextObject text) _textAddBuffer.Add(text);
 				else _objectAddBuffer.Add(o);
 			}
 

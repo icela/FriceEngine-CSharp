@@ -67,19 +67,12 @@ namespace FriceEngine.Utils.Misc
 
 	public class Utils
 	{
-		public static void ForceRun(Action action)
-		{
-			try
-			{
-				action.Invoke();
-			}
-			catch (Exception)
-			{
-				// ignored
-			}
-		}
+	    public static void ForceRun(Action action)
+	    {
+	        action?.Invoke();
+	    }
 
-		public static void Async(Action action) => new Thread(action.Invoke).Start();
+	    public static void Async(Action action) => new Thread(action.Invoke).Start();
 	}
 
 	public class OnCollosionEventArgs : EventArgs
