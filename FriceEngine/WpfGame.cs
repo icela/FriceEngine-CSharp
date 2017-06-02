@@ -31,14 +31,14 @@ namespace FriceEngine
 
 		public bool ShowFps
 		{
-			get { return _window.ShowFps; }
-			set { _window.ShowFps = value; }
+			get => _window.ShowFps;
+		    set => _window.ShowFps = value;
 		}
 
 		public double Width { get; set; } = 1024;
 		public double Height { get; set; } = 768;
 		public bool LoseFocusChangeColor = false;
-		public bool GameStarted { get; }
+	    public bool GameStarted { get; }
 
 		public readonly Random Random;
 		internal QuadTree Tree;
@@ -219,13 +219,12 @@ namespace FriceEngine
 		internal bool ShowFps = true;
 		internal readonly Canvas Canvas;
 
-		private readonly TextBlock _fpsTextBlock;
-		private int _fps;
+	    private int _fps;
 		private readonly List<IAbstractObject> _removing = new List<IAbstractObject>();
 
 		public WpfWindow(double width = 1024.0, double height = 768.0)
 		{
-			Canvas = new Canvas();
+		    Canvas = new Canvas();
 			Content = Canvas;
 			Width = width;
 			Height = height;
@@ -237,20 +236,20 @@ namespace FriceEngine
 				Canvas.Height = args.NewSize.Height;
 				Canvas.Width = args.NewSize.Width;
 			};
-			_fpsTextBlock = new TextBlock
+			var fpsTextBlock = new TextBlock
 			{
-				Foreground = Brushes.Blue,
-				Background = Brushes.White
+			    Foreground = Brushes.Blue,
+			    Background = Brushes.White
 			};
-			_fpsTextBlock.SetValue(Canvas.LeftProperty, Canvas.Width - 65.0);
-			_fpsTextBlock.SetValue(Canvas.TopProperty, Canvas.Height - 60.0);
+			fpsTextBlock.SetValue(Canvas.LeftProperty, Canvas.Width - 65.0);
+			fpsTextBlock.SetValue(Canvas.TopProperty, Canvas.Height - 60.0);
 			new FTimer(1000).Start(() =>
 			{
-				Dispatcher.Invoke(() => { _fpsTextBlock.Text = $"fps:{_fps}"; });
+				Dispatcher.Invoke(() => { fpsTextBlock.Text = $"fps:{_fps}"; });
 				_fps = 0;
 			});
 			if (ShowFps)
-				Canvas.Children.Add(_fpsTextBlock);
+				Canvas.Children.Add(fpsTextBlock);
 		}
 
 		public void Update(List<IAbstractObject> objects)
@@ -281,10 +280,12 @@ namespace FriceEngine
 						ObjectsDict.Remove(o.Uid);
 					}
 				}
-				(o as FObject)?.RunAnims();
-				(o as FObject)?.CheckCollitions();
-				if ((o as FObject)?.Died == true)
-					_removing.Add(o);
+			    if (o is FObject f)
+			    {
+			        f.RunAnims();
+                    f.CheckCollitions();
+                    if(f.Died) _removing.Add(o);
+                }
 			});
 			_removing.ForEach(o =>
 			{
@@ -305,57 +306,56 @@ namespace FriceEngine
 		private void _onAdd(IAbstractObject obj)
 		{
 			FrameworkElement element = null;
-			if (obj is ShapeObject)
+			if (obj is ShapeObject shape)
 			{
 				var brush = new SolidColorBrush(((ShapeObject) obj).ColorResource.Color.ToMediaColor());
-				if (((ShapeObject) obj).Shape is FRectangle)
+				if (shape.Shape is FRectangle)
 				{
 					element = new Rectangle
 					{
 						Fill = brush,
-						Width = (float) ((ShapeObject) obj).Width,
-						Height = (float) ((ShapeObject) obj).Height
+						Width = (float) shape.Width,
+						Height = (float) shape.Height
 					};
 				}
-				else if (((ShapeObject) obj).Shape is FOval)
+				else if (shape.Shape is FOval)
 				{
 					element = new Ellipse
 					{
 						Fill = brush,
-						Width = (float) ((ShapeObject) obj).Width,
-						Height = (float) ((ShapeObject) obj).Height
+						Width = (float) shape.Width,
+						Height = (float) shape.Height
 					};
 				}
 			}
-			else if (obj is ImageObject)
+			else if (obj is ImageObject image)
 			{
-				element = ((ImageObject) obj).Bitmap.ToImage();
+				element = image.Bitmap.ToImage();
 			}
-			else if (obj is TextObject)
+			else if (obj is TextObject text)
 			{
-				var o = (TextObject) obj;
 				element = new TextBlock
 				{
-					Foreground = new SolidColorBrush(o.ColorResource.Color.ToMediaColor()),
-					Text = o.Text
+					Foreground = new SolidColorBrush(text.ColorResource.Color.ToMediaColor()),
+					Text = text.Text
 				};
 			}
-			else if (obj is ButtonObject)
+			else if (obj is ButtonObject button)
 			{
-				var o = (ButtonObject) obj;
 				element = new Button
 				{
-					Background = new SolidColorBrush(o.BackgroundColor.Color.ToMediaColor()),
-					Foreground = new SolidColorBrush(o.ForegroundColor.Color.ToMediaColor()),
-					Height = o.Height,
-					Width = o.Width
+					Background = new SolidColorBrush(button.BackgroundColor.Color.ToMediaColor()),
+					Foreground = new SolidColorBrush(button.ForegroundColor.Color.ToMediaColor()),
+					Height = button.Height,
+					Width = button.Width
 				};
-				if (o.Image == null) ((Button) element).Content = o.Text;
-				else ((Button) element).Content = o.Image.Bitmap.ToImage();
+			    var buttonElement = (Button) element;
+			    if (button.Image == null) buttonElement.Content = button.Text;
+			    else buttonElement.Content = button.Image.Bitmap.ToImage();
 
-				if (o.OnClick != null) ((Button) element).Click += (s, e) => { o.OnClick(o.Name); };
-				if (o.OnMouseEnter != null) ((Button) element).Click += (s, e) => { o.OnMouseEnter(o.Name); };
-				if (o.OnMouseLeave != null) ((Button) element).Click += (s, e) => { o.OnMouseLeave(o.Name); };
+			    if (button.OnClick != null) buttonElement.Click += (s, e) => button.OnClick(button.Name);
+			    if (button.OnMouseEnter != null) buttonElement.Click += (s, e) => button.OnMouseEnter(button.Name);
+			    if (button.OnMouseLeave != null) buttonElement.Click += (s, e) => button.OnMouseLeave(button.Name);
 			}
 			if (element != null)
 			{
@@ -369,23 +369,23 @@ namespace FriceEngine
 		private void _onChange(IAbstractObject o)
 		{
 			var element = ObjectsDict[o.Uid];
-			if (o is TextObject)
+			if (o is TextObject text)
 			{
-				((TextBlock) element).Text = ((TextObject) o).Text;
-				((TextBlock) element).FontSize = ((TextObject) o).Size;
+			    var textblock = ((TextBlock) element);
+                textblock.Text = text.Text;
+				textblock.FontSize = text.Size;
 			}
-			if (o is ButtonObject)
+			if (o is ButtonObject button)
 			{
 				var oldButton = (Button) element;
-				var newButtonObject = (ButtonObject) o;
-				if (newButtonObject.Image == null) oldButton.Content = newButtonObject.Text;
-				else oldButton.Content = newButtonObject.Image.Bitmap.ToImage();
-				oldButton.Width = newButtonObject.Width;
-				oldButton.Height = newButtonObject.Height;
-				oldButton.Background = new SolidColorBrush(newButtonObject.BackgroundColor.ToMediaColor());
-				oldButton.Foreground = new SolidColorBrush(newButtonObject.ForegroundColor.ToMediaColor());
+				if (button.Image == null) oldButton.Content = button.Text;
+				else oldButton.Content = button.Image.Bitmap.ToImage();
+				oldButton.Width = button.Width;
+				oldButton.Height = button.Height;
+				oldButton.Background = new SolidColorBrush(button.BackgroundColor.ToMediaColor());
+				oldButton.Foreground = new SolidColorBrush(button.ForegroundColor.ToMediaColor());
 			}
-			(o as FObject)?.RunAnims();
+		    if (o is FObject f) f.RunAnims();
 			element.SetValue(Canvas.LeftProperty, o.X);
 			element.SetValue(Canvas.TopProperty, o.Y);
 		}

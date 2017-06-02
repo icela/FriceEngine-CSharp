@@ -7,7 +7,7 @@ In other words, the C# edition of frice engine.
 
 [Frice for JVM](https://github.com/icela/FriceEngine)
 
-Visual Studio really depressed me. Very week IDE.
+Visual Studio really inspried me. Very exciting IDE.
 
 
 ## Contributors

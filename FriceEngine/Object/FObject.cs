@@ -61,8 +61,8 @@ namespace FriceEngine.Object
 
 		public double Mass
 		{
-			get { return _mass; }
-			set { _mass = value <= 0 ? 0.001 : value; }
+			get => _mass;
+		    set => _mass = value <= 0 ? 0.001 : value;
 		}
 
 		public void SetCentre(double x, double y)
@@ -103,13 +103,12 @@ namespace FriceEngine.Object
 		/// </summary>
 		public void RunAnims()
 		{
-			MoveAnim ma;
-			MoveList.Keys.ToList().ForEach(i =>
-			{
-				MoveList.TryGetValue(i, out ma);
-				if (ma != null) Move(ma.Delta);
-			});
-		}
+		    foreach (var i in MoveList.Keys)
+		    {
+		        MoveList.TryGetValue(i, out MoveAnim ma);
+		        if (ma != null) Move(ma.Delta);
+            }
+        }
 
 		/// <summary>
 		/// Add animations
@@ -127,9 +126,8 @@ namespace FriceEngine.Object
 		{
 			foreach (var moveAnim in ma)
 			{
-				MoveAnim m;
-				MoveList.TryRemove(moveAnim.Uid, out m);
-			}
+                MoveList.TryRemove(moveAnim.Uid, out MoveAnim _);
+            }
 		}
 
 		/// <summary>
@@ -155,10 +153,10 @@ namespace FriceEngine.Object
 		/// <returns>collided or not.</returns>
 		public override bool IsCollide(ICollideBox other)
 		{
-			if (other is PhysicalObject)
-				return X + Width >= ((PhysicalObject) other).X && ((PhysicalObject) other).Y <= Y + Height &&
-				       X <= ((PhysicalObject) other).X + ((PhysicalObject) other).Width &&
-				       Y <= ((PhysicalObject) other).Y + ((PhysicalObject) other).Height;
+			if (other is PhysicalObject o)
+				return X + Width >= o.X && o.Y <= Y + Height &&
+				       X <= o.X + o.Width &&
+				       Y <= o.Y + o.Height;
 			return false;
 		}
 
@@ -173,14 +171,14 @@ namespace FriceEngine.Object
 
 		public override double Width
 		{
-			get { return Shape.Width; }
-			set { Shape.Width = value; }
+			get => Shape.Width;
+		    set => Shape.Width = value;
 		}
 
 		public override double Height
 		{
-			get { return Shape.Height; }
-			set { Shape.Height = value; }
+			get => Shape.Height;
+		    set => Shape.Height = value;
 		}
 
 		public ShapeObject(ColorResource colorResource, IFShape shape, double x, double y)
@@ -208,8 +206,8 @@ namespace FriceEngine.Object
 
 		public Bitmap Bitmap
 		{
-			get { return Res.Bitmap; }
-			set { Res.Bitmap = value; }
+			get => Res.Bitmap;
+		    set => Res.Bitmap = value;
 		}
 
 		public Point Point { get; set; }
@@ -218,8 +216,8 @@ namespace FriceEngine.Object
 
 		public override double X
 		{
-			get { return _x; }
-			set
+			get => _x;
+		    set
 			{
 				_x = value;
 				Point = new Point(Convert.ToInt32(_x), Convert.ToInt32(_y));
@@ -228,8 +226,8 @@ namespace FriceEngine.Object
 
 		public override double Y
 		{
-			get { return _y; }
-			set
+			get => _y;
+		    set
 			{
 				_y = value;
 				Point = new Point(Convert.ToInt32(_x), Convert.ToInt32(_y));
@@ -238,14 +236,14 @@ namespace FriceEngine.Object
 
 		public override double Height
 		{
-			get { return Bitmap.Height; }
-			set { Bitmap = _resize(Bitmap, Convert.ToInt32(Width), Convert.ToInt32(value)); }
+			get => Bitmap.Height;
+		    set => Bitmap = _resize(Bitmap, Convert.ToInt32(Width), Convert.ToInt32(value));
 		}
 
 		public override double Width
 		{
-			get { return Bitmap.Width; }
-			set { Bitmap = _resize(Bitmap, Convert.ToInt32(value), Convert.ToInt32(Height)); }
+			get => Bitmap.Width;
+		    set => Bitmap = _resize(Bitmap, Convert.ToInt32(value), Convert.ToInt32(Height));
 		}
 
 		public ImageObject(ImageResource img, double x, double y)
