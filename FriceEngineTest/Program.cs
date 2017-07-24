@@ -18,7 +18,7 @@ namespace FriceEngineTest
 //			{var a = new Random();
 //				while (true)
 //					Console.WriteLine($@"{a.Next(4)}\n");}
-			new Demo3();
+			new Test();
 //			new Test();
 		}
 	}
@@ -46,9 +46,9 @@ namespace FriceEngineTest
 					_b.Height *= 1.5;
 				});
 			var pause = new ButtonObject("Pause", "pause", 200, 200, 50, 25, ColorResource.Blue, ColorResource.Black,
-				onClick: s => { GamePause(); });
+				onClick: s => GamePause());
 			var start = new ButtonObject("Resume", "resume", 200, 250, 50, 25, ColorResource.Blue, ColorResource.Black,
-				onClick: s => { GameStart(); });
+				onClick: s => GameStart());
 			AddObject(_b, pause, start);
 		}
 

@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.IO;
 
 namespace FriceEngine.Resource
 {
@@ -88,7 +90,7 @@ namespace FriceEngine.Resource
 
 		public ImageResource(string path)
 		{
-			Bitmap = ImageManger.Instance[path];
+			Bitmap =  Uri.IsWellFormedUriString(path,UriKind.Absolute) ? WebImageManger.Instance[path] :ImageManger.Instance[path] ;
 		}
 
 		private ImageResource()

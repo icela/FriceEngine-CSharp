@@ -319,7 +319,7 @@ namespace FriceEngine
 
 			internal void RemoveObject(IAbstractObject o)
 			{
-				if (o == null) return;
+				if (o is null) return;
 				if (o is TextObject text) _textDeleteBuffer.Add(text);
 				else _objectDeleteBuffer.Add(o);
 			}
@@ -332,7 +332,7 @@ namespace FriceEngine
 
 			internal void AddObject(IAbstractObject o)
 			{
-				if (o == null) return;
+				if (o is null) return;
 				if (o is TextObject text) _textAddBuffer.Add(text);
 				else _objectAddBuffer.Add(o);
 			}
