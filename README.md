@@ -9,6 +9,9 @@ In other words, the C# edition of frice engine.
 
 Visual Studio really inspried me. Very exciting IDE.
 
+CI|status
+:---|:---:
+AppVeyor|[![Build status](https://ci.appveyor.com/api/projects/status/uabdcqj2dnsod224?svg=true)](https://ci.appveyor.com/project/CodeForCSharp/friceengine-csharp)
 
 ## Contributors
 

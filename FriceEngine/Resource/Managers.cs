@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Net;
+using System.Windows.Media.Imaging;
 
 namespace FriceEngine.Resource
 {
@@ -30,7 +31,7 @@ namespace FriceEngine.Resource
 	{
 	    public static ImageManger Instance { get; } = new ImageManger();
 
-	    public override Bitmap Create(string path) => (Bitmap) Image.FromFile(path);
+        public override Bitmap Create(string path) => (Bitmap)Image.FromFile(path);
 
 		public override Bitmap this[string path] => (Bitmap) base[path].Clone();
 	}
