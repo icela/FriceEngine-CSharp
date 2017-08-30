@@ -11,6 +11,7 @@ using FriceEngine.Object;
 using FriceEngine.Utils.Graphics;
 using FriceEngine.Utils.Message;
 using FriceEngine.Utils.Time;
+using JetBrains.Annotations;
 
 namespace FriceEngine
 {
@@ -19,8 +20,8 @@ namespace FriceEngine
 		// ReSharper disable once MemberCanBeProtected.Global
 		public WinFormGame()
 		{
-            Random = new Random(DateTime.Now.Millisecond);
-            SetBounds(300, 300, 500, 500);
+			Random = new Random(DateTime.Now.Millisecond);
+			SetBounds(300, 300, 500, 500);
 			FormBorderStyle = FormBorderStyle.FixedSingle;
 			// ReSharper disable once VirtualMemberCallInConstructor
 			DoubleBuffered = true;
@@ -46,26 +47,26 @@ namespace FriceEngine
 			// ReSharper disable VirtualMemberCallInConstructor
 		}
 
-		private void OnCustomDraw(Graphics g)
-		{
-			CustomDraw(g);
-		}
+		private void OnCustomDraw([NotNull] Graphics g) => CustomDraw(g);
 
-		private readonly SynchronizationContext _syncContext;
-		private readonly AbstractGame _gamePanel;
+		[NotNull] private readonly SynchronizationContext _syncContext;
+		[NotNull] private readonly AbstractGame _gamePanel;
 
-		public Random Random;
+		[NotNull] public Random Random;
 
-//        private readonly Graphics _gameScene;
-//        private readonly Bitmap _screenCut;
+//		private readonly Graphics _gameScene;
+//		private readonly Bitmap _screenCut;
 
+		[NotNull]
 		public new FPoint MousePosition()
 			=> new FPoint(Control.MousePosition.Y - Bounds.Y, Control.MousePosition.X - Bounds.X);
 
+		[NotNull]
 		public FPoint Mouse
 		{
-			get => MousePosition();
-		    set
+			[NotNull] get => MousePosition();
+			[NotNull]
+			set
 			{
 				MousePosition().X = (int) value.X;
 				MousePosition().Y = (int) value.Y;
@@ -78,7 +79,7 @@ namespace FriceEngine
 		/// </summary>
 		/// <param name="title">text of the title</param>
 		// ReSharper disable once MemberCanBeProtected.Global
-		public void SetTitle(string title) => Text = title;
+		public void SetTitle([NotNull] string title) => Text = title;
 
 		/// <summary>
 		/// show fps or not.
@@ -95,7 +96,7 @@ namespace FriceEngine
 		/// set the global text font.
 		/// </summary>
 		/// <param name="font">the new font.</param>
-		public void SetTextFont(Font font) => _gamePanel.TextFont = font;
+		public void SetTextFont([NotNull] Font font) => _gamePanel.TextFont = font;
 
 		/// <summary>
 		/// set if the engine should collect garbages itself.
@@ -108,17 +109,17 @@ namespace FriceEngine
 		/// add an object or text to screen.
 		/// </summary>
 		/// <param name="o">the object or text to be added.</param>
-		public void AddObject(IAbstractObject o) => _gamePanel.AddObject(o);
+		public void AddObject([NotNull] IAbstractObject o) => _gamePanel.AddObject(o);
 
-		public void AddObjects(params IAbstractObject[] objects) => _gamePanel.AddObjects(objects);
+		public void AddObjects([NotNull] params IAbstractObject[] objects) => _gamePanel.AddObjects(objects);
 
-		public void RemoveObjects(params IAbstractObject[] objects) => _gamePanel.RemoveObjects(objects);
+		public void RemoveObjects([NotNull] params IAbstractObject[] objects) => _gamePanel.RemoveObjects(objects);
 
 		/// <summary>
 		/// remove an object or text from screen.
 		/// </summary>
 		/// <param name="o">the object or text to be removed.</param>
-		public void RemoveObject(IAbstractObject o) => _gamePanel.RemoveObject(o);
+		public void RemoveObject([NotNull] IAbstractObject o) => _gamePanel.RemoveObject(o);
 
 		/// <summary>
 		/// clear all objects and texts
@@ -129,13 +130,13 @@ namespace FriceEngine
 		/// add a timerListener
 		/// </summary>
 		/// <param name="t">the timeListener to be added.</param>
-		public void AddTimeListener(FTimeListener t) => _gamePanel.FTimeListenerAddBuffer.Add(t);
+		public void AddTimeListener([NotNull] FTimeListener t) => _gamePanel.FTimeListenerAddBuffer.Add(t);
 
 		/// <summary>
 		/// remove a timeListener
 		/// </summary>
 		/// <param name="t">the timeListener to be removed.</param>
-		public void RemoveTimeListener(FTimeListener t) => _gamePanel.FTimeListenerDeleteBuffer.Add(t);
+		public void RemoveTimeListener([NotNull] FTimeListener t) => _gamePanel.FTimeListenerDeleteBuffer.Add(t);
 
 		/// <summary>
 		/// clear the timeListeners.
@@ -254,11 +255,11 @@ namespace FriceEngine
 				ProcessBuffer();
 				foreach (var o in _objects)
 				{
-				    if (o is FObject f)
-				    {
-				        f.RunAnims();
-				        f.CheckCollitions();
-                    }
+					if (o is FObject f)
+					{
+						f.RunAnims();
+						f.CheckCollitions();
+					}
 				}
 
 				var g = e.Graphics;
@@ -292,8 +293,8 @@ namespace FriceEngine
 				}
 				foreach (var t in _texts)
 				{
-				    var brush = new SolidBrush(t.GetColor().Color);
-				    g.DrawString(t.Text, TextFont, brush, (float) t.X, (float) t.Y);
+					var brush = new SolidBrush(t.GetColor().Color);
+					g.DrawString(t.Text, TextFont, brush, (float) t.X, (float) t.Y);
 				}
 				if (ShowFps)
 					g.DrawString("fps: " + _fpsDisplay, TextFont, new SolidBrush(Color.Black), 20, Height - 80);
