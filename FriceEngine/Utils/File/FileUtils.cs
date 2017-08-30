@@ -1,24 +1,26 @@
 ﻿using System.IO;
+using JetBrains.Annotations;
 
 namespace FriceEngine.Utils.File
 {
 	public static class FileUtils
 	{
-		public static void String2File(string path, string content)
+		public static void String2File(
+			[NotNull] string path,
+			[NotNull] string content)
 		{
-		    using (var s = new FileInfo(path).CreateText())
-		    {
-		        s.WriteLine(content);
-            }
+			using (var s = new FileInfo(path).CreateText())
+				s.WriteLine(content);
 		}
 
-		public static string File2String(string path)
+		[NotNull]
+		public static string File2String([NotNull] string path)
 		{
-		    using (var s = new FileInfo(path).OpenText())
-		    {
-		        var ret = s.ReadToEnd();
-		        return ret;
-            }
+			using (var s = new FileInfo(path).OpenText())
+			{
+				var ret = s.ReadToEnd();
+				return ret;
+			}
 		}
 	}
 }
