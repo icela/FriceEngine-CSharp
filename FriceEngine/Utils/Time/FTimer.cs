@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Timers;
+using JetBrains.Annotations;
 
 namespace FriceEngine.Utils.Time
 {
@@ -19,9 +20,9 @@ namespace FriceEngine.Utils.Time
 			};
 		}
 
-		private readonly Timer _timer;
+		[NotNull] private readonly Timer _timer;
 
-		public void Start(Action action)
+		public void Start([NotNull] Action action)
 		{
 			_timer.Start();
 			_timer.Elapsed += (sender, args) => action.Invoke();
@@ -30,17 +31,20 @@ namespace FriceEngine.Utils.Time
 
 	public class FTimeListener
 	{
-		public FTimeListener(long milliSeconds, Action onTimeUp, bool autoReset = false)
+		public FTimeListener(
+			long milliSeconds,
+			[NotNull] Action onTimeUp,
+			bool autoReset = false)
 		{
 			_timer = new Timer
 			{
 				Interval = milliSeconds,
 				AutoReset = autoReset
 			};
-			_timer.Elapsed += (sender, args) => { onTimeUp?.Invoke(); };
+			_timer.Elapsed += (sender, args) => { onTimeUp(); };
 		}
 
-		private readonly Timer _timer;
+		[NotNull] private readonly Timer _timer;
 
 		public void Start()
 		{

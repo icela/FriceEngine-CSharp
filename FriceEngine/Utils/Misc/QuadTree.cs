@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using FriceEngine.Object;
+using JetBrains.Annotations;
 
 namespace FriceEngine.Utils.Misc
 {
@@ -8,12 +9,12 @@ namespace FriceEngine.Utils.Misc
 	{
 		public int MaxObjects { get; set; } = 10;
 		public int MaxLevels { get; set; } = 5;
-		internal List<PhysicalObject> Objects = new List<PhysicalObject>();
-		internal QuadTree[] Nodes = new QuadTree[4];
+		[NotNull] internal List<PhysicalObject> Objects = new List<PhysicalObject>();
+		[NotNull] internal QuadTree[] Nodes = new QuadTree[4];
 		internal int Level;
-		internal Rectangle Bounds;
+		[NotNull] internal Rectangle Bounds;
 
-		public QuadTree(Rectangle bounds, int level = 0)
+		public QuadTree([NotNull] Rectangle bounds, int level = 0)
 		{
 			Level = level;
 			Bounds = bounds;
@@ -24,11 +25,9 @@ namespace FriceEngine.Utils.Misc
 			Objects.Clear();
 			for (var i = 0; i < 4; i++)
 			{
-				if (Nodes[i] != null)
-				{
-					Nodes[i].Clear();
-					Nodes[i] = null;
-				}
+				if (Nodes[i] == null) continue;
+				Nodes[i].Clear();
+				Nodes[i] = null;
 			}
 		}
 
@@ -44,7 +43,7 @@ namespace FriceEngine.Utils.Misc
 			Nodes[3] = new QuadTree(new Rectangle(x + subWidth, y + subHeight, subWidth, subHeight), Level + 1);
 		}
 
-		internal int GetIndex(PhysicalObject rectF)
+		internal int GetIndex([NotNull] PhysicalObject rectF)
 		{
 			var index = -1;
 			var verticalMidpoint = Bounds.X + Bounds.Width / 2;
@@ -66,7 +65,7 @@ namespace FriceEngine.Utils.Misc
 			return index;
 		}
 
-		public void Insert(PhysicalObject rectF)
+		public void Insert([NotNull] PhysicalObject rectF)
 		{
 			if (Nodes[0] != null)
 			{
@@ -97,9 +96,12 @@ namespace FriceEngine.Utils.Misc
 			}
 		}
 
-		public void Insert(IEnumerable<PhysicalObject> physicalObjects) => physicalObjects.ForEach(Insert);
+		public void Insert([NotNull] IEnumerable<PhysicalObject> physicalObjects) => physicalObjects.ForEach(Insert);
 
-		public List<PhysicalObject> Retrieve(List<PhysicalObject> returnObjects, PhysicalObject rectF)
+		[NotNull]
+		public List<PhysicalObject> Retrieve(
+			[NotNull] List<PhysicalObject> returnObjects,
+			[NotNull] PhysicalObject rectF)
 		{
 			var index = GetIndex(rectF);
 			if (index != -1 && Nodes[0] != null)

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
+using JetBrains.Annotations;
 
 namespace FriceEngine.Resource
 {
@@ -8,7 +8,7 @@ namespace FriceEngine.Resource
 	{
 	}
 
-	public sealed class ColorResource
+	public struct ColorResource
 	{
 		public Color Color;
 
@@ -21,7 +21,7 @@ namespace FriceEngine.Resource
 		{
 		}
 
-		public ColorResource(string name) : this(Color.FromName(name))
+		public ColorResource([NotNull] string name) : this(Color.FromName(name))
 		{
 		}
 
@@ -37,6 +37,7 @@ namespace FriceEngine.Resource
 		public override int GetHashCode() => Color.GetHashCode();
 
 		public static ColorResource From(int argb) => new ColorResource(argb);
+
 		public static ColorResource From(Color color) => new ColorResource(color);
 
 		public static readonly ColorResource Blue = new ColorResource(Color.Blue);
@@ -81,24 +82,22 @@ namespace FriceEngine.Resource
 
 	public class ImageResource
 	{
-		public Bitmap Bitmap;
+		[NotNull] public Bitmap Bitmap;
 
-		protected ImageResource(Bitmap bitmap)
+		public ImageResource([NotNull] Bitmap bitmap)
 		{
 			Bitmap = bitmap;
 		}
 
-		public ImageResource(string path)
+		public ImageResource([NotNull] string path)
 		{
-			Bitmap =  Uri.IsWellFormedUriString(path,UriKind.Absolute) ? WebImageManger.Instance[path] :ImageManger.Instance[path] ;
+			Bitmap = Uri.IsWellFormedUriString(path, UriKind.Absolute)
+				? WebImageManger.Instance[path]
+				: ImageManger.Instance[path];
 		}
 
-		private ImageResource()
-		{
-		}
-
+		[NotNull]
 		public static ImageResource FromFile(string path) => new ImageResource(path);
-		public static ImageResource Empty() => new ImageResource();
 	}
 
 	public sealed class WebImageResource : ImageResource
