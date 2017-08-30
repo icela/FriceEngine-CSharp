@@ -62,7 +62,7 @@ namespace FriceEngine.Object
 		public double Mass
 		{
 			get => _mass;
-		    set => _mass = value <= 0 ? 0.001 : value;
+			set => _mass = value <= 0 ? 0.001 : value;
 		}
 
 		public void SetCentre(double x, double y)
@@ -103,12 +103,12 @@ namespace FriceEngine.Object
 		/// </summary>
 		public void RunAnims()
 		{
-		    foreach (var i in MoveList.Keys)
-		    {
-		        MoveList.TryGetValue(i, out MoveAnim ma);
-		        if (ma != null) Move(ma.Delta);
-            }
-        }
+			foreach (var i in MoveList.Keys)
+			{
+				MoveList.TryGetValue(i, out MoveAnim ma);
+				if (ma != null) Move(ma.Delta);
+			}
+		}
 
 		/// <summary>
 		/// Add animations
@@ -126,8 +126,8 @@ namespace FriceEngine.Object
 		{
 			foreach (var moveAnim in ma)
 			{
-                MoveList.TryRemove(moveAnim.Uid, out MoveAnim _);
-            }
+				MoveList.TryRemove(moveAnim.Uid, out MoveAnim _);
+			}
 		}
 
 		/// <summary>
@@ -172,13 +172,13 @@ namespace FriceEngine.Object
 		public override double Width
 		{
 			get => Shape.Width;
-		    set => Shape.Width = value;
+			set => Shape.Width = value;
 		}
 
 		public override double Height
 		{
 			get => Shape.Height;
-		    set => Shape.Height = value;
+			set => Shape.Height = value;
 		}
 
 		public ShapeObject(ColorResource colorResource, IFShape shape, double x, double y)
@@ -207,7 +207,7 @@ namespace FriceEngine.Object
 		public Bitmap Bitmap
 		{
 			get => Res.Bitmap;
-		    set => Res.Bitmap = value;
+			set => Res.Bitmap = value;
 		}
 
 		public Point Point { get; set; }
@@ -217,7 +217,7 @@ namespace FriceEngine.Object
 		public override double X
 		{
 			get => _x;
-		    set
+			set
 			{
 				_x = value;
 				Point = new Point(Convert.ToInt32(_x), Convert.ToInt32(_y));
@@ -227,7 +227,7 @@ namespace FriceEngine.Object
 		public override double Y
 		{
 			get => _y;
-		    set
+			set
 			{
 				_y = value;
 				Point = new Point(Convert.ToInt32(_x), Convert.ToInt32(_y));
@@ -237,13 +237,13 @@ namespace FriceEngine.Object
 		public override double Height
 		{
 			get => Bitmap.Height;
-		    set => Bitmap = _resize(Bitmap, Convert.ToInt32(Width), Convert.ToInt32(value));
+			set => Bitmap = _resize(Bitmap, Convert.ToInt32(Width), Convert.ToInt32(value));
 		}
 
 		public override double Width
 		{
 			get => Bitmap.Width;
-		    set => Bitmap = _resize(Bitmap, Convert.ToInt32(value), Convert.ToInt32(Height));
+			set => Bitmap = _resize(Bitmap, Convert.ToInt32(value), Convert.ToInt32(Height));
 		}
 
 		public ImageObject(ImageResource img, double x, double y)
@@ -333,7 +333,6 @@ namespace FriceEngine.Object
 		public Action<string> OnClick;
 		public Action<string> OnMouseEnter;
 		public Action<string> OnMouseLeave;
-
 
 		[SuppressMessage("ReSharper", "VirtualMemberCallInConstructor")]
 		public ButtonObject(
