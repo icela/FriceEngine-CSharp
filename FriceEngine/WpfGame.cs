@@ -215,7 +215,7 @@ namespace FriceEngine
 	/// </summary>
 	public class WpfWindow : Window
 	{
-		[NotNull] public Action<Canvas> CustomDrawAction;
+		[CanBeNull] public Action<Canvas> CustomDrawAction;
 
 		[NotNull]
 		public Dictionary<int, FrameworkElement> ObjectsDict { get; } = new Dictionary<int, FrameworkElement>();
@@ -309,7 +309,7 @@ namespace FriceEngine
 
 		private void _onAdd([NotNull] IAbstractObject obj)
 		{
-			[NotNull] FrameworkElement element = null;
+			FrameworkElement element = null;
 			if (obj is ShapeObject shape)
 			{
 				var brush = new SolidColorBrush(((ShapeObject) obj).ColorResource.Color.ToMediaColor());
@@ -346,8 +346,7 @@ namespace FriceEngine
 					Width = button.Width
 				};
 				var buttonElement = (Button) element;
-				if (button.Image == null) buttonElement.Content = button.Text;
-				else buttonElement.Content = button.Image.Bitmap.ToImage();
+				buttonElement.Content = button.Image == null ? button.Text : button.Image.Bitmap.ToImage();
 
 				if (button.OnClick != null) buttonElement.Click += (s, e) => button.OnClick(button.Name);
 				if (button.OnMouseEnter != null) buttonElement.Click += (s, e) => button.OnMouseEnter(button.Name);
@@ -367,7 +366,7 @@ namespace FriceEngine
 			var element = ObjectsDict[o.Uid];
 			if (o is TextObject text)
 			{
-				var textblock = ((TextBlock) element);
+				var textblock = (TextBlock) element;
 				textblock.Text = text.Text;
 				textblock.FontSize = text.Size;
 			}
