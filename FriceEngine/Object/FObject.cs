@@ -338,7 +338,13 @@ namespace FriceEngine.Object
 		/// <param name="width">image width, defaultly original size.</param>
 		/// <param name="height">image height, defaultly original size.</param>
 		/// <returns></returns>
-		public static ImageObject FromFile(string path, double x, double y, int width = -1, int height = -1)
+		[NotNull]
+		public static ImageObject FromFile(
+			[NotNull] string path,
+			double x,
+			double y,
+			int width = -1,
+			int height = -1)
 		{
 			var img = new ImageObject(ImageResource.FromFile(path), x, y);
 			if (width > 0) img.Width = width;
@@ -354,34 +360,35 @@ namespace FriceEngine.Object
 //			return img;
 //		}
 
+		[NotNull]
 		public ImageObject Clone() => new ImageObject(Res, X, Y);
 	}
 
 	public class ButtonObject : FObject
 	{
-		public string Text;
-		public ColorResource BackgroundColor;
-		public ColorResource ForegroundColor;
-		public ImageResource Image;
-		public string Name;
-		public Action<string> OnClick;
-		public Action<string> OnMouseEnter;
-		public Action<string> OnMouseLeave;
+		[NotNull] public string Text;
+		[NotNull] public ColorResource BackgroundColor;
+		[NotNull] public ColorResource ForegroundColor;
+		[CanBeNull] public ImageResource Image;
+		[NotNull] public string Name;
+		[CanBeNull] public Action<string> OnClick;
+		[CanBeNull] public Action<string> OnMouseEnter;
+		[CanBeNull] public Action<string> OnMouseLeave;
 
 		[SuppressMessage("ReSharper", "VirtualMemberCallInConstructor")]
 		public ButtonObject(
-			string text,
-			string name,
+			[NotNull] string text,
+			[NotNull] string name,
 			double x,
 			double y,
 			double width,
 			double height,
-			ColorResource backgroundColor,
-			ColorResource foregroundColor = null,
-			ImageResource image = null,
-			Action<string> onClick = null,
-			Action<string> onMouseEnter = null,
-			Action<string> onMouseLeave = null)
+			[NotNull] ColorResource backgroundColor,
+			[CanBeNull] ColorResource foregroundColor = null,
+			[CanBeNull] ImageResource image = null,
+			[CanBeNull] Action<string> onClick = null,
+			[CanBeNull] Action<string> onMouseEnter = null,
+			[CanBeNull] Action<string> onMouseLeave = null)
 		{
 			Text = text;
 			Name = name;
@@ -399,7 +406,7 @@ namespace FriceEngine.Object
 	}
 
 
-	public class DoublePair
+	public struct DoublePair
 	{
 		public double X;
 		public double Y;

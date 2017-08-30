@@ -1,4 +1,5 @@
 ﻿using FriceEngine.Resource;
+using JetBrains.Annotations;
 
 namespace FriceEngine.Object
 {
@@ -6,11 +7,16 @@ namespace FriceEngine.Object
 	{
 		public string Text;
 		public double Size;
-		public ColorResource ColorResource;
+		[NotNull] public ColorResource ColorResource;
 		public override double X { get; set; }
 		public override double Y { get; set; }
 
-		public TextObject(ColorResource colorResource, string text, double size, double x, double y)
+		public TextObject(
+			[NotNull] ColorResource colorResource,
+			[NotNull] string text,
+			double size,
+			double x,
+			double y)
 		{
 			ColorResource = colorResource;
 			Text = text;
@@ -19,11 +25,9 @@ namespace FriceEngine.Object
 			Size = size;
 		}
 
+		[NotNull]
 		public ColorResource GetColor() => ColorResource;
 
-		public override string ToString()
-		{
-			return Text;
-		}
+		public override string ToString() => Text;
 	}
 }

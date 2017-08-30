@@ -1,19 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Net;
 using System.Windows.Media.Imaging;
+using JetBrains.Annotations;
 
 namespace FriceEngine.Resource
 {
 	public abstract class FManager<T>
 	{
-		public readonly IDictionary Res = new Dictionary<string, T>();
+		[NotNull] public readonly IDictionary Res = new Dictionary<string, T>();
 
-		public abstract T Create(string path);
+		[NotNull]
+		public abstract T Create([NotNull] string path);
 
+		[NotNull]
 		public virtual T this[string path]
 		{
+			[NotNull]
 			get
 			{
 				if (Res.Contains(path)) return (T) Res[path];
@@ -29,9 +34,9 @@ namespace FriceEngine.Resource
 	/// </summary>
 	public class ImageManger : FManager<Bitmap>
 	{
-	    public static ImageManger Instance { get; } = new ImageManger();
+		[NotNull]	public static ImageManger Instance { get; } = new ImageManger();
 
-        public override Bitmap Create(string path) => (Bitmap)Image.FromFile(path);
+		public override Bitmap Create(string path) => (Bitmap) Image.FromFile(path);
 
 		public override Bitmap this[string path] => (Bitmap) base[path].Clone();
 	}
@@ -42,16 +47,13 @@ namespace FriceEngine.Resource
 	/// </summary>
 	public class WebImageManger : FManager<Bitmap>
 	{
-	    public static WebImageManger Instance { get; } = new WebImageManger();
+		public static WebImageManger Instance { get; } = new WebImageManger();
 
-	    public override Bitmap Create(string path)
+		public override Bitmap Create(string path)
 		{
 			var r = WebRequest.Create(path).GetResponse() as HttpWebResponse;
 			using (var imageStream = r?.GetResponseStream())
-			{
-				var img = imageStream == null ? null : new Bitmap(imageStream, true);
-				return img;
-			}
+				return new Bitmap(imageStream, true);
 		}
 
 		public override Bitmap this[string path] => (Bitmap) base[path].Clone();
